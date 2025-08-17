@@ -74,7 +74,7 @@ Already using under AGPL? **Smooth transition available:**
 **Ready to go commercial?**
 
 📧 **Email:** iamfuyoh@gmail.com  
-💼 **LinkedIn:** [aleksandr-mordvinov](https://linkedin.com/in/aleksandr-mordvinov)
+💼 **LinkedIn:** [aleksandr-mordvinov](https://www.linkedin.com/in/aleksandr-mordvinov-3bb853325/)
 
 **Include in your inquiry:**
 - Your organization size
