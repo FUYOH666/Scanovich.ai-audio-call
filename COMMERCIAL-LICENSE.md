@@ -73,7 +73,7 @@ Already using under AGPL? **Smooth transition available:**
 
 **Ready to go commercial?**
 
-📧 **Email:** aleksandrmordvinovv@gmail.com  
+📧 **Email:** iamfuyoh@gmail.com  
 💼 **LinkedIn:** [aleksandr-mordvinov](https://linkedin.com/in/aleksandr-mordvinov)
 
 **Include in your inquiry:**
