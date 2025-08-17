@@ -4,9 +4,12 @@
 
 **Transform your customer service quality with artificial intelligence that never sleeps, never gets tired, and analyzes 100% of your calls with surgical precision.**
 
-![Platform Status](https://img.shields.io/badge/Status-Production_Ready-green.svg)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.8%2B-brightgreen.svg)
+![Status](https://img.shields.io/badge/Status-MVP-orange.svg)
 ![ROI](https://img.shields.io/badge/ROI-500%2B%25-brightgreen.svg)
 ![Industries](https://img.shields.io/badge/Industries-9%2B-blue.svg)
+![Seeking](https://img.shields.io/badge/Seeking-Partners%20%26%20Mentors-purple.svg)
 
 ---
 
