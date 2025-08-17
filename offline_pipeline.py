@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-АВТОНОМНЫЙ Аудио Pipeline для медицинского центра МРТ Лидер
+АВТОНОМНЫЙ Аудио Pipeline для медицинских центров
 БЕЗ ИНТЕРНЕТА, БЕЗ ТОКЕНОВ - полная конфиденциальность
 
 Автор: Scanovich
@@ -168,7 +168,7 @@ class OfflineAudioPipeline:
         
         # Добавляем заголовок об автономном режиме
         formatted_text.append("🔒 АВТОНОМНАЯ ТРАНСКРИБАЦИЯ (БЕЗ ИНТЕРНЕТА)")
-        formatted_text.append("🏥 Медицинский центр МРТ Лидер")
+        formatted_text.append("🏥 Медицинский центр")
         formatted_text.append("🎭 Диаризация будет выполнена через LLM на ЭТАПЕ 2")
         formatted_text.append("=" * 50)
         formatted_text.append("")

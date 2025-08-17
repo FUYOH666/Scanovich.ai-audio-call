@@ -1,5 +1,50 @@
-# 🏥 WhisperX Pipeline - .gitignore
-# Автор: Scanovich.ai | Версия: 4.0
+# Credentials and sensitive data
+credentials/
+*.key
+*.pem
+*.p12
+*.env
+.env
+.env.local
+.env.production
+
+# Internal documentation with sensitive information
+docs/internal/
+
+# API keys and tokens
+config/secrets/
+secrets.json
+api_keys.json
+
+# Database files with real data
+*.db
+*.sqlite
+*.sqlite3
+
+# Real audio files and transcriptions
+input/*.wav
+input/*.mp3
+input/*.m4a
+output/transcriptions/*
+output/reports/*
+!output/transcriptions/.gitkeep
+!output/reports/.gitkeep
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Python
 __pycache__/
@@ -22,71 +67,14 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
-# Virtual Environment
-venv/
-env/
-ENV/
-
-# IDE
-.vscode/
-.cursor/
-*.swp
-*.swo
-
-# OS Files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Models (локальные модели слишком большие для git)
-models/hub/
-models/cache/
-
-# Credentials (НЕ ДОЛЖНЫ попасть в git!)
-credentials/*.json
-!credentials/.gitkeep
-
-# Output files (результаты обработки)
-output/
-!output/*/.gitkeep
-
-# Temporary files
-*.tmp
-*.temp
-temp/
-
-# Audio files (слишком большие)
-input/
-!input/.gitkeep
-
-# Test files
-test_*.py
-*_test.py
-test_output/
-
-# Jupyter Notebooks
-.ipynb_checkpoints
-
-# pytest
-.pytest_cache/
-
-# Coverage reports
-htmlcov/
-.coverage
-.coverage.*
-coverage.xml
-
-# Environment variables
-.env
-.env.local
-.env.production
+# Models and cache
+models/
+cache/
+*.model
+*.pt
+*.pth
 
 # Logs
 *.log
-logs/ 
+logs/

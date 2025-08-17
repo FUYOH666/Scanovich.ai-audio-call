@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Google Sheets Integration для WhisperX Pipeline v2.0
-Автор: Scanovich | Сеть клиник МРТ-Лидер
+Автор: Scanovich | Медицинские центры
 
 Система оценки звонков по 20 баллам согласно корпоративному скрипту
 """
