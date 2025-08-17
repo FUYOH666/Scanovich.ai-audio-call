@@ -1,8 +1,8 @@
 # 🧠 Scanovich.ai - AI-Powered Call Analytics Platform
 
-## 🚀 Revolutionary AI Solution for Business Communication Analysis
+## 🚀 AI-Powered Call Analytics Platform
 
-**Transform your customer service quality with artificial intelligence that never sleeps, never gets tired, and analyzes 100% of your calls with surgical precision.**
+**An intelligent system for automated business call analysis, helping companies improve customer service quality through AI-driven insights and comprehensive call evaluation.**
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-brightgreen.svg)
