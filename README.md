@@ -187,19 +187,41 @@ For a business with **1,000 calls/month**:
 
 ---
 
-## 🌟 **WHY INVEST IN SCANOVICH.AI?**
+## 🤝 **LOOKING FOR PARTNERS & MENTORS**
 
-### 🚀 **The Opportunity**
+### 🚀 **About This Project**
+This is an **MVP (Minimum Viable Product)** demonstrating the potential of AI-powered call analytics. While the technology is functional and shows promising results, I'm actively seeking:
+
+- **🧑‍🏫 Mentors** with experience in AI/ML products or enterprise software
+- **🤝 Co-founders** with complementary skills (business development, sales, marketing)
+- **💰 Angel investors** who believe in the vision and want to help scale
+- **🎯 Strategic partners** in healthcare, fintech, or call center industries
+
+### 👨‍💻 **About the Founder**
+- **Aleksandr Mordvinov** - AI/ML enthusiast and developer
+- **Background**: Healthcare IT, machine learning, business automation
+- **Vision**: Democratize AI-powered communication analysis
+- **Looking for**: Guidance, partnership, and collaboration opportunities
+
+### 🌟 **Why Partner With This Project?**
+
+#### 🎯 **The Opportunity**
 1. **Massive Market**: $2.5B+ market growing 15% annually
-2. **Proven Technology**: Production-ready with real customer success
-3. **Unique Position**: Only privacy-first, medically-specialized solution
-4. **Scalable Business**: High margins, low churn, predictable revenue
+2. **Proven Concept**: Working MVP with real-world applications
+3. **Unique Position**: Privacy-first, medically-specialized solution
+4. **Early Stage**: Ground-floor opportunity with significant upside
 
-### 🏆 **The Team Advantage**
-- Deep AI/ML expertise with proven track record
-- Healthcare domain knowledge
-- International market experience
-- Customer-obsessed culture
+#### 🛠️ **What's Already Built**
+- Functional AI pipeline with 95%+ accuracy
+- Multi-language support (Russian, English, Thai)
+- Local deployment capability
+- Real business use cases in healthcare
+
+#### 🎁 **What We Need**
+- **Business expertise** for go-to-market strategy
+- **Industry connections** in target markets
+- **Scaling guidance** for team and infrastructure
+- **Investment** for faster development and market entry
 
 ### 💎 **The Vision**
 **To become the global standard for AI-powered business communication analysis, starting with healthcare and expanding to every industry where conversation quality matters.**
@@ -209,17 +231,17 @@ For a business with **1,000 calls/month**:
 ## 📈 **GET STARTED**
 
 ### 🎯 **For Investors**
-- [**Investment Deck**](mailto:investors@scanovich.ai): Detailed financial projections and market analysis
-- [**Live Demo**](mailto:demo@scanovich.ai): See the technology in action
-- [**Customer References**](mailto:references@scanovich.ai): Speak with existing customers
+- [**Investment Deck**](mailto:iamfuyoh@gmail.com): Detailed financial projections and market analysis
+- [**Live Demo**](mailto:iamfuyoh@gmail.com): See the technology in action
+- [**Customer References**](mailto:iamfuyoh@gmail.com): Speak with existing customers
 
 ### 🤝 **For Partners**
-- [**Partnership Program**](mailto:partners@scanovich.ai): Channel and technology partnerships
-- [**Integration Opportunities**](mailto:integrations@scanovich.ai): Technical collaboration
+- [**Partnership Program**](mailto:iamfuyoh@gmail.com): Channel and technology partnerships
+- [**Integration Opportunities**](mailto:iamfuyoh@gmail.com): Technical collaboration
 
 ### 💼 **For Enterprise Customers**
-- [**Free ROI Assessment**](mailto:sales@scanovich.ai): Personalized analysis of your potential savings
-- [**Pilot Program**](mailto:pilot@scanovich.ai): Risk-free 30-day trial
+- [**Free ROI Assessment**](mailto:iamfuyoh@gmail.com): Personalized analysis of your potential savings
+- [**Pilot Program**](mailto:iamfuyoh@gmail.com): Risk-free 30-day trial
 
 ---
 
@@ -228,9 +250,9 @@ For a business with **1,000 calls/month**:
 **Scanovich.ai**  
 *Transforming Business Communication with AI*
 
-- **Email**: contact@scanovich.ai
+- **Email**: iamfuyoh@gmail.com
 - **Website**: [www.scanovich.ai](https://scanovich.ai)
-- **LinkedIn**: [company/scanovich-ai](https://linkedin.com/company/scanovich-ai)
+- **LinkedIn**: [Aleksandr Mordvinov](https://www.linkedin.com/in/aleksandr-mordvinov-3bb853325/)
 
 ---
 
