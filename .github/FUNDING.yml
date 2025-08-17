@@ -1,0 +1,35 @@
+# GitHub Sponsorship Configuration
+# These are supported funding model platforms
+
+# Custom funding links
+custom: ['mailto:iamfuyoh@gmail.com?subject=Investment Opportunity - Scanovich.ai']
+
+# PayPal username (optional)
+# paypal: username
+
+# Patreon username (optional)  
+# patreon: username
+
+# Open Collective username (optional)
+# open_collective: username
+
+# Ko-fi username (optional)
+# ko_fi: username
+
+# Tidelift package name (optional)
+# tidelift: npm/package-name
+
+# Community Bridge project name (optional)
+# community_bridge: project-name
+
+# Liberapay username (optional)  
+# liberapay: username
+
+# IssueHunt username (optional)
+# issuehunt: username
+
+# LFX Crowdfunding project name (optional)
+# lfx_crowdfunding: project-name
+
+# Polar username (optional)
+# polar: username

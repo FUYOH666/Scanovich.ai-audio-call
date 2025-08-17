@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://barsilio69.github.io/scanovich.ai/landing/sitemap.xml
+Sitemap: https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/sitemap.xml
 
 # Specific rules for major search engines
 User-agent: Googlebot
