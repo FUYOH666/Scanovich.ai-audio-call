@@ -1,8 +1,4 @@
-# 🧠 Scanovich.ai - AI-Powered Call Analytics Platform
-
-## 🚀 AI-Powered Call Analytics Platform
-
-**An intelligent system for automated business call analysis, helping companies improve customer service quality through AI-driven insights and comprehensive call evaluation.**
+# 🧠 Scanovich.ai - ИИ-платформа для анализа звонков
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-brightgreen.svg)
@@ -11,254 +7,144 @@
 ![Industries](https://img.shields.io/badge/Industries-9%2B-blue.svg)
 ![Seeking](https://img.shields.io/badge/Seeking-Partners%20%26%20Mentors-purple.svg)
 
----
+<div align="center">
 
-## 💡 **THE PROBLEM WE SOLVE**
+**🌍 Language:** [🇷🇺 Русский](README.md) | [🇺🇸 English](README_EN.md)
 
-### 📊 **The Hidden Cost of Manual Call Analysis**
-- **95% of business calls** go unanalyzed due to resource constraints
-- **Manual analysis costs $40-60** per call when done properly
-- **Inconsistent quality control** leads to missed opportunities and customer dissatisfaction
-- **Staff turnover** destroys institutional knowledge and training investments
-- **Compliance risks** in regulated industries like healthcare and finance
-
-### 💰 **Real Business Impact**
-For a business with **1,000 calls/month**:
-- **Manual analysis cost**: $50,000/month ($600K annually)
-- **Lost revenue** from missed opportunities: $200K+ annually
-- **Compliance fines** potential: $100K+ per incident
+</div>
 
 ---
 
-## 🎯 **OUR SOLUTION: AI THAT PAYS FOR ITSELF**
-
-### ⚡ **What Scanovich.ai Does**
-- **100% Call Coverage**: Every call analyzed, no exceptions
-- **Real-time Quality Scoring**: 20+ KPIs tracked automatically  
-- **Predictive Insights**: Identify at-risk customers before they churn
-- **Compliance Monitoring**: Automatic regulatory compliance checking
-- **Staff Performance Analytics**: Data-driven coaching recommendations
-
-### 🛡️ **Enterprise-Grade Security**
-- **100% Local Deployment**: Your data never leaves your infrastructure
-- **GDPR/HIPAA Compliant**: Built for regulated industries
-- **Zero Cloud Dependencies**: Works completely offline
+**Интеллектуальная система автоматизированного анализа деловых звонков, помогающая компаниям повышать качество клиентского сервиса через ИИ-аналитику и комплексную оценку звонков.**
 
 ---
 
-## 💰 **BUSINESS MODEL & REVENUE POTENTIAL**
+## 👥 **Для кого:**
+- **🏥 Медицинские центры** - анализ звонков пациентов и качества обслуживания
+- **🏢 Call-центры и аутсорсинг** - мониторинг качества работы операторов
+- **🏪 Ритейл и e-commerce** - анализ продаж и работы с клиентами
+- **💼 B2B компании** - оценка эффективности отделов продаж
+- **🏦 Финансовые услуги** - контроль соблюдения регуляторных требований
+- **📞 Любой бизнес с входящими/исходящими звонками** - более 50 звонков в месяц
 
-### 🎯 **Target Markets**
+## ⚠️ **Проблема:**
+Большинство компаний теряют огромные возможности из-за неанализируемых звонков:
+- **📊 95% звонков остаются без анализа** - нет ресурсов на ручную проверку
+- **💰 Стоимость ручного анализа $40-60 за звонок** - для 1000 звонков = $50,000/месяц
+- **❌ Inconsistent quality control** - человеческий фактор влияет на оценки
+- **📉 Потери от упущенных продаж** - менеджеры не знают где ошибаются  
+- **⚖️ Риски compliance** - особенно в медицине и финансах
+- **👥 Текучка кадров** - нет данных для обучения и развития сотрудников
 
-#### **Primary Markets**
-| Industry | Market Size | Avg. Deal Size | Pain Point |
-|----------|-------------|----------------|------------|
-| **Healthcare** | $45B global | $15-50K | Compliance + Patient Experience |
-| **Financial Services** | $30B global | $25-100K | Regulatory Compliance |
-| **Call Centers** | $25B global | $10-30K | Quality Assurance |
+## ✅ **Решение:**
+**Scanovich.ai** - это ИИ-система автоматического анализа звонков, которая:
+- **🤖 100% автоматизация** - каждый звонок анализируется без участия человека
+- **⚡ Real-time оценка** - более 20 KPI отслеживаются в реальном времени
+- **🎯 Предиктивная аналитика** - выявляем клиентов в группе риска
+- **📋 Контроль соответствия** - автоматическая проверка compliance требований
+- **📈 Performance analytics** - данные для коучинга сотрудников
+- **🔍 Поиск по содержанию** - мгновенный поиск по расшифровкам всех звонков
 
-#### **Secondary Markets**
-- Real Estate: Lead qualification and conversion optimization
-- Legal Services: Client consultation quality and compliance
-- Education: Admissions and student service quality
+## 🚀 **Преимущества:**
+### **💰 Финансовая эффективность**
+- **Экономия 95% затрат на анализ** - вместо $50,000/мес → $2,500/мес
+- **ROI 500-1000%** за первый год использования
+- **Увеличение конверсии на 15-25%** благодаря аналитике
+- **Снижение churn rate на 30%** через early warning system
 
-### 💎 **Revenue Streams**
-1. **Software Licensing**: $5-15K/month per deployment
-2. **Professional Services**: $50-150K implementation projects
-3. **Maintenance & Support**: 20-30% annual recurring revenue
-4. **Custom AI Models**: $25-75K for industry-specific training
+### **⚡ Операционные преимущества**  
+- **Мгновенные insights** - результаты через минуты после звонка
+- **Объективная оценка** - исключение человеческого фактора
+- **Полное покрытие** - анализ 100% звонков, а не выборочно
+- **Многоязычность** - поддержка русского, английского, тайского
 
----
+### **📊 Управленческие возможности**
+- **Data-driven решения** - все решения на основе данных
+- **Автоматические отчеты** - ежедневная/недельная аналитика
+- **Тренды и паттерны** - выявление скрытых проблем
+- **Benchmarking** - сравнение с industry standards
 
-## 📈 **MARKET OPPORTUNITY**
+## 📋 **Дополнительно:**
+### **🛠️ Технические возможности**
+- **AI-транскрипция** - WhisperX для высокой точности
+- **Анализ эмоций** - определение тона и настроения
+- **Keyword extraction** - автоматическое выделение ключевых тем
+- **Интеграция** - API для подключения к CRM/телефонии
 
-### 🌍 **Total Addressable Market (TAM)**
-- **Global Call Analytics Market**: $2.5B (Growing 15% annually)
-- **Enterprise AI Market**: $150B (Expected to reach $300B by 2027)
-- **Quality Management Software**: $8B market
+### **📦 Быстрый старт**
+```bash
+# Установка системы
+git clone https://github.com/FUYOH666/Scanovich.ai-audio-call.git
+cd Scanovich.ai-audio-call
+pip install -r requirements.txt
+python unified_pipeline.py
+```
 
-### 🎯 **Serviceable Addressable Market (SAM)**
-- **Mid-to-Large Enterprises** (1000+ calls/month): $500M
-- **Regulated Industries** requiring compliance: $200M
-- **International Markets** (multi-language support): $800M
+### **🎯 Как использовать**
+1. **Подключите телефонию** - через API или загрузка файлов
+2. **Настройте критерии** - KPI под ваши бизнес-процессы
+3. **Получайте insights** - автоматические отчеты и аналитика
+4. **Принимайте решения** - на основе объективных данных
 
-### 🚀 **Competitive Advantages**
-1. **Privacy-First Architecture**: No cloud dependency = enterprise trust
-2. **Medical Specialization**: Deep healthcare domain expertise  
-3. **Multilingual Support**: Russian, English, Thai markets
-4. **Rapid Deployment**: 1-2 days vs. 3-6 months for competitors
+## 📊 **Статус проекта:**
+- **🚀 MVP готов** - базовая функциональность работает
+- **🧪 Тестируется в production** - несколько pilot клиентов
+- **👥 Ищем партнеров и менторов** - для масштабирования
+- **💼 Открыты для инвестиций** - seed/pre-A раунд
+- **🔄 Активная разработка** - еженедельные релизы
 
----
+## 🏢 **Область применения:**
+### **Здравоохранение**
+- **Медицинские центры**: анализ записи пациентов, контроль качества консультаций
+- **Телемедицина**: оценка удаленных консультаций
+- **Медицинские call-центры**: анализ обращений и записей на прием
 
-## 💵 **FINANCIAL PROJECTIONS**
+### **Продажи и маркетинг**
+- **Отделы продаж**: анализ звонков по лидам, conversion tracking
+- **Call-центры продаж**: мониторинг скриптов и техник продаж  
+- **Customer success**: анализ onboarding звонков и retention
 
-### 📊 **Customer Economics**
-- **Customer Acquisition Cost (CAC)**: $5-15K
-- **Annual Contract Value (ACV)**: $50-200K
-- **Customer Lifetime Value (LTV)**: $300-800K
-- **LTV/CAC Ratio**: 20-50x
-- **Gross Margin**: 80-90%
+### **Клиентский сервис**
+- **Техподдержка**: анализ качества решения проблем
+- **Complaint handling**: мониторинг работы с жалобами
+- **Quality assurance**: автоматический QA вместо ручного
 
-### 🎯 **Revenue Projections (Conservative)**
-| Year | Customers | Revenue | Growth Rate |
-|------|-----------|---------|-------------|
-| Year 1 | 10 | $500K | - |
-| Year 2 | 35 | $2.5M | 400% |
-| Year 3 | 100 | $8M | 220% |
-| Year 4 | 250 | $20M | 150% |
-| Year 5 | 500 | $40M | 100% |
-
----
-
-## 🏆 **COMPETITIVE ANALYSIS**
-
-### 🥇 **Market Position**
-| Feature | Scanovich.ai | Gong.io | Chorus.ai | CallRail |
-|---------|--------------|---------|-----------|----------|
-| **Privacy (Local Deploy)** | ✅ | ❌ | ❌ | ❌ |
-| **Medical Specialization** | ✅ | ❌ | ❌ | ❌ |
-| **Multilingual** | ✅ | Partial | Partial | ❌ |
-| **Real-time Analysis** | ✅ | ✅ | ✅ | ❌ |
-| **Compliance Built-in** | ✅ | Partial | Partial | ❌ |
-
-### 🎯 **Differentiation Strategy**
-1. **Privacy-First**: Only solution with 100% local deployment
-2. **Vertical Focus**: Deep healthcare/medical expertise
-3. **Global Reach**: Multi-language, multi-market capability
-4. **Rapid ROI**: Customers see 300-500% ROI within 6 months
-
----
-
-## 🛠️ **TECHNOLOGY STACK & INNOVATION**
-
-### 🧠 **AI/ML Technology**
-- **Speech Recognition**: Advanced WhisperX integration (95%+ accuracy)
-- **Natural Language Processing**: Custom LLM fine-tuned for business contexts
-- **Predictive Analytics**: Customer churn and opportunity identification
-- **Real-time Processing**: Analysis faster than call duration
-
-### ⚡ **Performance Metrics**
-- **Accuracy**: 95%+ transcription, 90%+ analysis accuracy
-- **Speed**: 2-10x faster than real-time processing
-- **Scalability**: Handles 5,000+ calls/day per deployment
-- **Uptime**: 99.9% availability guarantee
+### **Регулируемые отрасли**
+- **Финансы**: compliance мониторинг по финансовым продуктам
+- **Страхование**: анализ claims и продажи полисов
+- **Телеком**: контроль качества клиентского сервиса
 
 ---
 
-## 🤝 **PARTNERSHIP & INVESTMENT OPPORTUNITIES**
+## 📞 **Контакты и партнерство**
 
-### 💼 **Strategic Partnerships**
-- **CRM Integrations**: Salesforce, HubSpot, Microsoft Dynamics
-- **Telecom Providers**: Direct integration with phone systems
-- **Healthcare EMR**: Epic, Cerner integration opportunities
-- **Global Resellers**: Channel partner program
-
-### 💰 **Investment Use of Funds**
-| Priority | Investment | Purpose | Timeline |
-|----------|------------|---------|----------|
-| **1** | $500K | Team Expansion (5 engineers) | 6 months |
-| **2** | $300K | Sales & Marketing | 12 months |
-| **3** | $200K | International Expansion | 18 months |
-| **4** | $200K | Advanced AI/ML Development | 24 months |
-
-### 🎯 **Funding Rounds**
-- **Seed**: $1.2M for product development and initial market validation
-- **Series A**: $5M for scaling sales and international expansion
-- **Series B**: $15M for market domination and new product lines
-
----
-
-## 📞 **CUSTOMER SUCCESS STORIES**
-
-### 🏥 **Healthcare Network** 
-- **Challenge**: Manual analysis of 2,000+ patient calls/month
-- **Solution**: Scanovich.ai deployment with medical specialization
-- **Results**: 
-  - 85% reduction in analysis costs
-  - 40% improvement in patient satisfaction scores
-  - 100% compliance audit success rate
-  - **ROI: 450% in first year**
-
-### 📱 **Enterprise Call Center**
-- **Challenge**: Quality control for 50,000+ calls/month
-- **Solution**: AI-powered quality scoring and coaching
-- **Results**:
-  - 70% reduction in quality assurance costs
-  - 25% improvement in customer satisfaction
-  - 30% reduction in staff turnover
-  - **ROI: 320% in 8 months**
-
----
-
-## 🤝 **LOOKING FOR PARTNERS & MENTORS**
-
-### 🚀 **About This Project**
-This is an **MVP (Minimum Viable Product)** demonstrating the potential of AI-powered call analytics. While the technology is functional and shows promising results, I'm actively seeking:
-
-- **🧑‍🏫 Mentors** with experience in AI/ML products or enterprise software
-- **🤝 Co-founders** with complementary skills (business development, sales, marketing)
-- **💰 Angel investors** who believe in the vision and want to help scale
-- **🎯 Strategic partners** in healthcare, fintech, or call center industries
-
-### 👨‍💻 **About the Founder**
-- **Aleksandr Mordvinov** - AI/ML enthusiast and developer
-- **Background**: Healthcare IT, machine learning, business automation
-- **Vision**: Democratize AI-powered communication analysis
-- **Looking for**: Guidance, partnership, and collaboration opportunities
-
-### 🌟 **Why Partner With This Project?**
-
-#### 🎯 **The Opportunity**
-1. **Massive Market**: $2.5B+ market growing 15% annually
-2. **Proven Concept**: Working MVP with real-world applications
-3. **Unique Position**: Privacy-first, medically-specialized solution
-4. **Early Stage**: Ground-floor opportunity with significant upside
-
-#### 🛠️ **What's Already Built**
-- Functional AI pipeline with 95%+ accuracy
-- Multi-language support (Russian, English, Thai)
-- Local deployment capability
-- Real business use cases in healthcare
-
-#### 🎁 **What We Need**
-- **Business expertise** for go-to-market strategy
-- **Industry connections** in target markets
-- **Scaling guidance** for team and infrastructure
-- **Investment** for faster development and market entry
-
-### 💎 **The Vision**
-**To become the global standard for AI-powered business communication analysis, starting with healthcare and expanding to every industry where conversation quality matters.**
-
----
-
-## 📈 **GET STARTED**
-
-### 🎯 **For Investors**
-- [**Investment Deck**](mailto:iamfuyoh@gmail.com): Detailed financial projections and market analysis
-- [**Live Demo**](mailto:iamfuyoh@gmail.com): See the technology in action
-- [**Customer References**](mailto:iamfuyoh@gmail.com): Speak with existing customers
-
-### 🤝 **For Partners**
-- [**Partnership Program**](mailto:iamfuyoh@gmail.com): Channel and technology partnerships
-- [**Integration Opportunities**](mailto:iamfuyoh@gmail.com): Technical collaboration
-
-### 💼 **For Enterprise Customers**
-- [**Free ROI Assessment**](mailto:iamfuyoh@gmail.com): Personalized analysis of your potential savings
-- [**Pilot Program**](mailto:iamfuyoh@gmail.com): Risk-free 30-day trial
-
----
-
-## 📞 **Contact Information**
-
-**Scanovich.ai**  
-*Transforming Business Communication with AI*
-
-- **Email**: iamfuyoh@gmail.com
-- **Website**: [www.scanovich.ai](https://scanovich.ai)
+### **👨‍💻 Основатель**
+- **Email**: [iamfuyoh@gmail.com](mailto:iamfuyoh@gmail.com)
 - **LinkedIn**: [Aleksandr Mordvinov](https://www.linkedin.com/in/aleksandr-mordvinov-3bb853325/)
+- **GitHub**: [FUYOH666](https://github.com/FUYOH666)
+
+### **🤝 Ищем партнеров и инвесторов**
+- **💼 Business Development** - для масштабирования продаж
+- **💰 Seed инвестиции** - для ускорения развития продукта
+- **🏢 Pilot клиенты** - для тестирования и case studies
+- **🧠 Менторы в AI/B2B SaaS** - для стратегического развития
+
+### **🚀 Возможности сотрудничества**
+- **🔧 Technical partnership** - интеграции с CRM/телефонией
+- **📊 Data partnership** - обогащение аналитики
+- **🌍 Geographic expansion** - выход на новые рынки
+- **🏭 White-label решения** - для системных интеграторов
+
+### **📚 Ресурсы**
+- **🐛 Сообщить о проблеме**: [GitHub Issues](https://github.com/FUYOH666/Scanovich.ai-audio-call/issues)
+- **💡 Предложить улучшение**: [Feature Request](https://github.com/FUYOH666/Scanovich.ai-audio-call/issues/new)
+- **📖 Документация**: [QUICK_START.md](QUICK_START.md)
 
 ---
 
-*"The future of business communication analysis is here. The question isn't whether AI will transform your industry—it's whether you'll lead that transformation or get left behind."*
+## 📄 **Лицензия и статус**
+- **MIT License** - свободное использование в коммерческих целях
+- **MVP Status** - готов для pilot проектов
+- **Seeking Investment** - открыты для seed раунда
 
-**Ready to revolutionize your business communication? Let's talk.**
+**💡 Этот проект демонстрирует экспертизу в AI/ML, business analytics и enterprise software development.**
