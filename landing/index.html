@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanovich.ai - AI анализ деловых звонков</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Scanovich.ai - платформа для автоматического анализа деловых звонков с помощью искусственного интеллекта. Локальное развертывание, медицинская специализация.">
+    <meta name="keywords" content="анализ звонков, AI, машинное обучение, медицина, транскрипция, автоматизация">
+    <meta name="author" content="Scanovich.ai">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/">
+    <meta property="og:title" content="Scanovich.ai - AI анализ деловых звонков">
+    <meta property="og:description" content="Автоматический анализ деловых звонков с помощью ИИ. Локальное развертывание, высокая точность, медицинская специализация.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Scanovich.ai - AI анализ деловых звонков">
+    <meta property="twitter:description" content="Автоматический анализ деловых звонков с помощью ИИ">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/">
+    
+    <!-- Hreflang Tags -->
+    <link rel="alternate" hreflang="ru" href="https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/?lang=ru">
+    <link rel="alternate" hreflang="en" href="https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/?lang=en">
+    <link rel="alternate" hreflang="th" href="https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/?lang=th">
+    <link rel="alternate" hreflang="x-default" href="https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/">
+    
+    <!-- Business Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Scanovich.ai",
+        "description": "AI-powered call analysis system for business automation",
+        "url": "https://FUYOH666.github.io/Scanovich.ai-audio-call/landing/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "RUB",
+            "description": "Custom pricing based on call volume"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Scanovich.ai",
+            "email": "contact@scanovich.ai"
+        },
+        "keywords": "call analysis, AI, transcription, business automation, voice analytics",
+        "inLanguage": ["ru", "en", "th"]
+    }
+    </script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQFTKVM3L2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YQFTKVM3L2');
+    </script>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button onclick="changeLanguage('ru')" class="lang-btn active" data-lang="ru">🇷🇺 RU</button>
+        <button onclick="changeLanguage('en')" class="lang-btn" data-lang="en">🇺🇸 EN</button>
+        <button onclick="changeLanguage('th')" class="lang-btn" data-lang="th">🇹🇭 TH</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Scanovich.ai</span>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="nav" id="mobile-nav">
+                <a href="#features" data-i18n="nav-features" onclick="closeMobileMenu()">Возможности</a>
+                <a href="#industries" data-i18n="nav-industries" onclick="closeMobileMenu()">Области применения</a>
+                <a href="#calculator" data-i18n="nav-calculator" onclick="closeMobileMenu()">Калькулятор</a>
+                <a href="#resources" data-i18n="nav-resources" onclick="closeMobileMenu()">Ресурсы</a>
+                <a href="#contact" data-i18n="nav-contact" onclick="closeMobileMenu()">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-i18n="hero-title">⚡ AI-система анализа деловых звонков</h1>
+                <p class="hero-subtitle" data-i18n="hero-subtitle">
+                    Автоматическая транскрипция и анализ качества каждого звонка. 
+                    Локальное развертывание, медицинская специализация, мультиязычность.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="hero-stat1">90%+</div>
+                        <div class="stat-label" data-i18n="hero-stat1-label">Точность анализа</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="hero-stat2">2-10x</div>
+                        <div class="stat-label" data-i18n="hero-stat2-label">Быстрее реального времени</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-i18n="hero-stat3">3</div>
+                        <div class="stat-label" data-i18n="hero-stat3-label">Языка поддержки</div>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollTo('#calculator')" data-i18n="btn-calculate">
+                        💰 Рассчитать экономию
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollTo('#contact')" data-i18n="btn-contact">
+                        📞 Получить консультацию
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="features-header">
+                <h2 data-i18n="features-title">🚀 Возможности платформы</h2>
+                <p class="features-subtitle" data-i18n="features-subtitle">
+                    Комплексное AI-решение для автоматического анализа деловых звонков
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 data-i18n="feature1-title">Автоматический анализ</h3>
+                    <p data-i18n="feature1-desc">
+                        Система автоматически транскрибирует и анализирует каждый звонок, 
+                        выявляя соблюдение скрипта и качество обслуживания.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item" data-i18n="feature1-benefit1">✓ Анализ в реальном времени</div>
+                        <div class="benefit-item" data-i18n="feature1-benefit2">✓ 20+ критериев оценки</div>
+                        <div class="benefit-item" data-i18n="feature1-benefit3">✓ Детальная транскрипция</div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 data-i18n="feature2-title">Локальное развертывание</h3>
+                    <p data-i18n="feature2-desc">
+                        Все данные обрабатываются локально на ваших серверах. 
+                        Полная конфиденциальность и соответствие требованиям безопасности.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item" data-i18n="feature2-benefit1">✓ Без передачи данных в облако</div>
+                        <div class="benefit-item" data-i18n="feature2-benefit2">✓ Соответствие 152-ФЗ</div>
+                        <div class="benefit-item" data-i18n="feature2-benefit3">✓ Полный контроль данных</div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-i18n="feature3-title">Детальная аналитика</h3>
+                    <p data-i18n="feature3-desc">
+                        Получайте подробные отчеты по каждому звонку и общую статистику 
+                        работы администраторов с рекомендациями по улучшению.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item" data-i18n="feature3-benefit1">✓ HTML отчеты по звонкам</div>
+                        <div class="benefit-item" data-i18n="feature3-benefit2">✓ Экспорт в Google Sheets</div>
+                        <div class="benefit-item" data-i18n="feature3-benefit3">✓ Рекомендации по улучшению</div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚕️</div>
+                    <h3 data-i18n="feature4-title">Медицинская специализация</h3>
+                    <p data-i18n="feature4-desc">
+                        Система обучена на медицинской терминологии и протоколах. 
+                        Понимает специфику записи на процедуры и консультации.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item" data-i18n="feature4-benefit1">✓ Медицинская терминология</div>
+                        <div class="benefit-item" data-i18n="feature4-benefit2">✓ Протоколы записи</div>
+                        <div class="benefit-item" data-i18n="feature4-benefit3">✓ Контроль противопоказаний</div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 data-i18n="feature5-title">Мультиязычность</h3>
+                    <p data-i18n="feature5-desc">
+                        Поддержка русского, английского и тайского языков. 
+                        Система адаптируется к особенностям речи и акцентам.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item" data-i18n="feature5-benefit1">✓ 3 языка интерфейса</div>
+                        <div class="benefit-item" data-i18n="feature5-benefit2">✓ Распознавание акцентов</div>
+                        <div class="benefit-item" data-i18n="feature5-benefit3">✓ Локализация отчетов</div>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 data-i18n="feature6-title">Быстрое внедрение</h3>
+                    <p data-i18n="feature6-desc">
+                        Готовое решение для быстрого запуска. Минимальные требования 
+                        к инфраструктуре и простая интеграция с существующими системами.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit-item" data-i18n="feature6-benefit1">✓ Запуск за 1-2 дня</div>
+                        <div class="benefit-item" data-i18n="feature6-benefit2">✓ Простая настройка</div>
+                        <div class="benefit-item" data-i18n="feature6-benefit3">✓ Техническая поддержка</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Section -->
+    <section id="industries" class="industries">
+        <div class="container">
+            <div class="industries-header">
+                <h2 data-i18n="industries-title">🏢 Области применения</h2>
+                <p class="industries-subtitle" data-i18n="industries-subtitle">
+                    Наша AI-система анализа звонков подходит для любого бизнеса, где важно качество общения с клиентами
+                </p>
+            </div>
+            
+            <div class="industries-grid">
+                <div class="industry-card">
+                    <div class="industry-icon">🏥</div>
+                    <h3 data-i18n="industry1-title">Медицинские клиники</h3>
+                    <p data-i18n="industry1-desc">Анализ качества записи пациентов, соблюдение медицинских протоколов, контроль противопоказаний</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">🦷</div>
+                    <h3 data-i18n="industry2-title">Стоматологии</h3>
+                    <p data-i18n="industry2-desc">Оценка консультаций, запись на процедуры, анализ удовлетворенности пациентов</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">📞</div>
+                    <h3 data-i18n="industry3-title">Колл-центры</h3>
+                    <p data-i18n="industry3-desc">Мониторинг качества обслуживания, оценка операторов, автоматическая классификация обращений</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">💼</div>
+                    <h3 data-i18n="industry4-title">Продажи и CRM</h3>
+                    <p data-i18n="industry4-desc">Анализ переговоров с клиентами, оценка техник продаж, выявление причин отказов</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">🛠️</div>
+                    <h3 data-i18n="industry5-title">Служба поддержки</h3>
+                    <p data-i18n="industry5-desc">Контроль решения проблем, анализ времени ответа, оценка профессионализма сотрудников</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">🏦</div>
+                    <h3 data-i18n="industry6-title">Банки и финансы</h3>
+                    <p data-i18n="industry6-desc">Соблюдение регуляторных требований, анализ консультаций по продуктам, контроль рисков</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">🏘️</div>
+                    <h3 data-i18n="industry7-title">Недвижимость</h3>
+                    <p data-i18n="industry7-desc">Анализ показов объектов, оценка работы риелторов, выявление потребностей клиентов</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">⚖️</div>
+                    <h3 data-i18n="industry8-title">Юридические услуги</h3>
+                    <p data-i18n="industry8-desc">Контроль консультаций, анализ первичных обращений, оценка профессиональной этики</p>
+                </div>
+                
+                <div class="industry-card">
+                    <div class="industry-icon">🎓</div>
+                    <h3 data-i18n="industry9-title">Образование</h3>
+                    <p data-i18n="industry9-desc">Анализ консультаций абитуриентов, контроль качества приемной комиссии, оценка коммуникаций</p>
+                </div>
+            </div>
+            
+            <div class="industries-cta">
+                <h3 data-i18n="industries-cta-title">Ваш бизнес не в списке?</h3>
+                <p data-i18n="industries-cta-desc">
+                    Наша система легко адаптируется под любую отрасль. Получите персональную консультацию по внедрению
+                </p>
+                <button class="btn btn-primary" onclick="scrollTo('#contact')" data-i18n="btn-industry-consultation">
+                    💬 Обсудить ваш случай
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section id="calculator" class="calculator">
+        <div class="container">
+            <div class="calculator-header">
+                <h2 data-i18n="calc-title">💰 Рассчитайте экономию для вашего бизнеса</h2>
+                <p data-i18n="calc-subtitle">
+                    Узнайте, сколько вы сможете сэкономить на анализе звонков с помощью AI
+                </p>
+            </div>
+            
+            <div class="calculator-content">
+                <div class="calculator-inputs">
+                    <div class="input-group">
+                        <label for="callsSlider" data-i18n="calc-calls">Звонков в день:</label>
+                        <input type="range" id="callsSlider" min="10" max="5000" value="100" 
+                               oninput="updateCalculator()" class="slider">
+                        <span id="callsValue" class="value">100</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="salarySlider" data-i18n="calc-salary">Зарплата аналитика (₽/мес):</label>
+                        <input type="range" id="salarySlider" min="40000" max="150000" value="95000" step="5000"
+                               oninput="updateCalculator()" class="slider">
+                        <span id="salaryValue" class="value">95,000 ₽</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="timeSlider" data-i18n="calc-time">Время на анализ одного звонка (мин):</label>
+                        <input type="range" id="timeSlider" min="1" max="10" value="2.5" step="0.5"
+                               oninput="updateCalculator()" class="slider">
+                        <span id="timeValue" class="value">2.5</span>
+                    </div>
+                </div>
+                
+                <div class="calculator-results">
+                    <div class="result-section">
+                        <h3 data-i18n="calc-human-title">💼 Расходы на ручной анализ:</h3>
+                        <div class="cost-breakdown">
+                            <div class="cost-item">
+                                <span data-i18n="calc-analysts">Аналитики:</span>
+                                <span id="analystsCount">5 человек</span>
+                            </div>
+                            <div class="cost-item">
+                                <span data-i18n="calc-salaries">Зарплаты:</span>
+                                <span id="totalSalaries">475,000 ₽/мес</span>
+                            </div>
+                            <div class="cost-item">
+                                <span data-i18n="calc-management">Управление (25%):</span>
+                                <span id="managementCost">118,750 ₽/мес</span>
+                            </div>
+                            <div class="cost-item">
+                                <span data-i18n="calc-hr">HR и обучение (20%):</span>
+                                <span id="hrCost">95,000 ₽/мес</span>
+                            </div>
+                            <div class="cost-item">
+                                <span data-i18n="calc-office">Офисные расходы:</span>
+                                <span id="officeCost">75,000 ₽/мес</span>
+                            </div>
+                            <div class="cost-item">
+                                <span data-i18n="calc-risks">Риски (больничные, текучка):</span>
+                                <span id="risksCost">85,500 ₽/мес</span>
+                            </div>
+                            <div class="cost-total">
+                                <span data-i18n="calc-total-human">Общие расходы:</span>
+                                <span id="totalHumanCost">849,250 ₽/мес</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-section">
+                        <h3 data-i18n="calc-ai-title">🤖 Расходы на AI-систему:</h3>
+                        <div class="cost-breakdown">
+                            <div class="cost-item">
+                                <span data-i18n="calc-equipment">Оборудование (единоразово):</span>
+                                <span id="equipmentCost">300,000 - 1,500,000 ₽</span>
+                            </div>
+                            <div class="cost-item">
+                                <span data-i18n="calc-software">Лицензия ПО + Поддержка:</span>
+                                <span id="softwareCost" data-i18n="calc-dynamic-cost">Рассчитывается</span>
+                            </div>
+                            <div class="cost-total">
+                                <span data-i18n="calc-total-ai">Общие расходы в год:</span>
+                                <span id="totalAiCost">200,000 ₽/год</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-section savings">
+                        <h3 data-i18n="calc-savings-title">💎 Ваша экономия:</h3>
+                        <div class="savings-breakdown">
+                            <div class="savings-item">
+                                <span data-i18n="calc-monthly-savings">В месяц:</span>
+                                <span id="monthlySavings" class="savings-amount">832,583 ₽</span>
+                            </div>
+                            <div class="savings-item">
+                                <span data-i18n="calc-yearly-savings">В год:</span>
+                                <span id="yearlySavings" class="savings-amount">9,991,000 ₽</span>
+                            </div>
+                            <div class="savings-item">
+                                <span data-i18n="calc-roi">ROI:</span>
+                                <span id="roiValue" class="roi-value">1,111%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Magnets Section -->
+    <section id="resources" class="lead-magnets">
+        <div class="container">
+            <div class="lead-magnets-header">
+                <h2 data-i18n="resources-title">🎁 Полезные материалы</h2>
+                <p class="lead-magnets-subtitle" data-i18n="resources-subtitle">
+                    Получите ценные ресурсы для улучшения качества обслуживания и принятия решений
+                </p>
+            </div>
+            
+            <div class="magnets-grid">
+                <!-- Free Analysis -->
+                <div class="magnet-card featured">
+                    <div class="magnet-icon">📊</div>
+                    <h3 data-i18n="magnet1-title">Демо анализа звонков</h3>
+                    <p data-i18n="magnet1-desc">
+                        Посмотрите примеры работы системы на демонстрационных звонках. 
+                        Изучите возможности анализа без передачи ваших данных.
+                    </p>
+                    <div class="magnet-benefits">
+                        <div class="benefit-item" data-i18n="magnet1-benefit1">✓ Демо HTML-отчеты</div>
+                        <div class="benefit-item" data-i18n="magnet1-benefit2">✓ Примеры анализа</div>
+                        <div class="benefit-item" data-i18n="magnet1-benefit3">✓ Объяснение критериев</div>
+                    </div>
+                    <button class="btn btn-primary magnet-btn" onclick="scrollTo('#contact')" data-i18n="btn-get-demo">
+                        Посмотреть демо
+                    </button>
+                </div>
+                
+                <!-- ROI Calculator -->
+                <div class="magnet-card">
+                    <div class="magnet-icon">💰</div>
+                    <h3 data-i18n="magnet2-title">Персональный расчет</h3>
+                    <p data-i18n="magnet2-desc">
+                        Получите детальный расчет экономии для вашего конкретного случая 
+                        с учетом специфики бизнеса и объема звонков.
+                    </p>
+                    <div class="magnet-benefits">
+                        <div class="benefit-item" data-i18n="magnet2-benefit1">✓ Индивидуальный расчет</div>
+                        <div class="benefit-item" data-i18n="magnet2-benefit2">✓ Срок окупаемости</div>
+                        <div class="benefit-item" data-i18n="magnet2-benefit3">✓ План внедрения</div>
+                    </div>
+                    <button class="btn btn-secondary magnet-btn" onclick="scrollTo('#calculator')" data-i18n="btn-calculate-roi">
+                        Рассчитать экономию
+                    </button>
+                </div>
+                
+                <!-- Quality Checklist -->
+                <div class="magnet-card">
+                    <div class="magnet-icon">📋</div>
+                    <h3 data-i18n="magnet3-title">Техническая документация</h3>
+                    <p data-i18n="magnet3-desc">
+                        Подробная информация о системе, требованиях к оборудованию 
+                        и процессе внедрения для технических специалистов.
+                    </p>
+                    <div class="magnet-benefits">
+                        <div class="benefit-item" data-i18n="magnet3-benefit1">✓ Системные требования</div>
+                        <div class="benefit-item" data-i18n="magnet3-benefit2">✓ Архитектура решения</div>
+                        <div class="benefit-item" data-i18n="magnet3-benefit3">✓ API документация</div>
+                    </div>
+                    <button class="btn btn-secondary magnet-btn" onclick="scrollTo('#contact')" data-i18n="btn-get-docs">
+                        Получить документацию
+                    </button>
+                </div>
+            </div>
+            
+            <div class="magnets-cta">
+                <h3 data-i18n="magnets-cta-title">Готовы начать?</h3>
+                <p data-i18n="magnets-cta-desc">
+                    Получите персональную консультацию и узнайте больше о возможностях системы
+                </p>
+                <button class="btn btn-primary btn-large" onclick="scrollTo('#contact')" data-i18n="btn-consultation">
+                    💬 Получить консультацию
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 data-i18n="contact-title">📞 Получите консультацию</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3 data-i18n="contact-info-title">Мы поможем:</h3>
+                    <div class="contact-benefit">
+                        <i class="fas fa-calculator"></i>
+                        <span data-i18n="contact-benefit1">Рассчитать точную экономию для вашей компании</span>
+                    </div>
+                    <div class="contact-benefit">
+                        <i class="fas fa-cogs"></i>
+                        <span data-i18n="contact-benefit2">Настроить систему под ваши бизнес-процессы</span>
+                    </div>
+                    <div class="contact-benefit">
+                        <i class="fas fa-rocket"></i>
+                        <span data-i18n="contact-benefit3">Провести пилотное внедрение</span>
+                    </div>
+                    <div class="contact-benefit">
+                        <i class="fas fa-headset"></i>
+                        <span data-i18n="contact-benefit4">Обеспечить техническую поддержку</span>
+                    </div>
+                    
+                    <div class="contact-details">
+                        <h4 data-i18n="contact-details-title">Как с нами связаться:</h4>
+                        <p data-i18n="contact-details-desc">Заполните форму справа, и мы свяжемся с вами в течение 24 часов для обсуждения вашего проекта.</p>
+                    </div>
+                </div>
+                
+                <form class="contact-form">
+                    <h3 data-i18n="form-title">Заявка на консультацию</h3>
+                    <div class="form-group">
+                        <label for="name" data-i18n="form-name">Ваше имя *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-i18n="form-email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" data-i18n="form-phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="company" data-i18n="form-company">Компания</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label for="calls-volume" data-i18n="form-calls">Объем звонков в день</label>
+                        <input type="number" id="calls-volume" name="calls-volume" min="1" placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" data-i18n="form-message">Сообщение</label>
+                        <textarea id="message" name="message" rows="4" 
+                                  data-i18n-placeholder="form-message-placeholder"
+                                  placeholder="Расскажите о ваших задачах и целях внедрения системы"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-submit" data-i18n="form-submit">
+                        📤 Отправить заявку
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-brain"></i>
+                    <span>Scanovich.ai</span>
+                </div>
+                            <div class="footer-links">
+                <a href="#features" data-i18n="nav-features">Возможности</a>
+                <a href="#industries" data-i18n="nav-industries">Области применения</a>
+                <a href="#calculator" data-i18n="nav-calculator">Калькулятор</a>
+                <a href="#resources" data-i18n="nav-resources">Ресурсы</a>
+                <a href="#contact" data-i18n="nav-contact">Контакты</a>
+            </div>
+                <div class="footer-copyright">
+                    <span data-i18n="footer-copyright">© 2025 Scanovich.ai. Все права защищены.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
