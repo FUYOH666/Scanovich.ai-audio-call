@@ -22,7 +22,7 @@ class GoogleSheetsIntegration:
     """Интеграция с Google Sheets для оценки звонков по 20 баллам (со справедливой оценкой субъективных критериев)"""
     
     def __init__(self, credentials_path: str = "credentials/google_credentials.json", 
-                 spreadsheet_url: str = "https://docs.google.com/spreadsheets/d/1Fh7K3shckBk19XOlYMcTmqbck42Jys_JVpERS1v7R5o/edit"):
+                 spreadsheet_url: str = "https://docs.google.com/spreadsheets/d/_JVpERS1v7R5o/edit"):
         """
         Инициализация интеграции с Google Sheets
         
@@ -36,7 +36,7 @@ class GoogleSheetsIntegration:
         self.worksheet = None
         
         # 📊 ЭТАЛОННАЯ СТРУКТУРА КОЛОНОК (29 колонок A-AC) - полная структура с справедливой оценкой
-        # Источник: https://docs.google.com/spreadsheets/d/1BV4Iv54XAM-qJ8nCoy-EQ73VJEj27poa/edit
+        # Источник: https://docs.google.com/spreadsheets/d/-qJ8nCoy-EQ73VJEj27poa/edit
         self.columns = [
             # ОСНОВНАЯ ИНФОРМАЦИЯ (5 колонок)
             "Дата",                                    # A
@@ -80,7 +80,7 @@ class GoogleSheetsIntegration:
         """
         Очистка имени администратора от лишних слов и системных фраз
         
-        Проблема: LM Studio извлекает "МРТ, лидер администратора", "лидер администратор"
+        Проблема: LM  "лидер администратор"
         Решение: Фильтруем шумовые слова, оставляем только реальные имена
         
         Args:
