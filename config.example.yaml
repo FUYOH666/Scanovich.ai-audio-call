@@ -1,0 +1,166 @@
+# ⭐ ASR-4.5 Production Configuration Template
+# Author: Aleksandr Mordvinov
+# Project: ScanovichAI
+#
+# ШАБЛОН БЕЗОПАСНОЙ КОНФИГУРАЦИИ
+# Скопируйте в config.yaml и заполните реальными значениями
+
+# ⭐ ASR-конфигурация (Whisper Large V3)
+asr:
+  model: "large-v3"
+  device: "cuda"
+  compute_type: "float16"
+  cpu_threads: 16
+  device_index: 0
+  beam_size: 1
+  temperature: [0.0, 0.1, 0.3]
+  vad_filter: false
+  # ЗАМЕНИТЕ НА СВОЙ ПРОМПТ для вашего бизнеса
+  initial_prompt: "Ваша компания, администратор, запись на прием, диагностика, консультация"
+  language: "ru"
+  word_timestamps: false
+  condition_on_previous_text: false
+
+  # Предобработка аудио
+  preprocessing:
+    wake_signal:
+      enabled: true
+      samples: 8000
+      rms: 0.0504
+    normalize_volume: true
+    target_sample_rate: 16000
+
+# ⭐ VLLM-постобработка (локальный сервер)
+vllm:
+  enabled: true
+  base_url: "http://localhost:8000/v1"
+  # ЗАМЕНИТЕ НА СВОЮ МОДЕЛЬ (Qwen3, Llama, etc.)
+  model: "models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit"
+  temperature: 0.1
+  max_tokens: 12000
+  timeout: 180
+  retry_attempts: 3
+  retry_delay: 2.0
+
+# ⭐ Автоочистка
+cleanup:
+  enabled: true
+  input_retention_days: 30
+  compress_after_days: 7
+  max_disk_usage_percent: 80
+  schedule_hour: 3
+  archive_path: "./archive"
+
+# ⭐ Производительность
+performance:
+  concurrent_tasks: 1
+  batch_size: 1
+
+# ⭐ Пути (оставьте как есть)
+paths:
+  input: "./input"
+  output: "./output"
+  metadata: "./metadata"
+  archive: "./archive"
+  logs: "./logs"
+
+# ⭐ Логирование
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+  files:
+    main: "logs/asr-watcher.log"
+    errors: "logs/errors.log"
+  rotation:
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+
+# ⭐ Анализ качества обслуживания (адаптируйте под ваш бизнес)
+quality_analysis:
+  enabled: true
+  auto_analyze: true
+  provider: "vllm"
+  # ЗАМЕНИТЕ НА СВОЮ МОДЕЛЬ
+  model: "models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit"
+  base_url: "http://localhost:8000/v1"
+  temperature: 0.1
+  max_tokens: 8000
+  timeout: 120
+  retry_attempts: 3
+
+  # Скрипты оценки (ЗАМЕНИТЕ НА СВОИ)
+  scripts:
+    script_1_5t: "script установлены 1.5T.md"  # Ваш скрипт для типа бизнеса A
+    script_3t: "script установлены 3T.md"    # Ваш скрипт для типа бизнеса B
+
+  # Пути (оставьте как есть)
+  paths:
+    individual: "./quality_analysis/individual"
+    aggregated: "./quality_analysis/aggregated"
+    reports: "./quality_analysis/reports"
+
+# ⭐ Аналитика и отчётность
+analytics:
+  enabled: true
+  db_path: "./analytics/analytics.db"
+
+  # Критерии оценки (адаптируйте под ваш бизнес)
+  required_criteria: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  optional_criteria: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+
+  # Пороги алертов (настройте под ваш бизнес)
+  err_rate_critical: 0.85
+  miss_rate_critical: 0.80
+
+  # Telegram бот (НАСТРОЙТЕ СВОИ)
+  telegram:
+    enabled: true
+    # ЗАМЕНИТЕ НА СВОЙ ТОКЕН
+    bot_token: "YOUR_TELEGRAM_BOT_TOKEN"
+    # ЗАМЕНИТЕ НА СВОЙ CHAT_ID
+    chat_id: "YOUR_CHAT_ID"
+    daily_time: "09:00"
+    weekly_day: "monday"
+    weekly_time: "10:00"
+
+# ⭐ Google Sheets интеграция (НАСТРОЙТЕ СВОИ)
+google_sheets:
+  enabled: true
+  # ЗАМЕНИТЕ НА ПУТЬ К СВОИМ КРЕДЕНЦИАЛАМ
+  credentials_path: "./credentials/google_credentials.json"
+  # ЗАМЕНИТЕ НА СВОЙ SPREADSHEET_ID
+  spreadsheet_id: "YOUR_SPREADSHEET_ID"
+
+  # Листы (настройте под ваш бизнес)
+  worksheet_dashboard: "📊 Dashboard"
+  worksheet_calls: "📞 Все звонки"
+  worksheet_trends: "📈 Тренды"
+
+  # Настройки обновления
+  realtime_update: true
+  dashboard_update_interval: 60
+  trends_update_day: "monday"
+
+# ⭐ Безопасность
+security:
+  allowed_extensions: [".mp3", ".wav", ".m4a", ".ogg", ".flac"]
+  max_file_size_mb: 100
+  rate_limit_per_hour: 1000
+
+# ======================================================================
+# ⚠️  ИНСТРУКЦИИ ПО НАСТРОЙКЕ:
+# ======================================================================
+#
+# 1. СКОПИРУЙТЕ этот файл в config.yaml
+# 2. ЗАМЕНИТЕ ВСЕ "YOUR_*" значения на реальные
+# 3. НАСТРОЙТЕ промпты и скрипты под ваш бизнес
+# 4. НЕ ПУБЛИКУЙТЕ config.yaml с реальными секретами в GitHub
+# 5. Используйте .env файл для секретов в production
+#
+# ======================================================================
+#
+# ПРИМЕР .env файла (не публикуйте в GitHub!):
+# TELEGRAM_BOT_TOKEN=your_real_token
+# GOOGLE_CREDENTIALS_PATH=./credentials/your_creds.json
+# SPREADSHEET_ID=your_real_id
+# ======================================================================

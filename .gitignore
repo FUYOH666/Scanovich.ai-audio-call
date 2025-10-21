@@ -9,15 +9,47 @@ __pycache__/
 # Environment Variables
 .env
 
-# Logs
-logs/*.log
+# ⚠️ КОНФИДЕНЦИАЛЬНЫЕ ДАННЫЕ - НЕ ПУБЛИКОВАТЬ В GITHUB
+# ======================================================================
 
-# Output & Metadata
-output/*.txt
-metadata/*.json
-
-# Archive
+# Реальные данные клиентов (PII - Personal Identifiable Information)
+input/
+output/
+metadata/
 archive/
+analytics/
+quality_analysis/
+logs/
+
+# Базы данных с реальными данными
+*.db
+*.sqlite
+*.sqlite3
+
+# Конфигурационные файлы с реальными секретами
+.env
+.env.local
+.env.production
+.env.staging
+config.local.yaml
+config.production.yaml
+
+# Логи обработки реальных данных
+logs/*.log
+*.log
+
+# Кэш моделей с локальными данными
+models_cache/
+temp_models/
+
+# Загруженные аудиофайлы для обработки
+uploads/
+temp_uploads/
+
+# Результаты анализа реальных звонков
+results/
+reports/
+exports/
 
 # Temporary Files
 *.tmp
