@@ -1,0 +1,34 @@
+[Unit]
+Description=ASR-4.5 Watcher Service - Автоматическая транскрипция аудиозвонков
+Documentation=https://github.com/ScanovichAI/ASR-4.5
+After=network.target
+
+[Service]
+Type=simple
+User=ai
+Group=ai
+WorkingDirectory=/home/ai/Документы/ScanovichAI/ASR-4.5
+Environment="PATH=/home/ai/Документы/ScanovichAI/ASR-4.5/venv/bin:/usr/local/bin:/usr/bin"
+Environment="PYTHONUNBUFFERED=1"
+
+ExecStart=/home/ai/Документы/ScanovichAI/ASR-4.5/venv/bin/python main.py run
+
+# Автоматический рестарт при падении
+Restart=always
+RestartSec=10
+
+# Graceful shutdown (даём 30 секунд на завершение обработки)
+TimeoutStopSec=30
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=asr-watcher
+
+# Ограничения ресурсов (опционально)
+# CPUQuota=400%  # Максимум 4 ядра
+# MemoryLimit=16G
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,139 @@
+# ⭐ ASR-4.5 Production Configuration
+# Author: Aleksandr Mordvinov
+# Project: ScanovichAI
+
+# ⭐ ASR-конфигурация (Whisper Large V3)
+asr:
+  model: "large-v3"
+  device: "cuda"
+  compute_type: "float16"
+  cpu_threads: 16
+  device_index: 0
+  beam_size: 1
+  temperature: [0.0, 0.1, 0.3]
+  vad_filter: false
+  initial_prompt: "МРТ-Лидер, администратор, запись на прием, диагностика, МРТ, томография"
+  language: "ru"
+  word_timestamps: false  # Отключено для экономии памяти
+  condition_on_previous_text: false  # Каждый сегмент независим
+  
+  # Предобработка аудио
+  preprocessing:
+    wake_signal:
+      enabled: true
+      samples: 8000
+      rms: 0.0504
+    normalize_volume: true
+    target_sample_rate: 16000
+
+# ⭐ VLLM-постобработка (Qwen3-30B на localhost:8000)
+vllm:
+  enabled: true
+  base_url: "http://localhost:8000/v1"
+  model: "models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit"
+  temperature: 0.1
+  max_tokens: 12000  # Увеличено для длинных звонков (было 8000)
+  timeout: 180
+  retry_attempts: 3
+  retry_delay: 2.0
+
+# ⭐ Автоочистка
+cleanup:
+  enabled: true
+  input_retention_days: 30
+  compress_after_days: 7
+  max_disk_usage_percent: 80
+  schedule_hour: 3  # 03:00 каждый день
+  archive_path: "./archive"
+
+# ⭐ Производительность
+performance:
+  concurrent_tasks: 1  # Последовательная обработка (безопасно для памяти)
+  batch_size: 1
+
+# ⭐ Пути
+paths:
+  input: "./input"
+  output: "./output"
+  metadata: "./metadata"
+  archive: "./archive"
+  logs: "./logs"
+
+# ⭐ Логирование
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+  files:
+    main: "logs/asr-watcher.log"
+    errors: "logs/errors.log"
+  rotation:
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+
+# ⭐ Анализ качества обслуживания (Qwen3-30B локально через VLLM)
+quality_analysis:
+  enabled: true  # Включен для production
+  auto_analyze: true  # Автоматический анализ после транскрипции
+  provider: "vllm"  # Используем локальный VLLM
+  model: "models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit"
+  base_url: "http://localhost:8000/v1"
+  temperature: 0.1  # Небольшая температура для Qwen
+  max_tokens: 8000
+  timeout: 120
+  retry_attempts: 3
+  
+  # Скрипты оценки
+  scripts:
+    script_1_5t: "script установлены 1.5T.md"
+    script_3t: "script установлены 3T.md"
+  
+  # Пути
+  paths:
+    individual: "./quality_analysis/individual"
+    aggregated: "./quality_analysis/aggregated"
+    reports: "./quality_analysis/reports"
+
+# ⭐ Аналитика и отчётность (error-centric)
+analytics:
+  enabled: true
+  db_path: "./analytics/analytics.db"
+  
+  # Классификация критериев (severity)
+  required_criteria: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  optional_criteria: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+  
+  # Пороги алертов
+  err_rate_critical: 0.85  # 85% звонков с ошибками
+  miss_rate_critical: 0.80  # 80% провалов по параметру
+  
+  # Telegram бот
+  telegram:
+    enabled: true
+    bot_token: "7809858128:AAE8im5Og3Ma-tsPw60fudLAL_sC7Lrx7lA"
+    chat_id: "450421108"
+    daily_time: "09:00"
+    weekly_day: "monday"
+    weekly_time: "10:00"
+
+# ⭐ Google Sheets интеграция (батчи)
+google_sheets:
+  enabled: true
+  credentials_path: "./credentials/google_credentials.json"
+  spreadsheet_id: "1Fh7K3shckBk19XOlYMcTmqbck42Jys_JVpERS1v7R5o"
+  
+  # Листы
+  worksheet_dashboard: "📊 Dashboard"
+  worksheet_calls: "📞 Все звонки"
+  worksheet_trends: "📈 Тренды"
+  
+  # Real-time обновление (после каждого звонка!)
+  realtime_update: true           # Обновлять сразу после анализа
+  dashboard_update_interval: 60   # Минуты (каждый час)
+  trends_update_day: "monday"     # Еженедельно
+
+# ⭐ Безопасность
+security:
+  allowed_extensions: [".mp3", ".wav", ".m4a", ".ogg", ".flac"]
+  max_file_size_mb: 100
+  rate_limit_per_hour: 1000
+

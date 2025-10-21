@@ -1,0 +1,57 @@
+# ASR-4.5 Production Requirements
+# Python 3.12
+# Author: Aleksandr Mordvinov
+
+# ⭐ ASR Core
+faster-whisper==1.0.3
+
+# ⭐ PyTorch with CUDA 12.4 (RTX 5090)
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.5.1+cu124
+torchaudio==2.5.1+cu124
+
+# ⭐ Configuration & Validation
+pydantic==2.10.3
+pydantic-settings==2.6.1
+pyyaml==6.0.1
+python-dotenv==1.0.1
+
+# ⭐ Numerical & Audio Processing
+numpy==1.26.4
+scipy==1.14.0
+librosa==0.10.1
+soundfile==0.12.1
+
+# ⭐ VLLM Client (OpenAI-compatible API)
+openai==1.54.0
+
+# ⭐ File System Monitoring
+watchdog==4.0.0
+
+# ⭐ GPU Monitoring
+nvidia-ml-py==12.560.30
+
+# ⭐ Retry & Networking
+tenacity==8.5.0
+httpx==0.27.0
+
+# ⭐ CLI & Logging
+click==8.1.7
+coloredlogs==15.0.1
+tqdm==4.66.4
+
+# ⭐ Task Scheduling
+schedule==1.2.1
+
+# ⭐ Testing
+pytest==8.3.3
+pytest-asyncio==0.24.0
+pytest-timeout==2.3.1
+
+# ⭐ Telegram Bot
+python-telegram-bot==21.7
+
+# ⭐ Google Sheets Integration
+gspread==6.1.4
+google-auth==2.36.0
+

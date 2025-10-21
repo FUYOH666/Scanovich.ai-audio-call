@@ -1,0 +1,44 @@
+# Virtual Environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment Variables
+.env
+
+# Logs
+logs/*.log
+
+# Output & Metadata
+output/*.txt
+metadata/*.json
+
+# Archive
+archive/
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Models Cache (faster-whisper)
+~/.cache/huggingface/
+
