@@ -8,12 +8,20 @@
 """
 
 import logging
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional
+from http.client import RemoteDisconnected
 
 import gspread
 from google.oauth2.service_account import Credentials
+from tenacity import (
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from src.db_manager import DatabaseManager
 
@@ -75,19 +83,34 @@ class GoogleSheetsIntegrator:
             logger.error(f"Ошибка аутентификации Google Sheets: {e}")
             raise RuntimeError(f"Не удалось подключиться к Google Sheets: {e}") from e
 
-    def add_call_realtime(self, call_data: Dict) -> bool:
-        """
-        Добавить звонок в Google Sheets (real-time после анализа).
+    def _reconnect(self):
+        """Пересоздать соединение с Google Sheets при ошибках."""
+        logger.warning("⚠️ Пересоздание соединения с Google Sheets...")
+        try:
+            self._authenticate()
+            logger.info("✓ Соединение восстановлено")
+        except Exception as e:
+            logger.error(f"Не удалось восстановить соединение: {e}")
+            raise
 
+    @retry(
+        retry=retry_if_exception_type((ConnectionError, RemoteDisconnected, TimeoutError, gspread.exceptions.APIError)),
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        reraise=True,
+    )
+    def _add_call_with_retry(self, call_data: Dict) -> bool:
+        """
+        Внутренний метод добавления звонка с retry.
+        
         Args:
             call_data: Данные звонка с анализом качества
-
+            
         Returns:
             bool: True если добавлено
         """
         call_id = call_data.get('call_id', 'unknown')
-        logger.info(f"Добавление звонка в Google Sheets: {call_id}")
-
+        
         try:
             # Получение или создание листа
             try:
@@ -155,8 +178,44 @@ class GoogleSheetsIntegrator:
             logger.info(f"✓ Звонок добавлен в Google Sheets (с кликабельными ссылками)")
             return True
 
+        except (ConnectionError, RemoteDisconnected, TimeoutError) as conn_error:
+            # Сетевые ошибки - пробрасываем для retry
+            logger.warning(f"Сетевая ошибка при добавлении звонка: {conn_error}")
+            raise
         except Exception as e:
+            # Другие ошибки - логируем и возвращаем False
             logger.error(f"Ошибка добавления звонка в Google Sheets: {e}")
+            return False
+
+    def add_call_realtime(self, call_data: Dict) -> bool:
+        """
+        Добавить звонок в Google Sheets (real-time после анализа).
+        
+        Публичный метод с обработкой ошибок соединения и автоматическим retry.
+
+        Args:
+            call_data: Данные звонка с анализом качества
+
+        Returns:
+            bool: True если добавлено
+        """
+        call_id = call_data.get('call_id', 'unknown')
+        logger.info(f"Добавление звонка в Google Sheets: {call_id}")
+        
+        try:
+            return self._add_call_with_retry(call_data)
+        except (ConnectionError, RemoteDisconnected, TimeoutError) as conn_error:
+            # После всех retry попыток - пересоздаём соединение и пробуем последний раз
+            logger.warning(f"⚠️ Все retry исчерпаны, пересоздаю соединение: {conn_error}")
+            try:
+                self._reconnect()
+                time.sleep(2)  # Пауза после переподключения
+                return self._add_call_with_retry(call_data)
+            except Exception as final_error:
+                logger.error(f"❌ Не удалось добавить звонок после переподключения: {final_error}")
+                return False
+        except Exception as e:
+            logger.error(f"❌ Критическая ошибка при добавлении звонка: {e}")
             return False
 
     def batch_update_calls(self, date: str = None) -> int:
