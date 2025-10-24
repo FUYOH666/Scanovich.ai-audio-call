@@ -15,7 +15,7 @@ from typing import Dict, Optional, Tuple
 from openai import OpenAI
 
 from src.config_validation import QualityAnalysisConfig, VLLMConfig
-from src.quality_analyzer import Commercial LLMAnalyzer, EquipmentDetector, ScriptParser
+from src.quality_analyzer import CommercialLLMAnalyzer, EquipmentDetector, ScriptParser
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ class ModelComparator:
             quality_config: Конфигурация анализа качества
             vllm_config: Конфигурация VLLM
         """
-        self.claude_analyzer = Commercial LLMAnalyzer(quality_config)
+        self.claude_analyzer = CommercialLLMAnalyzer(quality_config)
         self.qwen_analyzer = LLMAnalyzer(vllm_config)
 
         # Загрузка скриптов

@@ -95,7 +95,7 @@ class ScriptParser:
 class EquipmentDetector:
     """Определение типа оборудования (Type-A vs Type-B) из транскрипции."""
 
-    KEYWORDS_Type-B = [
+    KEYWORDS_TYPE_B = [
         r"\b3\s*тесл",
         r"три\s*тесл",
         r"3т\b",
@@ -125,7 +125,7 @@ class EquipmentDetector:
         text_lower = transcription.lower()
 
         # Проверка на Type-B
-        for pattern in cls.KEYWORDS_Type-B:
+        for pattern in cls.KEYWORDS_TYPE_B:
             if re.search(pattern, text_lower):
                 logger.info("Обнаружено оборудование: Type-B")
                 return "Type-B"
@@ -141,7 +141,7 @@ class EquipmentDetector:
         return "Type-A"
 
 
-class Commercial LLMAnalyzer:
+class CommercialLLMAnalyzer:
     """Интеграция с Commercial LLM Sonnet 4.5 через OpenRouter."""
 
     def __init__(self, config: QualityAnalysisConfig):
@@ -442,7 +442,7 @@ class QualityAnalyzer:
             logger.info("✓ Используется локальный VLLM (LLM-30B) для анализа качества")
         else:
             # Используем OpenRouter (Commercial LLM)
-            self.analyzer = Commercial LLMAnalyzer(config)
+            self.analyzer = CommercialLLMAnalyzer(config)
             logger.info("✓ Используется OpenRouter (Commercial LLM Sonnet 4.5) для анализа качества")
 
         # Парсинг скриптов
@@ -546,7 +546,7 @@ class QualityAnalyzer:
     
     def _build_system_prompt(self, script_criteria, equipment_type):
         """Построить system prompt (используется для VLLM)."""
-        # Используем метод из Commercial LLMAnalyzer
+        # Используем метод из CommercialLLMAnalyzer
         from src.model_comparison import LLMAnalyzer
         
         criteria_text = "\n\n".join(
