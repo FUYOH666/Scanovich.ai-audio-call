@@ -219,8 +219,7 @@ cleanup-sheets   # Удаление дубликатов
 - Динамика vs предыдущая неделя
 - Top-3 провала
 
-**Бот:** @i18_autogen_bot  
-**Настройка:** chat_id в `config.yaml`
+**Настройка:** Укажите ваш Telegram bot token и chat_id в `config.yaml`
 
 ### Уровень 2: Google Sheets (детализация) 📊
 
