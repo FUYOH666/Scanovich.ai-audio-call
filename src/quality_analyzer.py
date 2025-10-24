@@ -2,7 +2,7 @@
 Модуль анализа качества обслуживания через Commercial LLM Sonnet 4.5.
 
 Функции:
-- Определение типа оборудования (Type-A vs Type-B)
+- Определение типа оборудования (1.5T vs 3T)
 - Парсинг скриптов обслуживания (30 критериев)
 - Анализ звонков через OpenRouter API (Commercial LLM Sonnet 4.5)
 - Расчёт итоговых оценок качества
@@ -93,7 +93,7 @@ class ScriptParser:
 
 
 class EquipmentDetector:
-    """Определение типа оборудования (Type-A vs Type-B) из транскрипции."""
+    """Определение типа оборудования (1.5T vs 3T) из транскрипции."""
 
     KEYWORDS_TYPE_B = [
         r"\b3\s*тесл",
@@ -120,25 +120,25 @@ class EquipmentDetector:
             classification: Классификация от VLLM (опционально)
 
         Returns:
-            str: "Type-A" или "Type-B"
+            str: "1.5T" или "3T"
         """
         text_lower = transcription.lower()
 
-        # Проверка на Type-B
+        # Проверка на 3T
         for pattern in cls.KEYWORDS_TYPE_B:
             if re.search(pattern, text_lower):
-                logger.info("Обнаружено оборудование: Type-B")
-                return "Type-B"
+                logger.info("Обнаружено оборудование: 3T")
+                return "3T"
 
-        # Проверка на Type-A
+        # Проверка на 1.5T
         for pattern in cls.KEYWORDS_1_5T:
             if re.search(pattern, text_lower):
-                logger.info("Обнаружено оборудование: Type-A")
-                return "Type-A"
+                logger.info("Обнаружено оборудование: 1.5T")
+                return "1.5T"
 
-        # По умолчанию Type-A (базовое оборудование)
-        logger.info("Тип оборудования не определён, используем Type-A по умолчанию")
-        return "Type-A"
+        # По умолчанию 1.5T (базовое оборудование)
+        logger.info("Тип оборудования не определён, используем 1.5T по умолчанию")
+        return "1.5T"
 
 
 class CommercialLLMAnalyzer:
@@ -178,7 +178,7 @@ class CommercialLLMAnalyzer:
 
         Args:
             script_criteria: Список критериев из скрипта
-            equipment_type: Тип оборудования (Type-A или Type-B)
+            equipment_type: Тип оборудования (1.5T или 3T)
 
         Returns:
             str: System prompt
@@ -499,7 +499,7 @@ class QualityAnalyzer:
         equipment_type = EquipmentDetector.detect(transcription, classification)
 
         # 2. Выбор соответствующего скрипта
-        script_key = "script_type_b" if equipment_type == "Type-B" else "script_type_a"
+        script_key = "script_3t" if equipment_type == "3T" else "script_1_5t"
         if script_key not in self.scripts:
             raise ValueError(f"Скрипт {script_key} не загружен!")
 

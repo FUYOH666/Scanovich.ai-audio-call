@@ -136,7 +136,7 @@ class ModelComparator:
         equipment_type = EquipmentDetector.detect(transcription, classification)
 
         # Выбор скрипта
-        script_key = "script_type_b" if equipment_type == "Type-B" else "script_type_a"
+        script_key = "script_3t" if equipment_type == "3T" else "script_1_5t"
         script_criteria = self.scripts[script_key]
 
         # Построение промптов (одинаковые для обеих моделей)
