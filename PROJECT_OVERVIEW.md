@@ -826,11 +826,13 @@ pytest-asyncio==0.24.0
 
 **Author:** Aleksandr Mordvinov  
 **Project:** ScanovichAI  
-**GitHub:** https://github.com/FUYOH666/Scanovich.ai-audio-call (private)
+**GitHub:** https://github.com/FUYOH666/Scanovich.ai-audio-call
 
 **Для коммерческих запросов:**
-- Email: [указать email]
-- Telegram: [указать telegram]
+- 🌐 Website: [scanovich.ai](https://scanovich.ai/)
+- 📧 Email: iamfuyoh666@gmail.com
+- 💬 Telegram: [@ScanovichAI](https://t.me/ScanovichAI)
+- 📱 Phone: 
 
 ---
 

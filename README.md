@@ -589,12 +589,15 @@ tail -f logs/errors.log          # Только ошибки
 
 ### Свяжитесь со мной:
 
-📧 **Email:** [укажите ваш email]  
-💬 **Telegram:** [укажите ваш telegram]  
-💼 **LinkedIn:** [укажите ваш LinkedIn]  
+🌐 **Website:** [scanovich.ai](https://scanovich.ai/)  
+📧 **Email:** iamfuyoh666@gmail.com  
+💬 **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)  
+📱 **Phone:**   
 🐙 **GitHub:** [@FUYOH666](https://github.com/FUYOH666)
 
 **Открыт для сотрудничества, партнерств и интересных проектов!**
+
+> 💡 **Хотите пилотный проект?** Заполните форму на [scanovich.ai](https://scanovich.ai/) — я отвечу в течение рабочего дня.
 
 ---
 
