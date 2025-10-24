@@ -120,3 +120,6 @@ exports/
 !config.example.yaml
 !branches.example.yaml
 !credentials/README.md
+
+# Внутренняя документация с клиент-специфичной информацией
+Бесперебойная работа.md
