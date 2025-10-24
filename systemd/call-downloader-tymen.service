@@ -1,5 +1,5 @@
 [Unit]
-Description=Call Records Downloader - Rostelecom Tymen
+Description=Call Records Downloader - Provider B City 2
 Documentation=https://github.com/FUYOH666/Scanovich.ai-audio-call
 After=network.target
 
@@ -7,11 +7,11 @@ After=network.target
 Type=simple
 User=ai
 Group=ai
-WorkingDirectory=/home/ai/Документы/ScanovichAI/Calls-downloader/rostelecom-Tymen
-Environment="PATH=/home/ai/Документы/ScanovichAI/Calls-downloader/rostelecom-Tymen/venv/bin:/usr/local/bin:/usr/bin"
+WorkingDirectory=/home/ai/Документы/ScanovichAI/Calls-downloader/Provider-B-City2
+Environment="PATH=/home/ai/Документы/ScanovichAI/Calls-downloader/Provider-B-City2/venv/bin:/usr/local/bin:/usr/bin"
 Environment="PYTHONUNBUFFERED=1"
 
-ExecStart=/home/ai/Документы/ScanovichAI/Calls-downloader/rostelecom-Tymen/venv/bin/python call_records_watcher.py
+ExecStart=/home/ai/Документы/ScanovichAI/Calls-downloader/Provider-B-City2/venv/bin/python call_records_watcher.py
 
 # Автоматический рестарт при падении
 Restart=always

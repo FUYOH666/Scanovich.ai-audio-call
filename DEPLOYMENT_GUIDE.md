@@ -224,7 +224,7 @@ cd /home/ai/Документы/ScanovichAI/
 git clone <ваш-репо-загрузчиков> Calls-downloader
 
 # 2. Настроить каждый загрузчик
-cd Calls-downloader/SvyazTransit-Irkutsk
+cd Calls-downloader/Provider-A-City1
 cp .env.example .env
 nano .env  # Указать credentials АТС
 
