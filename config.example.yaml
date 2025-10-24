@@ -90,8 +90,8 @@ quality_analysis:
 
   # Скрипты оценки (ЗАМЕНИТЕ НА СВОИ)
   scripts:
-    script_1_5t: "script установлены 1.5T.md"  # Ваш скрипт для типа бизнеса A
-    script_3t: "script установлены 3T.md"    # Ваш скрипт для типа бизнеса B
+    script_1_5t: "script_evaluation_type_A.md"  # Ваш скрипт для типа бизнеса A
+    script_3t: "script_evaluation_type_B.md"    # Ваш скрипт для типа бизнеса B
 
   # Пути (оставьте как есть)
   paths:
