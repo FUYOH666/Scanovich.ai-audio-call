@@ -57,7 +57,8 @@ class AnalyticsAggregator:
                 SELECT 
                     COUNT(*) as total_calls,
                     SUM(CASE WHEN errors_count > 0 THEN 1 ELSE 0 END) as calls_with_errors,
-                    SUM(CASE WHEN required_errors > 0 THEN 1 ELSE 0 END) as calls_with_required_errors
+                    SUM(CASE WHEN required_errors > 0 THEN 1 ELSE 0 END) as calls_with_required_errors,
+                    AVG(overall_score) as avg_score
                 FROM calls_summary
                 WHERE DATE(timestamp) = ?
                 """,
@@ -68,6 +69,7 @@ class AnalyticsAggregator:
             total_calls = row["total_calls"]
             calls_with_errors = row["calls_with_errors"]
             calls_with_required_errors = row["calls_with_required_errors"]
+            avg_score = row["avg_score"] if row["avg_score"] else 0
 
             err_rate = calls_with_errors / total_calls if total_calls > 0 else 0
 
@@ -123,15 +125,97 @@ class AnalyticsAggregator:
                     "err_rate": round(admin_err, 3),
                 }
 
+            # Статистика по филиалам
+            cursor.execute(
+                """
+                SELECT branch_address,
+                       COUNT(*) as calls,
+                       AVG(overall_score) as avg_score,
+                       SUM(CASE WHEN errors_count > 0 THEN 1 ELSE 0 END) as calls_with_errors
+                FROM calls_summary
+                WHERE DATE(timestamp) = ?
+                GROUP BY branch_address
+                ORDER BY calls_with_errors DESC
+                """,
+                (date,),
+            )
+
+            by_branch = {}
+            for row in cursor.fetchall():
+                branch_name = row["branch_address"] or "Unknown"
+                branch_err = row["calls_with_errors"] / row["calls"] if row["calls"] > 0 else 0
+
+                by_branch[branch_name] = {
+                    "calls": row["calls"],
+                    "avg_score": round(row["avg_score"], 1),
+                    "err_rate": round(branch_err, 3),
+                }
+
+            # Апсейл метрики (критерии 15, 28, 12)
+            # Загрузка JSON файлов качества для расчета
+            cursor.execute(
+                """
+                SELECT call_id
+                FROM calls_summary
+                WHERE DATE(timestamp) = ?
+                """,
+                (date,),
+            )
+            
+            call_ids = [row["call_id"] for row in cursor.fetchall()]
+            upsell_metrics = self._calculate_upsell_metrics(call_ids)
+
+            # Лучший и худший звонок дня (экстремумы)
+            cursor.execute(
+                """
+                SELECT admin_name, overall_score, call_id
+                FROM calls_summary
+                WHERE DATE(timestamp) = ?
+                ORDER BY overall_score DESC
+                LIMIT 1
+                """,
+                (date,),
+            )
+            
+            best_call_row = cursor.fetchone()
+            best_call = {
+                "admin_name": best_call_row["admin_name"] or "Не представился",
+                "score": best_call_row["overall_score"] if best_call_row else 0,
+                "call_id": best_call_row["call_id"] if best_call_row else None
+            } if best_call_row else None
+            
+            cursor.execute(
+                """
+                SELECT admin_name, overall_score, call_id
+                FROM calls_summary
+                WHERE DATE(timestamp) = ?
+                ORDER BY overall_score ASC
+                LIMIT 1
+                """,
+                (date,),
+            )
+            
+            worst_call_row = cursor.fetchone()
+            worst_call = {
+                "admin_name": worst_call_row["admin_name"] or "Не представился",
+                "score": worst_call_row["overall_score"] if worst_call_row else 0,
+                "call_id": worst_call_row["call_id"] if worst_call_row else None
+            } if worst_call_row else None
+
             # Формирование витрины
             aggregate = {
                 "date": date,
                 "total_calls": total_calls,
                 "calls_with_errors": calls_with_errors,
                 "calls_with_required_errors": calls_with_required_errors,
+                "avg_score": round(avg_score, 1),
                 "err_rate": round(err_rate, 3),
                 "top_3_failures": top_failures,
                 "by_admin": by_admin,
+                "by_branch": by_branch,
+                "upsell_metrics": upsell_metrics,
+                "best_call": best_call,
+                "worst_call": worst_call,
             }
 
             # Сохранение витрины
@@ -259,6 +343,92 @@ class AnalyticsAggregator:
 
         finally:
             conn.close()
+
+    def _calculate_upsell_metrics(self, call_ids: List[str]) -> Dict:
+        """
+        Вычислить апсейл метрики по критериям 15, 28, 12.
+
+        Args:
+            call_ids: Список ID звонков
+
+        Returns:
+            Dict: Апсейл метрики
+        """
+        # Критерии апсейла:
+        # 15 - Описание видеозаключения
+        # 28 - Допродажи (уточнение о дополнительных услугах)
+        # 12 - Стоимость услуг озвучена
+
+        criteria_map = {
+            15: "video_conclusion_rate",
+            28: "upsales_rate",
+            12: "price_mentioned_rate"
+        }
+
+        # Счетчики успехов
+        successes = {metric: 0 for metric in criteria_map.values()}
+        total_evaluated = {metric: 0 for metric in criteria_map.values()}
+
+        quality_dir = Path("quality_analysis/individual")
+        
+        if not quality_dir.exists():
+            logger.warning("Директория quality_analysis не найдена, апсейл метрики = 0")
+            return {metric: 0.0 for metric in criteria_map.values()}
+
+        for call_id in call_ids:
+            json_path = quality_dir / f"{call_id}.json"
+            
+            if not json_path.exists():
+                continue
+                
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    quality_data = json.load(f)
+                
+                criteria_evaluations = quality_data.get("criteria_evaluations", [])
+                
+                for criterion in criteria_evaluations:
+                    criterion_id = criterion.get("id")
+                    
+                    if criterion_id not in criteria_map:
+                        continue
+                    
+                    metric_name = criteria_map[criterion_id]
+                    
+                    # Проверка на relevant
+                    if not criterion.get("relevant", True):
+                        continue
+                    
+                    score = criterion.get("score")
+                    
+                    if score is None:
+                        continue
+                    
+                    total_evaluated[metric_name] += 1
+                    
+                    # Успех: score >= 0.5
+                    if score >= 0.5:
+                        successes[metric_name] += 1
+                        
+            except Exception as e:
+                logger.warning(f"Ошибка загрузки качества для {call_id}: {e}")
+                continue
+        
+        # Вычисление процентов
+        metrics = {}
+        for metric_name in criteria_map.values():
+            if total_evaluated[metric_name] > 0:
+                rate = successes[metric_name] / total_evaluated[metric_name]
+                metrics[metric_name] = round(rate, 3)
+            else:
+                metrics[metric_name] = 0.0
+        
+        logger.debug(
+            f"Апсейл метрики: видео={metrics['video_conclusion_rate']:.1%}, "
+            f"допродажи={metrics['upsales_rate']:.1%}, цена={metrics['price_mentioned_rate']:.1%}"
+        )
+        
+        return metrics
 
     def _save_aggregate(self, period_type: str, key: str, data: Dict):
         """

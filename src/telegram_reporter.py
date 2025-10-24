@@ -54,34 +54,58 @@ class TelegramReporter:
             logger.error("Chat ID не указан для ежедневного отчёта")
             return False
 
-        # Формирование текста отчёта (без Markdown V2 - проще)
+        # Формирование текста отчёта
         date_str = datetime.strptime(aggregate["date"], "%Y-%m-%d").strftime("%d.%m.%Y")
 
         message = f"""📊 Ежедневный отчёт | {date_str}
 
-Звонков сегодня: {aggregate['total_calls']}
-ERR: {aggregate['err_rate']:.0%} ({aggregate['calls_with_errors']} звонков с ошибками)
+Звонков: {aggregate['total_calls']}
+Средний балл: {aggregate.get('avg_score', 0):.1f}/100
+ERR: {aggregate['err_rate']:.0%} {self._get_err_emoji(aggregate['err_rate'])}
 
-⚠️ Top-3 провала (required):
+💰 АПСЕЙЛ:"""
+
+        # Апсейл метрики
+        upsell = aggregate.get("upsell_metrics", {})
+        video_rate = upsell.get("video_conclusion_rate", 0)
+        upsales_rate = upsell.get("upsales_rate", 0)
+        price_rate = upsell.get("price_mentioned_rate", 0)
+
+        message += f"""
+• Видео: {video_rate:.0%} {self._get_upsell_emoji(video_rate)}
+• Допродажи: {upsales_rate:.0%} {self._get_upsell_emoji(upsales_rate)}
+• Цена: {price_rate:.0%} {self._get_upsell_emoji(price_rate)}
+
+⚠️ Топ-3 ошибки:
 """
 
         for i, failure in enumerate(aggregate.get("top_3_failures", [])[:3], 1):
             miss_rate_pct = failure["miss_rate"] * 100
-            message += f"{i}. {failure['param_name']} - {failure['miss_count']} звонков ({miss_rate_pct:.0f}%)\n"
+            message += f"{i}. {failure['param_name']} - {miss_rate_pct:.0f}%\n"
 
-        message += "\n👤 Администраторы:\n"
+        # Рейтинг администраторов
+        by_admin = aggregate.get("by_admin", {})
+        if by_admin:
+            best_admin = max(by_admin.items(), key=lambda x: x[1]["avg_score"])
+            worst_admin = min(by_admin.items(), key=lambda x: x[1]["avg_score"])
+            
+            message += f"""
+👤 Администраторы:
+🏆 {best_admin[0]} - {best_admin[1]['avg_score']:.1f}
+❌ {worst_admin[0]} - {worst_admin[1]['avg_score']:.1f}
+"""
 
-        # Сортировка админов по ERR (худшие первые)
-        sorted_admins = sorted(
-            aggregate.get("by_admin", {}).items(),
-            key=lambda x: x[1]["err_rate"],
-            reverse=True,
-        )
-
-        for admin_name, stats in sorted_admins[:5]:
-            err_pct = stats["err_rate"] * 100
-            emoji = "❌" if stats["err_rate"] >= 0.85 else "⚠️" if stats["err_rate"] >= 0.70 else "✅"
-            message += f"• {admin_name} - ERR {err_pct:.0f}% ({stats['calls']} звонков) {emoji}\n"
+        # Рейтинг филиалов
+        by_branch = aggregate.get("by_branch", {})
+        if by_branch:
+            problem_branch = max(by_branch.items(), key=lambda x: x[1]["err_rate"])
+            top_branch = min(by_branch.items(), key=lambda x: x[1]["err_rate"])
+            
+            message += f"""
+🏢 Филиалы:
+🔴 {problem_branch[0]} - ERR {problem_branch[1]['err_rate']:.0%}
+✅ {top_branch[0]} - ERR {top_branch[1]['err_rate']:.0%}
+"""
 
         try:
             await self.bot.send_message(
@@ -95,6 +119,24 @@ ERR: {aggregate['err_rate']:.0%} ({aggregate['calls_with_errors']} звонко�
         except Exception as e:
             logger.error(f"Ошибка отправки ежедневного отчёта: {e}")
             return False
+
+    def _get_err_emoji(self, err_rate: float) -> str:
+        """Получить эмодзи для ERR."""
+        if err_rate >= 0.85:
+            return "🔴"
+        elif err_rate >= 0.70:
+            return "🟡"
+        else:
+            return "🟢"
+
+    def _get_upsell_emoji(self, rate: float) -> str:
+        """Получить эмодзи для апсейл метрик."""
+        if rate >= 0.60:
+            return "✅"
+        elif rate >= 0.30:
+            return "🟡"
+        else:
+            return "🔴"
 
     async def send_weekly_report(
         self, aggregate: Dict, chat_id: str = None

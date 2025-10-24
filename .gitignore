@@ -74,3 +74,16 @@ htmlcov/
 # Models Cache (faster-whisper)
 ~/.cache/huggingface/
 
+quarantine/
+
+# ⚠️ КОНФИДЕНЦИАЛЬНЫЕ КОНФИГУРАЦИИ
+# ======================================================================
+# Реальные конфигурации с секретами (API keys, credentials)
+config.yaml
+credentials/
+
+# Файлы с реальными адресами и именами
+branches.yaml
+
+# IDE и редакторы
+.cursor/

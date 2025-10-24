@@ -1,7 +1,8 @@
 [Unit]
 Description=ASR-4.5 Watcher Service - Автоматическая транскрипция аудиозвонков
 Documentation=https://github.com/ScanovichAI/ASR-4.5
-After=network.target
+After=network.target vllm.service
+Requires=vllm.service
 
 [Service]
 Type=simple

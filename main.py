@@ -784,6 +784,72 @@ def telegram_report(type, chat_id, config):
 
 
 @cli.command()
+@click.option("--config", default="config.yaml", help="Путь к config.yaml")
+@click.option("--date", default=None, help="Дата в формате YYYY-MM-DD (по умолчанию сегодня)")
+def update_dashboard(config, date):
+    """
+    Обновить Dashboard в Google Sheets за день.
+    
+    Генерирует витрину дня и обновляет лист "📊 Dashboard" 
+    с ключевыми метриками: апсейл, ошибки, рейтинг админов/филиалов.
+    
+    Пример:
+        ./venv/bin/python main.py update-dashboard
+        ./venv/bin/python main.py update-dashboard --date 2025-10-20
+    """
+    try:
+        # Загрузка конфигурации
+        config_manager = ConfigManager(config)
+        app_config = config_manager.get()
+
+        setup_logging(app_config)
+
+        if not app_config.google_sheets.enabled:
+            print("❌ Google Sheets интеграция отключена в config.yaml")
+            sys.exit(1)
+
+        logger.info("Обновление Dashboard в Google Sheets...")
+
+        # 1. Генерация витрины дня
+        from src.analytics_aggregator import AnalyticsAggregator
+        from src.google_sheets_integrator import GoogleSheetsIntegrator
+
+        aggregator = AnalyticsAggregator(
+            db_path=app_config.analytics.db_path,
+            aggregates_path="./analytics/aggregates"
+        )
+
+        day_aggregate = aggregator.aggregate_day(date)
+        
+        print(f"\n✅ Витрина дня создана: {day_aggregate['date']}")
+        print(f"   Звонков: {day_aggregate['total_calls']}")
+        print(f"   Средний балл: {day_aggregate['avg_score']:.1f}")
+        print(f"   ERR: {day_aggregate['err_rate']:.0%}")
+
+        # 2. Обновление Dashboard в Google Sheets
+        sheets_integrator = GoogleSheetsIntegrator(
+            credentials_path=app_config.google_sheets.credentials_path,
+            spreadsheet_id=app_config.google_sheets.spreadsheet_id,
+            db_path=app_config.analytics.db_path,
+        )
+
+        success = sheets_integrator.update_dashboard(day_aggregate)
+
+        if success:
+            print(f"\n✅ Dashboard обновлён в Google Sheets")
+            print(f"   Лист: 📊 Dashboard")
+            print(f"   URL: https://docs.google.com/spreadsheets/d/{app_config.google_sheets.spreadsheet_id}")
+        else:
+            print(f"\n❌ Не удалось обновить Dashboard")
+            sys.exit(1)
+
+    except Exception as e:
+        logger.error(f"Ошибка обновления Dashboard: {e}", exc_info=True)
+        print(f"\n❌ Критическая ошибка: {e}")
+        sys.exit(1)
+
+
+@cli.command()
 @click.option("--period", default="week", help="Период: day/week/month")
 @click.option("--output", default="errors_export.csv", help="Путь к выходному CSV")
 @click.option("--admin", help="Фильтр по администратору")
@@ -941,6 +1007,51 @@ def test_sheets(config):
 
     except Exception as e:
         print(f"\n❌ Ошибка: {e}")
+        sys.exit(1)
+
+
+@cli.command()
+@click.option("--apply", is_flag=True, help="Применить удаление (без флага - dry run)")
+@click.option("--config", default="config.yaml", help="Путь к config.yaml")
+def cleanup_sheets(apply, config):
+    """
+    Удалить дубликаты из Google Sheets.
+
+    По умолчанию запускается в режиме DRY RUN (только показывает дубликаты).
+    Используйте --apply для фактического удаления.
+
+    Пример:
+        ./venv/bin/python main.py cleanup-sheets           # Dry run
+        ./venv/bin/python main.py cleanup-sheets --apply   # Удалить
+    """
+    try:
+        config_manager = ConfigManager(config)
+        app_config = config_manager.get()
+
+        setup_logging(app_config)
+
+        if not app_config.google_sheets.enabled:
+            print("❌ Google Sheets интеграция отключена в config.yaml")
+            sys.exit(1)
+
+        from src.sheets_cleanup import SheetsCleanup
+
+        cleanup = SheetsCleanup(
+            app_config.google_sheets.credentials_path,
+            app_config.google_sheets.spreadsheet_id,
+        )
+
+        # Поиск и удаление дубликатов
+        removed = cleanup.remove_duplicates(dry_run=not apply)
+
+        if not apply:
+            print(f"\n🔍 Найдено дубликатов: {len(cleanup.find_duplicates())}")
+            print("Запустите с флагом --apply для удаления")
+        else:
+            print(f"\n✅ Удалено строк: {removed}")
+
+    except Exception as e:
+        logger.error(f"Ошибка очистки дубликатов: {e}", exc_info=True)
         sys.exit(1)
 
 

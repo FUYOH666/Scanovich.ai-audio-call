@@ -1,0 +1,42 @@
+[Unit]
+Description=VLLM Server - Qwen3-30B для ASR-4.5
+Documentation=https://github.com/ScanovichAI/ASR-4.5
+After=network.target
+
+[Service]
+Type=simple
+User=ai
+Group=ai
+WorkingDirectory=/home/ai/Документы/vLLm
+Environment="PATH=/home/ai/Документы/vLLm/venv/bin:/usr/local/bin:/usr/bin"
+Environment="PYTHONUNBUFFERED=1"
+Environment="CUDA_VISIBLE_DEVICES=0"
+
+ExecStart=/home/ai/Документы/vLLm/venv/bin/python -m vllm.entrypoints.openai.api_server \
+    --model models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit \
+    --dtype float16 \
+    --max-model-len 16384 \
+    --tensor-parallel-size 1 \
+    --gpu-memory-utilization 0.8 \
+    --max-num-seqs 1 \
+    --host 0.0.0.0 \
+    --port 8000
+
+# Автоматический рестарт при падении
+Restart=always
+RestartSec=30
+
+# Graceful shutdown (даём 60 секунд на завершение)
+TimeoutStopSec=60
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=vllm
+
+# Ограничения ресурсов
+# MemoryLimit=30G  # Раскомментируй если нужно
+
+[Install]
+WantedBy=multi-user.target
+

@@ -85,7 +85,8 @@ class GoogleSheetsIntegrator:
         Returns:
             bool: True если добавлено
         """
-        logger.info(f"Добавление звонка в Google Sheets: {call_data.get('call_id', 'unknown')}")
+        call_id = call_data.get('call_id', 'unknown')
+        logger.info(f"Добавление звонка в Google Sheets: {call_id}")
 
         try:
             # Получение или создание листа
@@ -115,7 +116,7 @@ class GoogleSheetsIntegrator:
                     "11.Аргументы", "12.Стоимость", "13.Выбор клиента", "14.Формат заключения", "15.Видеозаключение",
                     "16.Дата записи", "17.Время записи", "18.Персональные данные", "19.Подготовка", "20.Стоимость носителя",
                     "21.Вежливость", "22.Подтверждение", "23.Противопоказания", "24.Повторение итогов", "25.Удобство времени",
-                    "26.Льготы/скидки", "27.Причина отмены", "28.Альтернативы", "29.Адрес центра", "30.Телефон/контакты",
+                    "26.Льготы/скидки", "27.Эмоц.интеллект", "28.Допродажи", "29.Адрес центра", "30.Телефон/контакты",
                 ]
                 
                 headers.extend(criteria_names)
@@ -127,6 +128,23 @@ class GoogleSheetsIntegrator:
                 worksheet.freeze(rows=1)
                 
                 logger.info("✓ Лист '📞 Все звонки' создан с 30 критериями")
+
+            # ⭐ ПРОВЕРКА НА ДУБЛИКАТЫ: ищем call_id в столбце "📄 Транскрипция"
+            # Транскрипция формата: "output/{call_id}.txt"
+            try:
+                # Получаем последний столбец с ссылками на транскрипции (предпоследний)
+                transcription_col_index = 41  # 8 базовых + 30 критериев + 1 (Транскрипция)
+                transcription_col = worksheet.col_values(transcription_col_index)
+                
+                # Проверяем, есть ли уже этот call_id
+                search_pattern = f"output/{call_id}.txt"
+                for cell_value in transcription_col:
+                    if search_pattern in str(cell_value):
+                        logger.warning(f"⚠️ Звонок {call_id} уже существует в Google Sheets, пропускаем")
+                        return False
+                        
+            except Exception as check_error:
+                logger.warning(f"Не удалось проверить дубликаты: {check_error}, продолжаем добавление")
 
             # Формирование строки
             row = call_data.get("row_data", [])
@@ -306,67 +324,80 @@ class GoogleSheetsIntegrator:
         finally:
             conn.close()
 
-    def update_dashboard(self) -> bool:
+    def update_dashboard(self, aggregate: Dict) -> bool:
         """
-        Обновление Dashboard (метрики за сегодня).
+        Обновление Dashboard (добавление/обновление строки за день).
+
+        Args:
+            aggregate: Витрина дня из AnalyticsAggregator.aggregate_day()
 
         Returns:
             bool: True если обновлено
         """
-        today = datetime.now().strftime("%Y-%m-%d")
+        from src.dashboard_generator import DashboardGenerator
 
-        logger.info("Обновление Google Sheets Dashboard...")
-
-        conn = self.db_manager.get_connection()
+        date = aggregate.get("date", datetime.now().strftime("%Y-%m-%d"))
+        
+        logger.info(f"Обновление Google Sheets Dashboard за {date}...")
 
         try:
-            cursor = conn.cursor()
-
-            # Метрики за сегодня
-            cursor.execute(
-                """
-                SELECT 
-                    COUNT(*) as total,
-                    AVG(overall_score) as avg_score,
-                    SUM(CASE WHEN errors_count > 0 THEN 1 ELSE 0 END) as with_errors
-                FROM calls_summary
-                WHERE DATE(timestamp) = ?
-                """,
-                (today,),
-            )
-
-            row = cursor.fetchone()
-            total_calls = row["total"]
-            avg_score = row["avg_score"] or 0
-            err_rate = row["with_errors"] / total_calls if total_calls > 0 else 0
-
             # Получение или создание листа Dashboard
             try:
                 worksheet = self.spreadsheet.worksheet("📊 Dashboard")
             except gspread.exceptions.WorksheetNotFound:
+                # Создание нового листа с заголовками
                 worksheet = self.spreadsheet.add_worksheet(
-                    title="📊 Dashboard", rows=50, cols=10
+                    title="📊 Dashboard", rows=1000, cols=26
                 )
+                
+                # Добавление заголовков
+                generator = DashboardGenerator()
+                headers = generator.get_headers()
+                worksheet.append_row(headers)
+                
+                # Заморозка первой строки
+                worksheet.freeze(rows=1)
+                
+                logger.info("✓ Лист '📊 Dashboard' создан с заголовками")
 
-            # Обновление метрик (A1:B4)
-            values = [
-                ["Метрика", "Значение"],
-                ["Дата", today],
-                ["Звонков сегодня", total_calls],
-                ["Средний балл", f"{avg_score:.1f}/100"],
-                ["ERR", f"{err_rate:.0%}"],
-            ]
-
-            worksheet.update("A1:B5", values)
-
-            logger.info("✓ Dashboard обновлён")
-            return True
+            # Проверка на дубликаты: получаем первый столбец (даты)
+            try:
+                # Форматируем дату для поиска
+                date_obj = datetime.strptime(date, "%Y-%m-%d")
+                date_search = date_obj.strftime("%d.%m.%Y")
+                
+                dates_column = worksheet.col_values(1)  # Первый столбец
+                
+                # Ищем строку с этой датой (пропускаем заголовок)
+                row_index = None
+                for i, cell_date in enumerate(dates_column[1:], start=2):
+                    if cell_date == date_search:
+                        row_index = i
+                        break
+                
+                # Генерация строки Dashboard
+                generator = DashboardGenerator()
+                dashboard_row = generator.generate_daily_row(aggregate)
+                
+                if row_index:
+                    # Обновление существующей строки (26 столбцов A-Z)
+                    range_name = f"A{row_index}:Z{row_index}"
+                    worksheet.update(values=[dashboard_row], range_name=range_name, value_input_option='USER_ENTERED')
+                    logger.info(f"✓ Dashboard обновлён: строка {row_index} (дата {date_search})")
+                else:
+                    # Добавление новой строки
+                    worksheet.append_row(dashboard_row, value_input_option='USER_ENTERED')
+                    logger.info(f"✓ Dashboard: добавлена новая строка за {date_search}")
+                
+                return True
+                
+            except Exception as update_error:
+                logger.error(f"Ошибка обновления данных Dashboard: {update_error}")
+                return False
 
         except Exception as e:
             logger.error(f"Ошибка обновления Dashboard: {e}")
             return False
-        finally:
-            conn.close()
 
     def setup_conditional_formatting(self) -> bool:
         """

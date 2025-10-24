@@ -3,7 +3,6 @@ Daemon-watcher для непрерывного мониторинга input/ и 
 """
 
 import logging
-import os
 import queue
 import signal
 import sys
@@ -160,6 +159,12 @@ class DaemonWatcher:
         cleanup_thread = threading.Thread(target=self._cleanup_scheduler, daemon=True)
         cleanup_thread.start()
 
+        # Запуск планировщика ежедневной синхронизации Dashboard (23:00)
+        if self.config.google_sheets.enabled:
+            sync_thread = threading.Thread(target=self._daily_sync_scheduler, daemon=True)
+            sync_thread.start()
+            logger.info("✓ Планировщик ежедневной синхронизации Dashboard: 23:00")
+
         logger.info("✓ Daemon watcher запущен успешно")
 
         try:
@@ -198,6 +203,8 @@ class DaemonWatcher:
     def _process_existing_files(self):
         """Обработать существующие файлы в input/ при старте."""
         input_path = Path(self.config.paths.input)
+        output_path = Path(self.config.paths.output)
+        
         existing_files = [
             f
             for f in input_path.iterdir()
@@ -205,9 +212,28 @@ class DaemonWatcher:
         ]
 
         if existing_files:
-            logger.info(f"Обнаружено {len(existing_files)} существующих файлов для обработки")
+            logger.info(f"Обнаружено {len(existing_files)} файлов в input/")
+            
+            # Фильтрация: пропускаем уже обработанные файлы
+            new_files = []
+            skipped = 0
+            
             for file_path in existing_files:
-                self.file_queue.put(file_path)
+                # Проверка: существует ли транскрипция в output/
+                transcription_file = output_path / f"{file_path.stem}.txt"
+                
+                if transcription_file.exists():
+                    logger.info(f"Пропущено (уже обработано): {file_path.name}")
+                    skipped += 1
+                else:
+                    new_files.append(file_path)
+            
+            if new_files:
+                logger.info(f"Новых файлов для обработки: {len(new_files)}")
+                for file_path in new_files:
+                    self.file_queue.put(file_path)
+            else:
+                logger.info(f"Все файлы уже обработаны (пропущено: {skipped})")
 
     def _worker(self):
         """Worker thread для обработки очереди файлов."""
@@ -249,11 +275,21 @@ class DaemonWatcher:
                     f"Файл слишком большой: {file_size_mb:.2f} MB "
                     f"(лимит: {self.config.security.max_file_size_mb} MB)"
                 )
+                self._move_to_quarantine(file_path, "TOO_LARGE")
                 return
 
             # 2. Предобработка аудио
-            preprocessed_audio = self.audio_preprocessor.preprocess(str(file_path))
-            audio_duration = self.audio_preprocessor.get_audio_duration(str(file_path))
+            try:
+                preprocessed_audio = self.audio_preprocessor.preprocess(str(file_path))
+                audio_duration = self.audio_preprocessor.get_audio_duration(str(file_path))
+            except ValueError as e:
+                # Битый/повреждённый аудиофайл
+                if "CORRUPTED_AUDIO" in str(e):
+                    logger.warning(f"⚠️ Битый аудиофайл, перемещаю в карантин: {file_path.name}")
+                    self._move_to_quarantine(file_path, "CORRUPTED")
+                    return
+                else:
+                    raise  # Другие ValueError пробрасываем дальше
 
             # 3. ASR транскрипция
             raw_transcription, asr_metrics = self.asr_engine.transcribe(
@@ -341,6 +377,32 @@ class DaemonWatcher:
         except Exception as e:
             logger.error(f"❌ Ошибка обработки {file_path.name}: {e}", exc_info=True)
             self.stats["error_count"] += 1
+            # Перемещаем проблемный файл в карантин, чтобы не блокировать очередь
+            self._move_to_quarantine(file_path, "ERROR")
+
+    def _move_to_quarantine(self, file_path: Path, reason: str):
+        """
+        Переместить файл в карантин.
+
+        Args:
+            file_path: Путь к файлу
+            reason: Причина (CORRUPTED, TOO_LARGE, ERROR)
+        """
+        try:
+            quarantine_dir = Path("quarantine")
+            quarantine_dir.mkdir(exist_ok=True)
+            
+            # Добавляем причину в имя файла
+            quarantine_file = quarantine_dir / f"{reason}_{file_path.name}"
+            
+            # Перемещение
+            import shutil
+            shutil.move(str(file_path), str(quarantine_file))
+            
+            logger.warning(f"🗑️ Файл перемещён в карантин: {quarantine_file}")
+            
+        except Exception as e:
+            logger.error(f"Не удалось переместить в карантин {file_path.name}: {e}")
 
     def _save_results(
         self, file_path: Path, text: str, classification: Optional[dict], metrics: dict
@@ -403,6 +465,48 @@ class DaemonWatcher:
 
             time.sleep(60)  # Проверка каждую минуту
 
+    def _daily_sync_scheduler(self):
+        """Планировщик ежедневной синхронизации Dashboard (23:00)."""
+        logger.info("✓ Планировщик ежедневной синхронизации Dashboard запущен: 23:00")
+        
+        last_sync_date = None
+
+        while self.running:
+            current_hour = int(time.strftime("%H"))
+            current_date = time.strftime("%Y-%m-%d")
+
+            # Запуск синхронизации в 23:00 (только один раз в день)
+            if current_hour == 23 and last_sync_date != current_date:
+                logger.info("⏰ Запуск ежедневной синхронизации Dashboard...")
+                
+                try:
+                    # 1. Генерация витрины дня
+                    from src.analytics_aggregator import AnalyticsAggregator
+                    
+                    aggregator = AnalyticsAggregator(
+                        db_path=self.config.analytics.db_path,
+                        aggregates_path="./analytics/aggregates"
+                    )
+                    
+                    day_aggregate = aggregator.aggregate_day()
+                    logger.info(f"✓ Витрина дня создана: {day_aggregate['total_calls']} звонков")
+                    
+                    # 2. Обновление Dashboard в Google Sheets
+                    if self.sheets_integrator:
+                        self.sheets_integrator.update_dashboard(day_aggregate)
+                        logger.info("✓ Dashboard в Google Sheets обновлён")
+                    
+                    last_sync_date = current_date
+                    logger.info("✓ Ежедневная синхронизация Dashboard завершена")
+                    
+                except Exception as e:
+                    logger.error(f"Ошибка ежедневной синхронизации Dashboard: {e}", exc_info=True)
+                
+                # Спим до следующего дня (чтобы не запускать повторно)
+                time.sleep(3600)
+
+            time.sleep(60)  # Проверка каждую минуту
+
     def _prepare_sheets_row(self, file_path, quality_result, asr_metrics, transcription):
         """
         Подготовить строку данных для Google Sheets.
@@ -418,9 +522,9 @@ class DaemonWatcher:
         """
         from datetime import datetime
 
-        # Извлечение критичных ошибок
-        critical_errors = []
-        optional_errors = []
+        # Подсчёт ошибок
+        critical_errors_count = 0
+        optional_errors_count = 0
         
         for criterion in quality_result.get("criteria_evaluations", []):
             param_id = criterion.get("id")
@@ -431,18 +535,18 @@ class DaemonWatcher:
             
             if is_error:
                 if param_id <= 20:  # required
-                    critical_errors.append(criterion.get("name", ""))
+                    critical_errors_count += 1
                 else:  # optional
-                    optional_errors.append(criterion.get("name", ""))
+                    optional_errors_count += 1
         
-        critical_str = ", ".join(critical_errors[:3]) if critical_errors else "-"
-        optional_str = ", ".join(optional_errors[:3]) if optional_errors else "-"
-        
-        # Длительность
-        audio_duration = asr_metrics.get("audio_duration", 0)
-        minutes = int(audio_duration // 60)
-        seconds = int(audio_duration % 60)
-        duration_str = f"{minutes}:{seconds:02d}"
+        # Длительность (защита от None)
+        audio_duration = asr_metrics.get("audio_duration") or 0
+        if audio_duration and audio_duration > 0:
+            minutes = int(audio_duration // 60)
+            seconds = int(audio_duration % 60)
+            duration_str = f"{minutes}:{seconds:02d}"
+        else:
+            duration_str = "N/A"
         
         # Timestamp
         dt = datetime.now()
@@ -456,7 +560,7 @@ class DaemonWatcher:
             quality_result.get("equipment_type") or "1.5T",  # Оборудование
             duration_str,  # Длительность
             quality_result.get("overall_score", 0),  # Общий балл
-            len(critical_errors) + len(optional_errors),  # Ошибок всего
+            critical_errors_count + optional_errors_count,  # Ошибок всего
         ]
         
         # Добавляем все 30 критериев (балл + комментарий в скобках)
@@ -472,12 +576,20 @@ class DaemonWatcher:
                 score = criterion.get("score")
                 comment = criterion.get("comment", "")
                 
-                # Формат: "балл (комментарий)" или "-" если не применимо
-                if score is None or not criterion.get("relevant", True):
-                    cell_value = "-"
+                # Формат: "балл (комментарий)" или "N/A (комментарий)" если неприменимо
+                relevant = criterion.get("relevant", True)
+                
+                # Комментарий до 250 символов (полные комментарии для анализа)
+                short_comment = comment[:250] + "..." if len(comment) > 250 else comment
+                
+                if not relevant:
+                    # Неприменимый критерий - показываем комментарий с пометкой N/A
+                    cell_value = f"N/A ({short_comment})" if comment else "N/A"
+                elif score is None:
+                    # Score отсутствует, но критерий применим - показываем комментарий
+                    cell_value = f"- ({short_comment})" if comment else "-"
                 else:
-                    # Короткий комментарий (первые 50 символов)
-                    short_comment = comment[:50] + "..." if len(comment) > 50 else comment
+                    # Обычный критерий с баллом
                     cell_value = f"{score:.1f} ({short_comment})" if comment else f"{score:.1f}"
                 
                 row_data.append(cell_value)
