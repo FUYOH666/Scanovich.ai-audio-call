@@ -61,7 +61,7 @@ class VLLMConfig(BaseModel):
         default="http://localhost:8000/v1", description="URL VLLM API"
     )
     model: str = Field(
-        default="models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit", description="Модель"
+        default="models/LLM-30B-A3B-Instruct-2507-AWQ-4bit", description="Модель"
     )
     temperature: float = Field(default=0.1, ge=0.0, le=2.0)
     max_tokens: int = Field(default=8000, ge=100, le=32000)
@@ -138,8 +138,8 @@ class QualityAnalysisConfig(BaseModel):
     retry_attempts: int = Field(default=3, ge=1, le=10)
     scripts: dict = Field(
         default={
-            "script_1_5t": "script установлены 1.5T.md",
-            "script_3t": "script установлены 3T.md",
+            "script_type_a": "script_evaluation_type_A.md",
+            "script_type_b": "script_evaluation_type_B.md",
         }
     )
     paths: dict = Field(

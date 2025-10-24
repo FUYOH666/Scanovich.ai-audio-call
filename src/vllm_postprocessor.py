@@ -1,5 +1,5 @@
 """
-VLLM-постобработка через Qwen3-30B.
+VLLM-постобработка через LLM-30B.
 
 Функции:
 - Исправление ошибок ASR
@@ -27,7 +27,7 @@ from src.branches_manager import BranchesManager
 logger = logging.getLogger(__name__)
 
 
-# Промпт для Qwen3-30B (будет дополнен данными из branches.yaml)
+# Промпт для LLM-30B (будет дополнен данными из branches.yaml)
 VLLM_SYSTEM_PROMPT_TEMPLATE = """Ты - эксперт по обработке транскрипций телефонных звонков.
 
 ЗАДАЧИ:
@@ -48,7 +48,7 @@ VLLM_SYSTEM_PROMPT_TEMPLATE = """Ты - эксперт по обработке �
 {branches_info}
 
 4. ИСПРАВЬ ИМЕНА АДМИНИСТРАТОРОВ к стандартным вариантам:
-   - "РУ", "РЗУ", "арз", "арзуша" → "Арзу"
+   - "Var1", "Var2", "Var3" → "Admin Name"
    - "Алена" → "Алёна"
    - "Даша" → "Дарья"
    - "Наташа" → "Наталья"
@@ -85,7 +85,7 @@ VLLM_SYSTEM_PROMPT_TEMPLATE = """Ты - эксперт по обработке �
 
 
 class VLLMPostprocessor:
-    """Постобработка транскрипций через VLLM (Qwen3-30B)."""
+    """Постобработка транскрипций через VLLM (LLM-30B)."""
 
     def __init__(self, config: VLLMConfig, branches_yaml_path: str = "branches.yaml"):
         """

@@ -102,7 +102,7 @@ class BranchesManager:
             address: Адрес филиала
 
         Returns:
-            List[str]: Список оборудования (например, ["1.5T", "3T"])
+            List[str]: Список оборудования (например, ["Type-A", "Type-B"])
         """
         branch_info = self.branches_data.get(address, {})
         return branch_info.get("equipment", [])

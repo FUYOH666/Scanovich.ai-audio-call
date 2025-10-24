@@ -47,11 +47,11 @@ input/ (новые аудиозвонки)
   ↓
 1. Транскрибация (Whisper Large V3) - RTF 0.027 (37x быстрее!)
   ↓
-2. Маскирование PII (Qwen3-30B) - ФИО/телефоны → замаскированы
-   + Исправление имён админов (РУ/РЗУ → Арзу)
+2. Маскирование PII (LLM-30B) - ФИО/телефоны → замаскированы
+   + Исправление имён админов (Name variants → Canonical name)
    + Нормализация адресов через branches.yaml
   ↓
-3. Анализ качества (Qwen3-30B) - оценка по 30 критериям скриптов 1.5T/3T
+3. Анализ качества (LLM-30B) - оценка по 30 критериям скриптов Type-A/Type-B
   ↓
 4. Сбор в БД (SQLite) - только failed/unknown для аналитики
   ↓
@@ -82,7 +82,7 @@ output/ + metadata/ + quality_analysis/ + archive/ (30 дней ротация)
 
 ### Экономика:
 - **Стоимость:** $0 (локально)
-- **Экономия:** $51,287/год (vs Claude Sonnet 4.5)
+- **Экономия:** $51,287/год (vs Commercial LLM API Sonnet 4.5)
 - **ROI:** 2 недели (окупаемость GPU RTX 5090)
 
 ### Качество:
@@ -103,7 +103,7 @@ output/ + metadata/ + quality_analysis/ + archive/ (30 дней ротация)
 ### Программные:
 - **OS:** Linux (Ubuntu 22.04+)
 - **Python:** 3.12
-- **VLLM:** Запущен на порту 8000 с Qwen3-30B
+- **VLLM:** Запущен на порту 8000 с LLM-30B
 
 ---
 
@@ -152,10 +152,10 @@ sudo ./systemd/install_all_services.sh
 # 2. Запустить все сервисы
 sudo systemctl start vllm.service
 sudo systemctl start asr-watcher.service
-sudo systemctl start call-downloader-irkutsk.service
-sudo systemctl start call-downloader-volgodonks.service
-sudo systemctl start call-downloader-tymen.service
-sudo systemctl start call-downloader-angarsk.service
+sudo systemctl start call-downloader-provider-a-city1.service
+sudo systemctl start call-downloader-provider-b-city1.service
+sudo systemctl start call-downloader-provider-b-city2.service
+sudo systemctl start call-downloader-provider-a-city2.service
 
 # 3. Проверить статус
 sudo systemctl status vllm.service asr-watcher.service call-downloader-*.service
@@ -182,7 +182,7 @@ analyze-quality  # Анализ одного звонка (30 критериев
 analyze-batch    # Пакетный анализ всех транскрипций
 report           # Отчёт по администратору (Markdown)
 cost-stats       # Статистика токенов/стоимости
-compare-models   # A/B тест (Qwen3 vs Claude)
+compare-models   # A/B тест (LLM vs Commercial LLM API)
 ```
 
 ### Аналитика:
@@ -267,11 +267,11 @@ cleanup-sheets   # Удаление дубликатов
 
 ## 🎯 Оценка качества (30 критериев)
 
-**Модель:** Qwen3-30B (локально, бесплатно!)
+**Модель:** LLM-30B (локально, бесплатно!)
 
 **Скрипты оценки:**
-- `script установлены 1.5T.md` - для оборудования 1.5 Тесла
-- `script установлены 3T.md` - для оборудования 3 Тесла
+- `script_evaluation_type_A.md` - для оборудования Type-A Equipment
+- `script_evaluation_type_B.md` - для оборудования Type-B Equipment
 
 **Критерии (блоки):**
 1. Приветствие (5 критериев) - 15%
@@ -318,7 +318,7 @@ cleanup-sheets   # Удаление дубликатов
 ASR-4.5/
 ├── src/                    # 21 модуль (~6100 строк кода)
 │   ├── asr.py              # Whisper Large V3
-│   ├── vllm_postprocessor.py   # Qwen3 маскирование + нормализация
+│   ├── vllm_postprocessor.py   # LLM маскирование + нормализация
 │   ├── quality_analyzer.py     # Анализ 30 критериев
 │   ├── db_manager.py           # SQLite БД
 │   ├── analytics_aggregator.py # Витрины day/week + апсейл
@@ -354,7 +354,7 @@ ASR-4.5/
 
 ## 🔧 Конфигурация (config.yaml)
 
-Основные параметры уже настроены оптимально для RTX 5090 + Qwen3-30B.
+Основные параметры уже настроены оптимально для RTX 5090 + LLM-30B.
 
 **Что можно настроить:**
 - `analytics.telegram.chat_id` - ваш Telegram chat ID
@@ -365,12 +365,12 @@ ASR-4.5/
 **Нормализация адресов и админов (branches.yaml):**
 ```yaml
 branches:
-  - address: "ул. Республики д.196А"
-    variants: ["республики 196а", "республики 196", "проспект республики"]
+  - address: "Street Example, Building 123"
+    variants: ["street example 123", "street example", "avenue example"]
     
 admins:
-  - canonical_name: "Арзу"
-    variants: ["РУ", "РЗУ", "арз", "арзуша"]
+  - canonical_name: "Admin Name"
+    variants: ["variant1", "variant2", "variant3"]
 ```
 
 ---
@@ -487,7 +487,7 @@ ls -lh quarantine/
 1. **Watchdog** - мониторинг input/ (inotify events)
 2. **Worker Queue** - обработка файлов (последовательно, безопасно для памяти)
 3. **ASR** - транскрибация (Whisper Large V3)
-4. **VLLM** - маскирование + классификация (Qwen3-30B)
+4. **VLLM** - маскирование + классификация (LLM-30B)
 5. **Quality** - анализ качества (30 критериев)
 6. **Analytics** - сохранение в SQLite
 7. **Sheets** - real-time обновление Google Sheets
@@ -560,7 +560,7 @@ tail -f logs/errors.log          # Только ошибки
 **Худший админ:** Unknown (53.8)
 
 **Проблемный филиал:** Unknown (ERR 100%, балл 51.8)  
-**Топ филиал:** ул. Скорбатова д.38 (ERR 100%, балл 93.3)
+**Топ филиал:** Top Branch Address (ERR 100%, балл 93.3)
 
 ---
 
@@ -582,7 +582,7 @@ tail -f logs/errors.log          # Только ошибки
 ### Почему стоит выбрать ScanovichAI?
 
 1. **100% локально** — все данные остаются у вас, никаких внешних API
-2. **Экономия** — до $51K/год vs коммерческие решения (Claude, GPT-4)
+2. **Экономия** — до $51K/год vs коммерческие решения (Commercial LLM API, Commercial-LLM)
 3. **Масштабируемость** — от 10K до 100K+ звонков/месяц на одном GPU
 4. **Гибкость** — легко адаптируется под любую отрасль и скрипты
 5. **Production-ready** — уже работает 24/7 в реальном бизнесе
@@ -607,8 +607,8 @@ tail -f logs/errors.log          # Только ошибки
 - **`Бесперебойная работа.md`** — настройка systemd сервисов для 24/7 работы
 - **`systemd/README_SESSION_FIX.md`** — исправление проблем с автологаутом
 - **`branches.yaml`** — эталонные адреса филиалов и имена администраторов
-- **`script установлены 1.5T.md`** — скрипт оценки для оборудования 1.5 Тесла
-- **`script установлены 3T.md`** — скрипт оценки для оборудования 3 Тесла
+- **`script_evaluation_type_A.md`** — скрипт оценки для оборудования Type-A Equipment
+- **`script_evaluation_type_B.md`** — скрипт оценки для оборудования Type-B Equipment
 
 ---
 

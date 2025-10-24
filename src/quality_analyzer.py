@@ -1,10 +1,10 @@
 """
-Модуль анализа качества обслуживания через Claude Sonnet 4.5.
+Модуль анализа качества обслуживания через Commercial LLM Sonnet 4.5.
 
 Функции:
-- Определение типа оборудования (1.5T vs 3T)
+- Определение типа оборудования (Type-A vs Type-B)
 - Парсинг скриптов обслуживания (30 критериев)
-- Анализ звонков через OpenRouter API (Claude Sonnet 4.5)
+- Анализ звонков через OpenRouter API (Commercial LLM Sonnet 4.5)
 - Расчёт итоговых оценок качества
 """
 
@@ -93,9 +93,9 @@ class ScriptParser:
 
 
 class EquipmentDetector:
-    """Определение типа оборудования (1.5T vs 3T) из транскрипции."""
+    """Определение типа оборудования (Type-A vs Type-B) из транскрипции."""
 
-    KEYWORDS_3T = [
+    KEYWORDS_Type-B = [
         r"\b3\s*тесл",
         r"три\s*тесл",
         r"3т\b",
@@ -120,33 +120,33 @@ class EquipmentDetector:
             classification: Классификация от VLLM (опционально)
 
         Returns:
-            str: "1.5T" или "3T"
+            str: "Type-A" или "Type-B"
         """
         text_lower = transcription.lower()
 
-        # Проверка на 3T
-        for pattern in cls.KEYWORDS_3T:
+        # Проверка на Type-B
+        for pattern in cls.KEYWORDS_Type-B:
             if re.search(pattern, text_lower):
-                logger.info("Обнаружено оборудование: 3T")
-                return "3T"
+                logger.info("Обнаружено оборудование: Type-B")
+                return "Type-B"
 
-        # Проверка на 1.5T
+        # Проверка на Type-A
         for pattern in cls.KEYWORDS_1_5T:
             if re.search(pattern, text_lower):
-                logger.info("Обнаружено оборудование: 1.5T")
-                return "1.5T"
+                logger.info("Обнаружено оборудование: Type-A")
+                return "Type-A"
 
-        # По умолчанию 1.5T (базовое оборудование)
-        logger.info("Тип оборудования не определён, используем 1.5T по умолчанию")
-        return "1.5T"
+        # По умолчанию Type-A (базовое оборудование)
+        logger.info("Тип оборудования не определён, используем Type-A по умолчанию")
+        return "Type-A"
 
 
-class ClaudeAnalyzer:
-    """Интеграция с Claude Sonnet 4.5 через OpenRouter."""
+class Commercial LLMAnalyzer:
+    """Интеграция с Commercial LLM Sonnet 4.5 через OpenRouter."""
 
     def __init__(self, config: QualityAnalysisConfig):
         """
-        Инициализация Claude анализатора.
+        Инициализация Commercial LLM анализатора.
 
         Args:
             config: Конфигурация анализа качества
@@ -167,18 +167,18 @@ class ClaudeAnalyzer:
                 api_key=api_key,
                 timeout=config.timeout,
             )
-            logger.info(f"✓ Claude Sonnet 4.5 клиент инициализирован: {config.base_url}")
+            logger.info(f"✓ Commercial LLM Sonnet 4.5 клиент инициализирован: {config.base_url}")
         except Exception as e:
             logger.error(f"Ошибка инициализации OpenRouter клиента: {e}")
             raise RuntimeError(f"Не удалось подключиться к OpenRouter: {e}") from e
 
     def build_system_prompt(self, script_criteria: List[Dict], equipment_type: str) -> str:
         """
-        Построить system prompt для Claude.
+        Построить system prompt для Commercial LLM.
 
         Args:
             script_criteria: Список критериев из скрипта
-            equipment_type: Тип оборудования (1.5T или 3T)
+            equipment_type: Тип оборудования (Type-A или Type-B)
 
         Returns:
             str: System prompt
@@ -245,7 +245,7 @@ class ClaudeAnalyzer:
         self, transcription: str, metadata: Optional[Dict] = None
     ) -> str:
         """
-        Построить user prompt для Claude.
+        Построить user prompt для Commercial LLM.
 
         Args:
             transcription: Текст транскрипции
@@ -285,7 +285,7 @@ class ClaudeAnalyzer:
     )
     def _call_claude(self, system_prompt: str, user_prompt: str) -> Tuple[str, Dict]:
         """
-        Вызов Claude Sonnet 4.5 API с retry-логикой.
+        Вызов Commercial LLM Sonnet 4.5 API с retry-логикой.
 
         Args:
             system_prompt: System prompt
@@ -314,20 +314,20 @@ class ClaudeAnalyzer:
                 "total": response.usage.total_tokens,
             }
 
-            # Расчёт стоимости (Claude Sonnet 4.5: $3/$15 за 1M токенов)
+            # Расчёт стоимости (Commercial LLM Sonnet 4.5: $3/$15 за 1M токенов)
             cost_usd = (
                 tokens_used["prompt"] * 0.000003
                 + tokens_used["completion"] * 0.000015
             )
 
             logger.info(
-                f"Claude ответ получен: {tokens_used['total']} токенов, ${cost_usd:.4f}"
+                f"Commercial LLM ответ получен: {tokens_used['total']} токенов, ${cost_usd:.4f}"
             )
 
             return result_text, {"tokens_used": tokens_used, "cost_usd": cost_usd}
 
         except Exception as e:
-            logger.warning(f"Ошибка вызова Claude API (retry): {e}")
+            logger.warning(f"Ошибка вызова Commercial LLM API (retry): {e}")
             raise
 
     def analyze(
@@ -338,7 +338,7 @@ class ClaudeAnalyzer:
         metadata: Optional[Dict] = None,
     ) -> Dict:
         """
-        Полный анализ звонка через Claude.
+        Полный анализ звонка через Commercial LLM.
 
         Args:
             transcription: Текст транскрипции
@@ -353,7 +353,7 @@ class ClaudeAnalyzer:
         system_prompt = self.build_system_prompt(script_criteria, equipment_type)
         user_prompt = self.build_user_prompt(transcription, metadata)
 
-        # Вызов Claude
+        # Вызов Commercial LLM
         response_text, api_stats = self._call_claude(system_prompt, user_prompt)
 
         # Парсинг JSON
@@ -363,14 +363,14 @@ class ClaudeAnalyzer:
             evaluation.update(api_stats)
             return evaluation
         else:
-            raise ValueError("Не удалось распарсить ответ от Claude")
+            raise ValueError("Не удалось распарсить ответ от Commercial LLM")
 
     def _parse_response(self, response_text: str) -> Optional[Dict]:
         """
-        Парсинг JSON ответа от Claude.
+        Парсинг JSON ответа от Commercial LLM.
 
         Args:
-            response_text: Ответ от Claude
+            response_text: Ответ от Commercial LLM
 
         Returns:
             Dict или None: Распарсенный JSON
@@ -401,13 +401,13 @@ class ClaudeAnalyzer:
             ]
             for field in required_fields:
                 if field not in result:
-                    logger.error(f"Claude ответ не содержит поле: {field}")
+                    logger.error(f"Commercial LLM ответ не содержит поле: {field}")
                     return None
 
             return result
 
         except json.JSONDecodeError as e:
-            logger.error(f"Ошибка парсинга JSON от Claude: {e}")
+            logger.error(f"Ошибка парсинга JSON от Commercial LLM: {e}")
             logger.debug(f"Некорректный JSON: {response_text[:500]}")
             return None
 
@@ -427,10 +427,10 @@ class QualityAnalyzer:
         
         # Выбор анализатора в зависимости от provider
         if config.provider == "vllm":
-            # Используем локальный VLLM (Qwen3-30B)
-            from src.model_comparison import QwenAnalyzer
+            # Используем локальный VLLM (LLM-30B)
+            from src.model_comparison import LLMAnalyzer
             
-            # Создаём временный конфиг для Qwen
+            # Создаём временный конфиг для LLM
             if vllm_config is None:
                 from src.config_validation import VLLMConfig
                 vllm_config = VLLMConfig(
@@ -438,12 +438,12 @@ class QualityAnalyzer:
                     model=config.model,
                     timeout=config.timeout
                 )
-            self.analyzer = QwenAnalyzer(vllm_config)
-            logger.info("✓ Используется локальный VLLM (Qwen3-30B) для анализа качества")
+            self.analyzer = LLMAnalyzer(vllm_config)
+            logger.info("✓ Используется локальный VLLM (LLM-30B) для анализа качества")
         else:
-            # Используем OpenRouter (Claude)
-            self.analyzer = ClaudeAnalyzer(config)
-            logger.info("✓ Используется OpenRouter (Claude Sonnet 4.5) для анализа качества")
+            # Используем OpenRouter (Commercial LLM)
+            self.analyzer = Commercial LLMAnalyzer(config)
+            logger.info("✓ Используется OpenRouter (Commercial LLM Sonnet 4.5) для анализа качества")
 
         # Парсинг скриптов
         self.scripts = {}
@@ -499,27 +499,27 @@ class QualityAnalyzer:
         equipment_type = EquipmentDetector.detect(transcription, classification)
 
         # 2. Выбор соответствующего скрипта
-        script_key = "script_3t" if equipment_type == "3T" else "script_1_5t"
+        script_key = "script_type_b" if equipment_type == "Type-B" else "script_type_a"
         if script_key not in self.scripts:
             raise ValueError(f"Скрипт {script_key} не загружен!")
 
         script_criteria = self.scripts[script_key]
 
-        # 3. Анализ через выбранную модель (VLLM или Claude)
+        # 3. Анализ через выбранную модель (VLLM или Commercial LLM)
         if self.config.provider == "vllm":
             # Построение промптов
             system_prompt = self._build_system_prompt(script_criteria, equipment_type)
             user_prompt = self._build_user_prompt(transcription, metadata)
             
-            # Анализ через Qwen3
+            # Анализ через LLM
             response_text, metrics = self.analyzer.analyze(system_prompt, user_prompt)
             evaluation = self._parse_response(response_text)
             if evaluation:
                 evaluation.update(metrics)
             else:
-                raise ValueError("Не удалось распарсить ответ от Qwen3")
+                raise ValueError("Не удалось распарсить ответ от LLM")
         else:
-            # Анализ через Claude
+            # Анализ через Commercial LLM
             evaluation = self.analyzer.analyze(
                 transcription, script_criteria, equipment_type, metadata
             )
@@ -546,8 +546,8 @@ class QualityAnalyzer:
     
     def _build_system_prompt(self, script_criteria, equipment_type):
         """Построить system prompt (используется для VLLM)."""
-        # Используем метод из ClaudeAnalyzer
-        from src.model_comparison import QwenAnalyzer
+        # Используем метод из Commercial LLMAnalyzer
+        from src.model_comparison import LLMAnalyzer
         
         criteria_text = "\n\n".join(
             [

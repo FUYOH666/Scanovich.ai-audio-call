@@ -557,7 +557,7 @@ class DaemonWatcher:
             dt.strftime("%H:%M"),  # Время
             quality_result.get("admin_name") or "Неизвестен",  # Админ
             quality_result.get("clinic_address") or "N/A",  # Филиал
-            quality_result.get("equipment_type") or "1.5T",  # Оборудование
+            quality_result.get("equipment_type") or "Type-A",  # Оборудование
             duration_str,  # Длительность
             quality_result.get("overall_score", 0),  # Общий балл
             critical_errors_count + optional_errors_count,  # Ошибок всего

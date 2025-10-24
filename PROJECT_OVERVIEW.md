@@ -76,7 +76,7 @@
 - ✅ **Конкретные рекомендации** — для обучения персонала
 
 **Экономический эффект:**
-- **Экономия:** $51,287/год vs Claude Sonnet 4.5 API
+- **Экономия:** $51,287/год vs Commercial LLM API API
 - **ROI:** 2 недели (окупаемость GPU RTX 5090)
 - **Производительность:** 37x быстрее реального времени
 
@@ -94,7 +94,7 @@
 - **Устройство:** CUDA (NVIDIA GPU)
 
 #### 2. **Постобработка и анализ (LLM)**
-- **Модель:** Qwen3-30B-A3B-Instruct (AWQ 4-bit квантизация)
+- **Модель:** Large Language Model (30B parameters) (AWQ 4-bit квантизация)
 - **Сервер:** vLLM (OpenAI-compatible API)
 - **Контекст:** 16K токенов (достаточно для 17+ мин звонков)
 - **VRAM:** ~30GB из 32GB (RTX 5090)
@@ -188,15 +188,15 @@ pytest-asyncio==0.24.0
 │     • Сохранение → output/*.txt                            │
 │                                                              │
 │  4. Постобработка (vllm_postprocessor.py)                  │
-│     • VLLM API (Qwen3-30B, localhost:8000)                 │
+│     • VLLM API (LLM-30B, localhost:8000)                 │
 │     • Маскирование PII (ФИО, телефоны)                     │
 │     • Нормализация адресов/админов (branches.yaml)         │
 │     • Классификация звонков                                │
 │     • Сохранение → metadata/*.json                         │
 │                                                              │
 │  5. Анализ качества (quality_analyzer.py)                  │
-│     • VLLM API (Qwen3-30B)                                 │
-│     • Оценка по 30 критериям (скрипты 1.5T/3T)            │
+│     • VLLM API (LLM-30B)                                 │
+│     • Оценка по 30 критериям (evaluation scripts)            │
 │     • Апсейл-метрики (видео, допродажи, цена)             │
 │     • Рекомендации для обучения                            │
 │     • Сохранение → quality_analysis/individual/*.json      │
@@ -258,7 +258,7 @@ pytest-asyncio==0.24.0
 12. **audio_preprocessor.py** — предобработка аудио
 13. **cleanup_manager.py** — автоочистка archive/
 14. **cost_tracker.py** — статистика токенов/стоимости
-15. **model_comparison.py** — A/B тест (Qwen3 vs Claude)
+15. **model_comparison.py** — A/B тест (LLM vs Commercial-LLM)
 16. **report_generator.py** — Markdown отчеты
 17. **csv_exporter.py** — экспорт в CSV
 18. **error_extractor.py** — извлечение ошибок из БД
@@ -275,20 +275,20 @@ pytest-asyncio==0.24.0
 **Задачи:**
 - ✅ Анализ требований бизнеса (диагностический центры)
 - ✅ Исследование моделей ASR (Whisper vs Azure vs Google)
-- ✅ Исследование LLM (Claude vs GPT-4 vs Qwen3)
+- ✅ Исследование LLM (Commercial-LLM vs Commercial LLM vs LLM)
 - ✅ Прототип транскрипции (faster-whisper)
-- ✅ Прототип анализа качества (Claude API)
+- ✅ Прототип анализа качества (Commercial-LLM API)
 
 **Результаты:**
 - Выбор Whisper Large V3 (лучшая точность для русского)
-- Выбор Qwen3-30B (баланс качество/стоимость)
+- Выбор LLM-30B (баланс качество/стоимость)
 - Доказательство концепции (PoC): RTF 0.027, WER ~5%
 
 ### Этап 2: Разработка MVP (Сентябрь 2025)
 
 **Задачи:**
 - ✅ Разработка core pipeline (ASR → LLM → анализ)
-- ✅ Интеграция VLLM сервера (Qwen3-30B)
+- ✅ Интеграция VLLM сервера (LLM-30B)
 - ✅ Маскирование PII (ФИО, телефоны)
 - ✅ Анализ качества по 30 критериям
 - ✅ SQLite БД для аналитики
@@ -391,7 +391,7 @@ pytest-asyncio==0.24.0
 ### Экономический эффект:
 
 - **Стоимость обработки:** $0 (локально)
-- **Экономия vs Claude API:** $51,287/год
+- **Экономия vs Commercial-LLM API:** $51,287/год
 - **ROI:** 2 недели (окупаемость GPU RTX 5090)
 
 ---
@@ -606,11 +606,11 @@ pytest-asyncio==0.24.0
 
 #### 1. **Улучшение моделей**
 
-**Текущее:** Whisper Large V3 + Qwen3-30B
+**Текущее:** Whisper Large V3 + LLM-30B
 
 **Потенциал:**
 - **ASR:** Whisper Large V4 (когда выйдет)
-- **LLM:** Qwen3-72B, Llama 4, Claude 4
+- **LLM:** LLM-72B, Open-Source-LLM, Next-gen LLM
 - **Специализированные модели:** дообучение на отраслевых данных
 
 **Эффект:**
@@ -684,7 +684,7 @@ pytest-asyncio==0.24.0
 - Yandex SpeechKit (облако, $0.05/мин)
 - Google Cloud Speech-to-Text (облако, $0.024/мин)
 - Azure Speech Services (облако, $0.016/мин)
-- Claude API (облако, $0.003/1K токенов)
+- Commercial-LLM API (облако, $0.003/1K токенов)
 
 ### 2. **Высокая производительность**
 
@@ -737,7 +737,7 @@ pytest-asyncio==0.24.0
 **Преимущество:**
 - $0 за обработку (только GPU)
 - ROI 2 недели (окупаемость GPU)
-- Экономия $51K/год vs Claude API
+- Экономия $51K/год vs Commercial-LLM API
 
 **Конкуренты:**
 - Высокая стоимость ($0.05-0.15/мин)

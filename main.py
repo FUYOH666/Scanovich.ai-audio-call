@@ -349,13 +349,13 @@ def metrics(config):
 
 @cli.command()
 @click.argument("transcription_file", type=click.Path(exists=True))
-@click.option("--show-reasoning", is_flag=True, help="Показать ход мышления Claude")
+@click.option("--show-reasoning", is_flag=True, help="Показать ход мышления Commercial-LLM")
 @click.option("--config", default="config.yaml", help="Путь к config.yaml")
 def analyze_quality(transcription_file, show_reasoning, config):
     """
     Анализ качества обслуживания для одной транскрипции.
 
-    Использует Claude Sonnet 4.5 для оценки по 30 критериям скрипта.
+    Использует Commercial LLM API для оценки по 30 критериям скрипта.
 
     Пример:
         ./venv/bin/python main.py analyze-quality output/звонок.txt
@@ -587,7 +587,7 @@ def report(admin_name, period, config):
 @click.option("--config", default="config.yaml", help="Путь к config.yaml")
 def compare_models(transcription_file, config):
     """
-    A/B тест: Claude Sonnet 4.5 vs Qwen3-30B на одном звонке.
+    A/B тест: Commercial LLM API vs LLM-Model на одном звонке.
 
     Сравнивает качество анализа двух моделей для принятия решения
     о выборе модели для production.
@@ -652,7 +652,7 @@ def cost_stats(config, period):
     """
     Статистика стоимости API вызовов (токены, расходы).
 
-    Показывает сколько потрачено на анализ качества через Claude Sonnet 4.5.
+    Показывает сколько потрачено на анализ качества через Commercial LLM API.
 
     Пример:
         ./venv/bin/python main.py cost-stats

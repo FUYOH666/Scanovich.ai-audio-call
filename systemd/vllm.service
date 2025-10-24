@@ -1,5 +1,5 @@
 [Unit]
-Description=VLLM Server - Qwen3-30B для ASR-4.5
+Description=VLLM Server - LLM-Model для ASR-4.5
 Documentation=https://github.com/ScanovichAI/ASR-4.5
 After=network.target
 
@@ -13,7 +13,7 @@ Environment="PYTHONUNBUFFERED=1"
 Environment="CUDA_VISIBLE_DEVICES=0"
 
 ExecStart=/home/ai/Документы/vLLm/venv/bin/python -m vllm.entrypoints.openai.api_server \
-    --model models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit \
+    --model models/your-llm-model \
     --dtype float16 \
     --max-model-len 16384 \
     --tensor-parallel-size 1 \

@@ -2,8 +2,8 @@
 Модуль A/B тестирования моделей для анализа качества.
 
 Сравнивает:
-- Qwen3-30B (локальный VLLM) - бесплатно
-- Claude Sonnet 4.5 (OpenRouter) - ~$0.07/звонок
+- LLM-30B (локальный VLLM) - бесплатно
+- Commercial LLM Sonnet 4.5 (OpenRouter) - ~$0.07/звонок
 """
 
 import json
@@ -15,17 +15,17 @@ from typing import Dict, Optional, Tuple
 from openai import OpenAI
 
 from src.config_validation import QualityAnalysisConfig, VLLMConfig
-from src.quality_analyzer import ClaudeAnalyzer, EquipmentDetector, ScriptParser
+from src.quality_analyzer import Commercial LLMAnalyzer, EquipmentDetector, ScriptParser
 
 logger = logging.getLogger(__name__)
 
 
-class QwenAnalyzer:
-    """Анализатор качества через локальный Qwen3-30B (VLLM)."""
+class LLMAnalyzer:
+    """Анализатор качества через локальный LLM-30B (VLLM)."""
 
     def __init__(self, vllm_config: VLLMConfig):
         """
-        Инициализация Qwen анализатора.
+        Инициализация LLM анализатора.
 
         Args:
             vllm_config: Конфигурация VLLM
@@ -38,9 +38,9 @@ class QwenAnalyzer:
                 api_key="EMPTY",
                 timeout=vllm_config.timeout,
             )
-            logger.info(f"✓ Qwen3-30B клиент инициализирован: {vllm_config.base_url}")
+            logger.info(f"✓ LLM-30B клиент инициализирован: {vllm_config.base_url}")
         except Exception as e:
-            logger.error(f"Ошибка инициализации Qwen клиента: {e}")
+            logger.error(f"Ошибка инициализации LLM клиента: {e}")
             raise RuntimeError(f"Не удалось подключиться к VLLM: {e}") from e
 
     def analyze(
@@ -49,7 +49,7 @@ class QwenAnalyzer:
         user_prompt: str,
     ) -> Tuple[str, Dict]:
         """
-        Анализ через Qwen3-30B.
+        Анализ через LLM-30B.
 
         Args:
             system_prompt: System prompt
@@ -67,7 +67,7 @@ class QwenAnalyzer:
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
                 ],
-                temperature=0.1,  # Немного температуры для Qwen
+                temperature=0.1,  # Немного температуры для LLM
                 max_tokens=self.config.max_tokens,
             )
 
@@ -78,15 +78,15 @@ class QwenAnalyzer:
             metrics = {
                 "response_time": round(elapsed, 2),
                 "cost_usd": 0.0,  # Локальный VLLM - бесплатно
-                "model": "Qwen3-30B (Local VLLM)",
+                "model": "LLM-30B (Local VLLM)",
             }
 
-            logger.info(f"Qwen3 ответ получен за {elapsed:.2f}s (бесплатно)")
+            logger.info(f"LLM ответ получен за {elapsed:.2f}s (бесплатно)")
 
             return result_text, metrics
 
         except Exception as e:
-            logger.error(f"Ошибка вызова Qwen3 API: {e}")
+            logger.error(f"Ошибка вызова LLM API: {e}")
             raise
 
 
@@ -103,8 +103,8 @@ class ModelComparator:
             quality_config: Конфигурация анализа качества
             vllm_config: Конфигурация VLLM
         """
-        self.claude_analyzer = ClaudeAnalyzer(quality_config)
-        self.qwen_analyzer = QwenAnalyzer(vllm_config)
+        self.claude_analyzer = Commercial LLMAnalyzer(quality_config)
+        self.qwen_analyzer = LLMAnalyzer(vllm_config)
 
         # Загрузка скриптов
         self.scripts = {}
@@ -136,7 +136,7 @@ class ModelComparator:
         equipment_type = EquipmentDetector.detect(transcription, classification)
 
         # Выбор скрипта
-        script_key = "script_3t" if equipment_type == "3T" else "script_1_5t"
+        script_key = "script_type_b" if equipment_type == "Type-B" else "script_type_a"
         script_criteria = self.scripts[script_key]
 
         # Построение промптов (одинаковые для обеих моделей)
@@ -145,8 +145,8 @@ class ModelComparator:
         )
         user_prompt = self.claude_analyzer.build_user_prompt(transcription, metadata)
 
-        # Тест 1: Claude Sonnet 4.5
-        logger.info("Тест 1/2: Claude Sonnet 4.5...")
+        # Тест 1: Commercial LLM Sonnet 4.5
+        logger.info("Тест 1/2: Commercial LLM Sonnet 4.5...")
         try:
             claude_response, claude_stats = self.claude_analyzer._call_claude(
                 system_prompt, user_prompt
@@ -155,11 +155,11 @@ class ModelComparator:
             if claude_result:
                 claude_result.update(claude_stats)
         except Exception as e:
-            logger.error(f"Ошибка Claude анализа: {e}")
+            logger.error(f"Ошибка Commercial LLM анализа: {e}")
             claude_result = {"error": str(e)}
 
-        # Тест 2: Qwen3-30B
-        logger.info("Тест 2/2: Qwen3-30B (Local VLLM)...")
+        # Тест 2: LLM-30B
+        logger.info("Тест 2/2: LLM-30B (Local VLLM)...")
         try:
             qwen_response, qwen_metrics = self.qwen_analyzer.analyze(
                 system_prompt, user_prompt
@@ -175,7 +175,7 @@ class ModelComparator:
                     **qwen_metrics,
                 }
         except Exception as e:
-            logger.error(f"Ошибка Qwen анализа: {e}")
+            logger.error(f"Ошибка LLM анализа: {e}")
             qwen_result = {"error": str(e)}
 
         # Сравнение результатов
@@ -199,17 +199,17 @@ class ModelComparator:
             comparison: Результаты от compare()
         """
         print("\n" + "=" * 80)
-        print("🔬 A/B ТЕСТ: Claude Sonnet 4.5 vs Qwen3-30B")
+        print("🔬 A/B ТЕСТ: Commercial LLM Sonnet 4.5 vs LLM-30B")
         print("=" * 80)
 
         print(f"\n📋 Параметры теста:")
         print(f"  Оборудование: {comparison['equipment_type']}")
         print(f"  Длина транскрипции: {comparison['transcription_length']} символов")
 
-        # Claude результаты
+        # Commercial LLM результаты
         claude = comparison["claude_sonnet_4_5"]
         print(f"\n{'=' * 80}")
-        print("🌟 МОДЕЛЬ A: Claude Sonnet 4.5 (OpenRouter)")
+        print("🌟 МОДЕЛЬ A: Commercial LLM Sonnet 4.5 (OpenRouter)")
         print("=" * 80)
 
         if "error" in claude:
@@ -225,10 +225,10 @@ class ModelComparator:
             for w in claude.get("weaknesses", [])[:3]:
                 print(f"    • {w}")
 
-        # Qwen результаты
+        # LLM результаты
         qwen = comparison["qwen3_30b"]
         print(f"\n{'=' * 80}")
-        print("🤖 МОДЕЛЬ B: Qwen3-30B (Local VLLM)")
+        print("🤖 МОДЕЛЬ B: LLM-30B (Local VLLM)")
         print("=" * 80)
 
         if "error" in qwen:
@@ -252,7 +252,7 @@ class ModelComparator:
         print("📊 СРАВНИТЕЛЬНАЯ ТАБЛИЦА")
         print("=" * 80)
 
-        print(f"\n| Критерий | Claude Sonnet 4.5 | Qwen3-30B |")
+        print(f"\n| Критерий | Commercial LLM Sonnet 4.5 | LLM-30B |")
         print(f"|----------|-------------------|-----------|")
 
         claude_score = claude.get("overall_score", "ERROR")
@@ -277,28 +277,28 @@ class ModelComparator:
         print("=" * 80)
 
         if "error" in qwen:
-            print(f"\n❌ Qwen3-30B не справился с задачей")
-            print(f"\n✅ Рекомендация: Использовать Claude Sonnet 4.5")
+            print(f"\n❌ LLM-30B не справился с задачей")
+            print(f"\n✅ Рекомендация: Использовать Commercial LLM Sonnet 4.5")
             print(f"   Причина: Локальная модель не может обработать сложный промпт")
         elif claude_score == qwen_score:
             print(f"\n✅ Обе модели показали одинаковый результат!")
-            print(f"\n💰 Рекомендация: Использовать Qwen3-30B (локально)")
+            print(f"\n💰 Рекомендация: Использовать LLM-30B (локально)")
             print(f"   Экономия: ${claude.get('cost_usd', 0):.4f} на звонок")
         elif isinstance(claude_score, (int, float)) and isinstance(qwen_score, (int, float)):
             diff = abs(claude_score - qwen_score)
             if diff <= 5:
                 print(f"\n✅ Модели показали схожие результаты (разница {diff:.1f} баллов)")
-                print(f"\n💰 Рекомендация: Использовать Qwen3-30B (локально)")
+                print(f"\n💰 Рекомендация: Использовать LLM-30B (локально)")
                 print(f"   Экономия: ${claude.get('cost_usd', 0):.4f} на звонок")
                 print(f"   Качество: Достаточное для задачи")
             else:
                 print(f"\n⚠️ Существенная разница в оценках: {diff:.1f} баллов")
-                print(f"\n✅ Рекомендация: Использовать Claude Sonnet 4.5")
+                print(f"\n✅ Рекомендация: Использовать Commercial LLM Sonnet 4.5")
                 print(f"   Причина: Более точный и объективный анализ")
                 print(f"   Стоимость: ${claude.get('cost_usd', 0):.4f}/звонок - приемлемо для качества")
         else:
             print(f"\n⚠️ Невозможно сравнить результаты")
-            print(f"\n✅ Рекомендация: Использовать Claude Sonnet 4.5")
+            print(f"\n✅ Рекомендация: Использовать Commercial LLM Sonnet 4.5")
             print(f"   Причина: Гарантированная стабильность и качество")
 
         print("\n" + "=" * 80 + "\n")

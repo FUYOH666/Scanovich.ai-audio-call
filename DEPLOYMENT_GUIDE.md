@@ -92,12 +92,12 @@ nano branches.yaml
 **Структура:**
 ```yaml
 branches:
-  - address: "ул. Республики д.196А"
+  - address: "Street Name, Building 123"
     variants: ["республики 196а", "республики 196"]
     
 admins:
-  - canonical_name: "Арзу"
-    variants: ["РУ", "РЗУ", "арз"]
+  - canonical_name: "Admin Name"
+    variants: ["Variant1", "Variant2", "Variant3"]
 ```
 
 ---
@@ -123,14 +123,14 @@ python3.12 -m venv venv
 ./venv/bin/pip install vllm
 ```
 
-### 4.3. Скачать модель Qwen3-30B
+### 4.3. Скачать модель LLM-30B
 
 ```bash
 # Создать директорию для моделей
 mkdir -p models
 
 # Скачать модель (через huggingface-cli или wget)
-huggingface-cli download Qwen/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit --local-dir models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit
+huggingface-cli download LLM/LLM-30B-A3B-Instruct-2507-AWQ-4bit --local-dir models/LLM-30B-A3B-Instruct-2507-AWQ-4bit
 ```
 
 **Ожидаемое время:** 30-60 минут (модель ~15GB)
@@ -160,7 +160,7 @@ cd /home/ai/Документы/ScanovichAI/ASR-4.5
 # Запустить VLLM вручную (в отдельном терминале)
 cd /home/ai/Документы/vLLm
 ./venv/bin/python -m vllm.entrypoints.openai.api_server \
-    --model models/Qwen3-30B-A3B-Instruct-2507-AWQ-4bit \
+    --model models/LLM-30B-A3B-Instruct-2507-AWQ-4bit \
     --dtype float16 \
     --max-model-len 16384 \
     --tensor-parallel-size 1 \
