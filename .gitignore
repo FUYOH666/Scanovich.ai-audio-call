@@ -1,3 +1,6 @@
+# ⚠️ КРИТИЧНО: Защита персональных данных и конфиденциальной информации
+# ======================================================================
+
 # Virtual Environment
 venv/
 __pycache__/
@@ -8,82 +11,112 @@ __pycache__/
 
 # Environment Variables
 .env
+.env.*
 
-# ⚠️ КОНФИДЕНЦИАЛЬНЫЕ ДАННЫЕ - НЕ ПУБЛИКОВАТЬ В GITHUB
+# ⚠️ ПЕРСОНАЛЬНЫЕ ДАННЫЕ КЛИЕНТОВ (PII - Personal Identifiable Information)
 # ======================================================================
-
-# Реальные данные клиентов (PII - Personal Identifiable Information)
+# Аудиофайлы с записями звонков
 input/
-output/
-metadata/
-archive/
-analytics/
-quality_analysis/
-logs/
+*.mp3
+*.wav
+*.m4a
+*.ogg
+*.flac
 
-# Базы данных с реальными данными
+# Транскрипции звонков (содержат ФИО, телефоны, адреса)
+output/
+*.txt
+
+# Метаданные звонков (классификация, PII)
+metadata/
+*.json
+
+# Архивы обработанных звонков
+archive/
+*.tar.gz
+*.zip
+
+# Аналитика и статистика (реальные данные)
+analytics/
 *.db
 *.sqlite
 *.sqlite3
 
-# Конфигурационные файлы с реальными секретами
-.env
-.env.local
-.env.production
-.env.staging
-config.local.yaml
-config.production.yaml
+# Анализ качества (оценки реальных звонков)
+quality_analysis/
 
-# Логи обработки реальных данных
-logs/*.log
+# Логи обработки (могут содержать PII)
+logs/
 *.log
 
-# Кэш моделей с локальными данными
-models_cache/
-temp_models/
+# Карантин (битые файлы, могут содержать PII)
+quarantine/
 
-# Загруженные аудиофайлы для обработки
-uploads/
-temp_uploads/
+# ⚠️ КОНФИДЕНЦИАЛЬНЫЕ КОНФИГУРАЦИИ
+# ======================================================================
+# Реальные конфигурации с секретами
+config.yaml
+config.local.yaml
+config.production.yaml
+config.staging.yaml
 
-# Результаты анализа реальных звонков
-results/
-reports/
-exports/
+# API ключи и credentials
+credentials/
+google_credentials.json
+*.pem
+*.key
+*.crt
 
-# Temporary Files
+# Файлы с реальными адресами филиалов и именами сотрудников
+branches.yaml
+
+# ⚠️ ВРЕМЕННЫЕ И СЛУЖЕБНЫЕ ФАЙЛЫ
+# ======================================================================
+# Временные файлы
 *.tmp
 *.temp
 .cache/
+temp/
+tmp/
 
-# IDE
+# IDE и редакторы
+.cursor/
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Testing
 .pytest_cache/
 .coverage
 htmlcov/
+.tox/
 
-# Models Cache (faster-whisper)
+# Models Cache (faster-whisper, transformers)
 ~/.cache/huggingface/
+models_cache/
+temp_models/
 
-quarantine/
+# Uploads и downloads
+uploads/
+downloads/
+temp_uploads/
 
-# ⚠️ КОНФИДЕНЦИАЛЬНЫЕ КОНФИГУРАЦИИ
+# Results и reports (могут содержать PII)
+results/
+reports/
+exports/
+*.csv
+
+# ⚠️ ВАЖНО: Примеры конфигураций МОЖНО публиковать
 # ======================================================================
-# Реальные конфигурации с секретами (API keys, credentials)
-config.yaml
-credentials/
-
-# Файлы с реальными адресами и именами
-branches.yaml
-
-# IDE и редакторы
-.cursor/
+# Эти файлы содержат только примеры без реальных данных:
+!config.example.yaml
+!branches.example.yaml
+!credentials/README.md
