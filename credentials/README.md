@@ -31,8 +31,10 @@
 5. Скачайте файл ключа
 
 ### Шаг 4: Настройка доступа к таблице
-1. Откройте Google Sheets таблицу:
-   [https://docs.google.com/spreadsheets/d/1Fh7K3shckBk19XOlYMcTmqbck42Jys_JVpERS1v7R5o](https://docs.google.com/spreadsheets/d/1Fh7K3shckBk19XOlYMcTmqbck42Jys_JVpERS1v7R5o)
+1. Откройте вашу Google Sheets таблицу:
+   ```
+   https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID
+   ```
 2. Нажмите "Share" (Поделиться)
 3. В поле email введите email сервисного аккаунта (заканчивается на `@project.iam.gserviceaccount.com`)
 4. Установите права "Editor" (Редактор)

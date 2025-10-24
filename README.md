@@ -246,7 +246,7 @@ cleanup-sheets   # Удаление дубликатов
   - Примеры действий при проблемах
   - Критические пороги и целевые показатели
 
-**Ссылка:** https://docs.google.com/spreadsheets/d/1Fh7K3shckBk19XOlYMcTmqbck42Jys_JVpERS1v7R5o
+**Ссылка:** `https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID` (настройте в `config.yaml`)
 
 **Ручное обновление Dashboard:**
 ```bash
