@@ -2,8 +2,8 @@
 #
 # Отключение всех автоматических logout/suspend/lock для 24/7 работы
 # 
-# Author: Aleksandr Mordvinov
-# Project: ScanovichAI
+# Author: 
+# Project: ASR Call Quality Analyzer
 #
 
 echo "=================================================="

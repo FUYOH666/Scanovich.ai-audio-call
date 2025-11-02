@@ -1,6 +1,6 @@
 [Unit]
 Description=VLLM Server - LLM-Model для ASR-4.5
-Documentation=https://github.com/ScanovichAI/ASR-4.5
+Documentation=https://github.com/ASR Call Quality Analyzer/ASR-4.5
 After=network.target
 
 [Service]

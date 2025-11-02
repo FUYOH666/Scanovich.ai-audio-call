@@ -1,5 +1,4 @@
 """ASR-4.5 Production System - Автоматическая транскрипция аудиозвонков."""
 
 __version__ = "4.5.0"
-__author__ = "Aleksandr Mordvinov"
 

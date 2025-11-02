@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 #
-# Установка всех systemd сервисов для ScanovichAI
+# Установка всех systemd сервисов для ASR Call Quality Analyzer
 #
-# Author: Aleksandr Mordvinov
-# Project: ScanovichAI
+# Author: 
+# Project: ASR Call Quality Analyzer
 #
 
 set -e
 
 echo "=================================================="
-echo "🚀 Установка systemd сервисов ScanovichAI"
+echo "🚀 Установка systemd сервисов ASR Call Quality Analyzer"
 echo "=================================================="
 
 # 1. VLLM Server
@@ -27,10 +27,10 @@ echo "   ✅ asr-watcher.service установлен"
 # 3. Загрузчики аудиозвонков
 echo ""
 echo "3️⃣  Установка загрузчиков аудиозвонков..."
-sudo cp systemd/call-downloader-irkutsk.service /etc/systemd/system/
-sudo cp systemd/call-downloader-volgodonks.service /etc/systemd/system/
-sudo cp systemd/call-downloader-tymen.service /etc/systemd/system/
-sudo cp systemd/call-downloader-angarsk.service /etc/systemd/system/
+sudo cp systemd/call-downloader-provider-a-city1.service /etc/systemd/system/
+sudo cp systemd/call-downloader-provider-b-city1.service /etc/systemd/system/
+sudo cp systemd/call-downloader-provider-b-city2.service /etc/systemd/system/
+sudo cp systemd/call-downloader-provider-a-city2.service /etc/systemd/system/
 echo "   ✅ Все 4 загрузчика установлены"
 
 # 4. Перезагрузить systemd
@@ -44,10 +44,10 @@ echo ""
 echo "5️⃣  Включение автозапуска всех сервисов..."
 sudo systemctl enable vllm.service
 sudo systemctl enable asr-watcher.service
-sudo systemctl enable call-downloader-irkutsk.service
-sudo systemctl enable call-downloader-volgodonks.service
-sudo systemctl enable call-downloader-tymen.service
-sudo systemctl enable call-downloader-angarsk.service
+sudo systemctl enable call-downloader-provider-a-city1.service
+sudo systemctl enable call-downloader-provider-b-city1.service
+sudo systemctl enable call-downloader-provider-b-city2.service
+sudo systemctl enable call-downloader-provider-a-city2.service
 echo "   ✅ Автозапуск включен для всех сервисов"
 
 echo ""
@@ -62,10 +62,10 @@ echo ""
 echo "2. Запустите все сервисы:"
 echo "   sudo systemctl start vllm.service"
 echo "   sudo systemctl start asr-watcher.service"
-echo "   sudo systemctl start call-downloader-irkutsk.service"
-echo "   sudo systemctl start call-downloader-volgodonks.service"
-echo "   sudo systemctl start call-downloader-tymen.service"
-echo "   sudo systemctl start call-downloader-angarsk.service"
+echo "   sudo systemctl start call-downloader-provider-a-city1.service"
+echo "   sudo systemctl start call-downloader-provider-b-city1.service"
+echo "   sudo systemctl start call-downloader-provider-b-city2.service"
+echo "   sudo systemctl start call-downloader-provider-a-city2.service"
 echo ""
 echo "3. Проверьте статус:"
 echo "   sudo systemctl status vllm.service asr-watcher.service call-downloader-*.service"
@@ -73,7 +73,7 @@ echo ""
 echo "4. Мониторинг логов:"
 echo "   journalctl -u vllm.service -f"
 echo "   journalctl -u asr-watcher.service -f"
-echo "   journalctl -u call-downloader-irkutsk.service -f"
+echo "   journalctl -u call-downloader-provider-a-city1.service -f"
 echo ""
 echo "=================================================="
 

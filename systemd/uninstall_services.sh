@@ -2,8 +2,8 @@
 #
 # Удаление systemd сервисов ASR-4.5
 # 
-# Author: Aleksandr Mordvinov
-# Project: ScanovichAI
+# Author: 
+# Project: ASR Call Quality Analyzer
 #
 
 set -e
@@ -46,7 +46,7 @@ echo "✅ Удаление завершено!"
 echo "=================================================="
 echo ""
 echo "Теперь можно запускать процессы вручную:"
-echo "  cd /home/ai/Документы/ScanovichAI/ASR-4.5"
+echo "  cd /path/to/project/ASR-4.5"
 echo "  ./venv/bin/python main.py run"
 echo ""
 

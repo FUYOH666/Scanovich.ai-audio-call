@@ -88,6 +88,14 @@ class AudioPreprocessor:
                     if 'data' in data and isinstance(data['data'], str):
                         b64_audio = data['data']
                         
+                        # ⭐ ВАЛИДАЦИЯ: Проверка на пустое поле
+                        if not b64_audio or len(b64_audio.strip()) == 0:
+                            logger.error(
+                                f"JSON содержит пустое поле 'data' (no audio): "
+                                f"{data.get('filename', 'unknown')}"
+                            )
+                            raise ValueError("CORRUPTED_AUDIO: Empty data field in JSON")
+                        
                         # Декодируем base64 → binary audio
                         try:
                             audio_bytes = base64.b64decode(b64_audio)

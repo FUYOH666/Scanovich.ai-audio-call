@@ -170,5 +170,5 @@ Checklist:
 
 ---
 
-**© 2025 ScanovichAI | Aleksandr Mordvinov**
+**© 2025 ASR Call Quality Analyzer | **
 

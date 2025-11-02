@@ -1,7 +1,7 @@
-# 🚀 ScanovichAI: Проект автоматизации анализа качества обслуживания
+# 🚀 ASR Call Quality Analyzer: Проект автоматизации анализа качества обслуживания
 
-**Author:** Aleksandr Mordvinov  
-**Project:** ScanovichAI ASR-4.5  
+**Author:**   
+**Project:** ASR Call Quality Analyzer ASR-4.5  
 **Дата создания:** Сентябрь 2025  
 **Последнее обновление:** Октябрь 2025
 
@@ -24,7 +24,7 @@
 
 ## 🎯 Описание проекта
 
-**ScanovichAI** — это **production-ready система** автоматического анализа качества обслуживания клиентов на основе записей телефонных разговоров.
+**ASR Call Quality Analyzer** — это **production-ready система** автоматического анализа качества обслуживания клиентов на основе записей телефонных разговоров.
 
 ### Ключевые возможности:
 
@@ -64,7 +64,7 @@
 - ❌ Риски утечки данных (передача в облако)
 - ❌ Ограничения по объему (квоты, rate limits)
 
-### Решение ScanovichAI:
+### Решение ASR Call Quality Analyzer:
 
 **Автоматизированная система:**
 - ✅ **100% охват** — каждый звонок анализируется
@@ -407,7 +407,7 @@ pytest-asyncio==0.24.0
 - Отсутствие контроля качества (выборочная проверка)
 - Высокая текучесть персонала (нет обратной связи)
 
-**Решение ScanovichAI:**
+**Решение ASR Call Quality Analyzer:**
 - 100% охват звонков
 - Объективная оценка по скриптам
 - Конкретные рекомендации для обучения
@@ -824,18 +824,18 @@ pytest-asyncio==0.24.0
 
 ## 📞 Контакты и поддержка
 
-**Author:** Aleksandr Mordvinov  
-**Project:** ScanovichAI  
-**GitHub:** https://github.com/FUYOH666/Scanovich.ai-audio-call
+**Author:**   
+**Project:** ASR Call Quality Analyzer  
+**GitHub:** https://github.com/YOUR_USERNAME/analyze-calls-AI
 
 **Для коммерческих запросов:**
-- 🌐 Website: [scanovich.ai](https://scanovich.ai/)
+- 🌐 Website: [](https:///)
 - 📧 Email: iamfuyoh666@gmail.com
 - 💬 Telegram: [@ScanovichAI](https://t.me/ScanovichAI)
 - 📱 Phone: 
 
 ---
 
-**© 2025 ScanovichAI | Aleksandr Mordvinov**
+**© 2025 ASR Call Quality Analyzer | **
 
 **Лицензия:** Proprietary (коммерческое использование требует лицензии)

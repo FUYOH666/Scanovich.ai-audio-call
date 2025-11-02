@@ -2,13 +2,13 @@
 #
 # Установка systemd сервисов для ASR-4.5
 # 
-# Author: Aleksandr Mordvinov
-# Project: ScanovichAI
+# Author: 
+# Project: ASR Call Quality Analyzer
 #
 
 set -e
 
-PROJECT_DIR="/home/ai/Документы/ScanovichAI/ASR-4.5"
+PROJECT_DIR="/path/to/project/ASR-4.5"
 
 echo "=================================================="
 echo "Установка systemd сервисов ASR-4.5"

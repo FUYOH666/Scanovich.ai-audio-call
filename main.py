@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
 ASR-4.5 Production System - CLI Interface
-
-Author: Aleksandr Mordvinov
-Project: ScanovichAI
 """
 
 import json

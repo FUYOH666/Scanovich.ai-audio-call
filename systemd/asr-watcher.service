@@ -1,6 +1,6 @@
 [Unit]
 Description=ASR-4.5 Watcher Service - Автоматическая транскрипция аудиозвонков
-Documentation=https://github.com/ScanovichAI/ASR-4.5
+Documentation=https://github.com/YOUR_USERNAME/analyze-calls-AI
 After=network.target vllm.service
 Requires=vllm.service
 
@@ -8,11 +8,11 @@ Requires=vllm.service
 Type=simple
 User=ai
 Group=ai
-WorkingDirectory=/home/ai/Документы/ScanovichAI/ASR-4.5
-Environment="PATH=/home/ai/Документы/ScanovichAI/ASR-4.5/venv/bin:/usr/local/bin:/usr/bin"
+WorkingDirectory=/path/to/project/ASR-4.5
+Environment="PATH=/path/to/project/ASR-4.5/venv/bin:/usr/local/bin:/usr/bin"
 Environment="PYTHONUNBUFFERED=1"
 
-ExecStart=/home/ai/Документы/ScanovichAI/ASR-4.5/venv/bin/python main.py run
+ExecStart=/path/to/project/ASR-4.5/venv/bin/python main.py run
 
 # Автоматический рестарт при падении
 Restart=always

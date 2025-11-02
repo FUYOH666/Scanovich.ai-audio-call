@@ -1,0 +1,30 @@
+[Unit]
+Description=Call Records Downloader - Provider B City 1
+Documentation=https://github.com/YOUR_USERNAME/analyze-calls-AI
+After=network.target
+
+[Service]
+Type=simple
+User=ai
+Group=ai
+WorkingDirectory=/path/to/project/Calls-downloader/Provider-B-City1
+Environment="PATH=/path/to/project/Calls-downloader/Provider-B-City1/venv/bin:/usr/local/bin:/usr/bin"
+Environment="PYTHONUNBUFFERED=1"
+
+ExecStart=/path/to/project/Calls-downloader/Provider-B-City1/venv/bin/python call_records_watcher.py
+
+# Автоматический рестарт при падении
+Restart=always
+RestartSec=10
+
+# Graceful shutdown
+TimeoutStopSec=30
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=call-downloader-provider-b-city1
+
+[Install]
+WantedBy=multi-user.target
+

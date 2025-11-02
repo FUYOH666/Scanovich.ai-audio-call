@@ -2,8 +2,8 @@
 #
 # Проверка настроек сессии и энергосбережения для предотвращения отключений
 #
-# Author: Aleksandr Mordvinov
-# Project: ScanovichAI
+# Author: 
+# Project: ASR Call Quality Analyzer
 #
 
 echo "=================================================="

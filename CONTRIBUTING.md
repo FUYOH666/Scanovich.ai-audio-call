@@ -1,4 +1,4 @@
-# 🤝 Contributing to ScanovichAI
+# 🤝 Contributing to ASR Call Quality Analyzer
 
 Спасибо за интерес к проекту! Я открыт для вклада от сообщества.
 
@@ -188,13 +188,13 @@ def analyze_quality(transcript: str, script: str) -> dict:
 
 ## 📞 Вопросы?
 
-- 🌐 Website: [scanovich.ai](https://scanovich.ai/)
+- 🌐 Website: [](https:///)
 - 📧 Email: iamfuyoh666@gmail.com
 - 💬 Telegram: [@ScanovichAI](https://t.me/ScanovichAI)
 
 ---
 
-**Спасибо за вклад в ScanovichAI! 🚀**
+**Спасибо за вклад в ASR Call Quality Analyzer! 🚀**
 
-**© 2025 ScanovichAI | Aleksandr Mordvinov**
+**© 2025 ASR Call Quality Analyzer | **
 

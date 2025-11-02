@@ -1,4 +1,4 @@
-# 🚀 Руководство по развертыванию ScanovichAI
+# 🚀 Руководство по развертыванию ASR Call Quality Analyzer
 
 **Быстрый старт для развертывания на новом ПК**
 
@@ -25,7 +25,7 @@
 
 ```bash
 # Клонировать приватный репозиторий
-git clone git@github.com:FUYOH666/Scanovich.ai-audio-call.git ASR-4.5
+git clone git@github.com:YOUR_USERNAME/analyze-calls-AI.git ASR-4.5
 cd ASR-4.5
 ```
 
@@ -140,7 +140,7 @@ huggingface-cli download LLM/LLM-30B-A3B-Instruct-2507-AWQ-4bit --local-dir mode
 ## 🔍 Шаг 5: Проверка установки
 
 ```bash
-cd /home/ai/Документы/ScanovichAI/ASR-4.5
+cd /home/ai/Документы/ASR Call Quality Analyzer/ASR-4.5
 
 # Проверить здоровье системы
 ./venv/bin/python main.py health
@@ -177,7 +177,7 @@ cd /home/ai/Документы/vLLm
 ### Вариант A: Ручной запуск (для тестирования)
 
 ```bash
-cd /home/ai/Документы/ScanovichAI/ASR-4.5
+cd /home/ai/Документы/ASR Call Quality Analyzer/ASR-4.5
 
 # Запустить daemon
 ./venv/bin/python main.py run
@@ -188,7 +188,7 @@ cd /home/ai/Документы/ScanovichAI/ASR-4.5
 ### Вариант B: Systemd сервисы (для 24/7 работы)
 
 ```bash
-cd /home/ai/Документы/ScanovichAI/ASR-4.5
+cd /home/ai/Документы/ASR Call Quality Analyzer/ASR-4.5
 
 # 1. Установить все сервисы
 sudo ./systemd/install_all_services.sh
@@ -220,7 +220,7 @@ journalctl -u asr-watcher.service -f
 
 ```bash
 # 1. Клонировать проект загрузчиков
-cd /home/ai/Документы/ScanovichAI/
+cd /home/ai/Документы/ASR Call Quality Analyzer/
 git clone <ваш-репо-загрузчиков> Calls-downloader
 
 # 2. Настроить каждый загрузчик
@@ -229,7 +229,7 @@ cp .env.example .env
 nano .env  # Указать credentials АТС
 
 # 3. Установить systemd сервисы
-cd /home/ai/Документы/ScanovichAI/ASR-4.5
+cd /home/ai/Документы/ASR Call Quality Analyzer/ASR-4.5
 sudo systemctl start call-downloader-irkutsk.service
 sudo systemctl start call-downloader-volgodonks.service
 sudo systemctl start call-downloader-tymen.service
@@ -241,7 +241,7 @@ sudo systemctl start call-downloader-angarsk.service
 ## 🛡️ Шаг 8: Защита от автологаута (критично!)
 
 ```bash
-cd /home/ai/Документы/ScanovichAI/ASR-4.5
+cd /home/ai/Документы/ASR Call Quality Analyzer/ASR-4.5
 
 # Отключить автоматические logout/suspend
 sudo ./systemd/disable_autologout.sh
@@ -378,4 +378,4 @@ curl https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getMe
 
 ---
 
-**© 2025 ScanovichAI | Aleksandr Mordvinov**
+**© 2025 ASR Call Quality Analyzer | **

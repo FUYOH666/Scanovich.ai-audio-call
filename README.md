@@ -1,4 +1,4 @@
-# 🎯 ScanovichAI: Автоматический анализ качества обслуживания клиентов
+# 🎯 ASR Call Quality Analyzer: Автоматический анализ качества обслуживания клиентов
 
 **Production-ready система для автоматической транскрипции и анализа качества телефонных звонков**
 
@@ -6,8 +6,6 @@
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**Author:** Aleksandr Mordvinov  
-**Project:** ScanovichAI  
 **Version:** 4.5.0
 
 ---
@@ -22,7 +20,7 @@
 - 🏦 **Банки и финансы** — контроль продаж, техподдержки
 - 🎓 **Образование** — оценка работы менеджеров по продажам
 
-**Текущий кейс:** Система успешно работает в сети диагностических центров (4 филиала, ~80 звонков/час, 24/7).
+**Пример использования:** Система может быть развернута для любого бизнеса с телефонным обслуживанием клиентов.
 
 **Но это только начало!** Архитектура спроектирована так, чтобы легко адаптироваться под **любую отрасль** и **любые скрипты обслуживания**.
 
@@ -31,7 +29,7 @@
 ## 🚀 Быстрый запуск (одна команда)
 
 ```bash
-cd /home/ai/Документы/ScanovichAI/ASR-4.5 && ./venv/bin/python main.py run
+cd /path/to/your/project && ./venv/bin/python main.py run
 ```
 
 **Остановка:** `Ctrl+C` (graceful shutdown)
@@ -113,7 +111,7 @@ output/ + metadata/ + quality_analysis/ + archive/ (30 дней ротация)
 
 ```bash
 # 1. Клонировать репозиторий
-git clone git@github.com:FUYOH666/Scanovich.ai-audio-call.git ASR-4.5
+git clone git@github.com:YOUR_USERNAME/analyze-calls-AI.git ASR-4.5
 cd ASR-4.5
 
 # 2. Создать виртуальное окружение
@@ -578,7 +576,7 @@ tail -f logs/errors.log          # Только ошибки
 - ✅ **Обучение** — обучение вашей команды работе с системой
 - ✅ **Поддержка** — техническая поддержка и обновления
 
-### Почему стоит выбрать ScanovichAI?
+### Почему стоит выбрать эту систему?
 
 1. **100% локально** — все данные остаются у вас, никаких внешних API
 2. **Экономия** — до $51K/год vs коммерческие решения (Commercial LLM API, Commercial-LLM)
@@ -586,17 +584,9 @@ tail -f logs/errors.log          # Только ошибки
 4. **Гибкость** — легко адаптируется под любую отрасль и скрипты
 5. **Production-ready** — уже работает 24/7 в реальном бизнесе
 
-### Свяжитесь со мной:
+### Контакты и поддержка:
 
-🌐 **Website:** [scanovich.ai](https://scanovich.ai/)  
-📧 **Email:** iamfuyoh666@gmail.com  
-💬 **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)  
-📱 **Phone:**   
-🐙 **GitHub:** [@FUYOH666](https://github.com/FUYOH666)
-
-**Открыт для сотрудничества, партнерств и интересных проектов!**
-
-> 💡 **Хотите пилотный проект?** Заполните форму на [scanovich.ai](https://scanovich.ai/) — я отвечу в течение рабочего дня.
+Для вопросов и поддержки обратитесь к документации проекта или создайте issue в репозитории.
 
 ---
 
@@ -611,4 +601,4 @@ tail -f logs/errors.log          # Только ошибки
 
 ---
 
-**© 2025 ScanovichAI | Aleksandr Mordvinov**
+**© 2025 ASR Call Quality Analyzer**

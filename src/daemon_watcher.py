@@ -24,33 +24,51 @@ logger = logging.getLogger(__name__)
 
 
 class AudioFileHandler(FileSystemEventHandler):
-    """Handler для событий файловой системы."""
+    """Handler для событий файловой системы с защитой от duplicate events."""
 
-    def __init__(self, file_queue: queue.Queue, allowed_extensions: list):
+    def __init__(self, file_queue: queue.Queue, allowed_extensions: list, output_path: Path):
         """
         Инициализация handler'а.
 
         Args:
             file_queue: Очередь для обработки файлов
             allowed_extensions: Разрешённые расширения файлов
+            output_path: Путь к output/ для проверки обработанных файлов
         """
         super().__init__()
         self.file_queue = file_queue
         self.allowed_extensions = allowed_extensions
+        self.output_path = output_path
+        self.seen_files = set()  # Tracking для предотвращения duplicate events
 
     def on_created(self, event):
-        """Обработка события создания файла."""
+        """Обработка события создания файла (с дедупликацией)."""
         if event.is_directory:
             return
 
         file_path = Path(event.src_path)
 
         # Проверка расширения
-        if file_path.suffix.lower() in self.allowed_extensions:
-            logger.info(f"Обнаружен новый файл: {file_path.name}")
-            self.file_queue.put(file_path)
-        else:
+        if file_path.suffix.lower() not in self.allowed_extensions:
             logger.debug(f"Пропущен файл с неподдерживаемым расширением: {file_path.name}")
+            return
+
+        # ⭐ ЗАЩИТА 1: Duplicate event от Watchdog (срабатывает несколько раз)
+        if file_path in self.seen_files:
+            logger.debug(f"Duplicate event пропущено: {file_path.name}")
+            return
+
+        # ⭐ ЗАЩИТА 2: Файл уже обработан ранее (есть транскрипция)
+        transcription_file = self.output_path / f"{file_path.stem}.txt"
+        if transcription_file.exists():
+            logger.debug(f"Файл уже обработан: {file_path.name}")
+            self.seen_files.add(file_path)  # Добавляем в tracking
+            return
+
+        # Добавляем в очередь и tracking
+        logger.info(f"Обнаружен новый файл: {file_path.name}")
+        self.file_queue.put(file_path)
+        self.seen_files.add(file_path)
 
 
 class DaemonWatcher:
@@ -101,10 +119,12 @@ class DaemonWatcher:
             )
             logger.info("✓ Google Sheets интеграция включена (real-time)")
 
-        # Watchdog observer
+        # Watchdog observer с дедупликацией
         self.observer = Observer()
         handler = AudioFileHandler(
-            self.file_queue, config.security.allowed_extensions
+            self.file_queue, 
+            config.security.allowed_extensions,
+            Path(config.paths.output)  # ⭐ Передаём output_path для проверки
         )
         self.observer.schedule(handler, str(config.paths.input), recursive=False)
 
