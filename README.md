@@ -159,7 +159,7 @@ sudo systemctl start call-downloader-provider-a-city2.service
 sudo systemctl status vllm.service asr-watcher.service call-downloader-*.service
 ```
 
-**Подробнее:** См. `Бесперебойная работа.md`
+**Подробнее:** См. `DEPLOYMENT_GUIDE.md` (раздел "Настройка systemd сервисов")
 
 ---
 
@@ -592,9 +592,8 @@ tail -f logs/errors.log          # Только ошибки
 
 ## 📚 Дополнительная документация
 
+- **`DEPLOYMENT_GUIDE.md`** — полное руководство по развертыванию и настройке systemd для 24/7 работы
 - **`PROJECT_OVERVIEW.md`** — полное описание проекта, технологий, коммерческого потенциала
-- **`Бесперебойная работа.md`** — настройка systemd сервисов для 24/7 работы
-- **`systemd/README_SESSION_FIX.md`** — исправление проблем с автологаутом
 - **`branches.yaml`** — эталонные адреса филиалов и имена администраторов
 - **`script_evaluation_type_A.md`** — скрипт оценки для оборудования Type-A Equipment
 - **`script_evaluation_type_B.md`** — скрипт оценки для оборудования Type-B Equipment
