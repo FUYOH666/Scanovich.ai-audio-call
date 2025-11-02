@@ -230,10 +230,10 @@ nano .env  # Указать credentials АТС
 
 # 3. Установить systemd сервисы
 cd /home/ai/Документы/ASR Call Quality Analyzer/ASR-4.5
-sudo systemctl start call-downloader-irkutsk.service
-sudo systemctl start call-downloader-volgodonks.service
-sudo systemctl start call-downloader-tymen.service
-sudo systemctl start call-downloader-angarsk.service
+sudo systemctl start call-downloader-provider-a-city1.service
+sudo systemctl start call-downloader-provider-b-city1.service
+sudo systemctl start call-downloader-provider-b-city2.service
+sudo systemctl start call-downloader-provider-a-city2.service
 ```
 
 ---

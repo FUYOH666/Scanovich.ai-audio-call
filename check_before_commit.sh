@@ -5,8 +5,8 @@
 #
 # Использование: ./check_before_commit.sh
 #
-# Author: Aleksandr Mordvinov
-# Project: ScanovichAI
+# Author: 
+# Project: ASR Call Quality Analyzer
 #
 
 set -e

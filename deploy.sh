@@ -1,6 +1,6 @@
 #!/bin/bash
 # Безопасный деплой скрипт для ASR-4.5
-# Author: Aleksandr Mordvinov
+# Author: 
 # Date: 21 октября 2025
 
 set -e  # Прерывать выполнение при ошибке
