@@ -95,7 +95,7 @@ class ScriptParser:
 class EquipmentDetector:
     """Определение типа оборудования (1.5T vs 3T) из транскрипции."""
 
-    KEYWORDS_TYPE_B = [
+    KEYWORDS_TEMPLATE_B = [
         r"\b3\s*тесл",
         r"три\s*тесл",
         r"3т\b",
@@ -120,25 +120,25 @@ class EquipmentDetector:
             classification: Классификация от VLLM (опционально)
 
         Returns:
-            str: "1.5T" или "3T"
+            str: "template_a" или "template_b" (определяется по ключевым словам)
         """
         text_lower = transcription.lower()
 
-        # Проверка на 3T
-        for pattern in cls.KEYWORDS_TYPE_B:
+        # Проверка на Template B (по ключевым словам)
+        for pattern in cls.KEYWORDS_TEMPLATE_B:
             if re.search(pattern, text_lower):
-                logger.info("Обнаружено оборудование: 3T")
-                return "3T"
+                logger.info("Обнаружен тип услуги: Template B")
+                return "template_b"
 
-        # Проверка на 1.5T
+        # Проверка на Template A (по ключевым словам)
         for pattern in cls.KEYWORDS_1_5T:
             if re.search(pattern, text_lower):
-                logger.info("Обнаружено оборудование: 1.5T")
-                return "1.5T"
+                logger.info("Обнаружен тип услуги: Template A")
+                return "template_a"
 
-        # По умолчанию 1.5T (базовое оборудование)
-        logger.info("Тип оборудования не определён, используем 1.5T по умолчанию")
-        return "1.5T"
+        # По умолчанию Template A (базовый шаблон)
+        logger.info("Тип услуги не определён, используем Template A по умолчанию")
+        return "template_a"
 
 
 class CommercialLLMAnalyzer:

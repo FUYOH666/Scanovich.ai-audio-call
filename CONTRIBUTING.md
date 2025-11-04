@@ -19,25 +19,36 @@ cd Scanovich.ai-audio-call
 git checkout -b feature/your-feature-name
 ```
 
-### 3. **Внесите изменения**
-- Следуйте стилю кода (black, ruff)
+### 3. **Установка зависимостей**
+```bash
+# Установить uv (если не установлен)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+
+# Синхронизировать зависимости
+uv sync
+```
+
+### 4. **Внесите изменения**
+- Следуйте стилю кода (ruff для форматирования и линтинга)
 - Добавьте тесты для новой функциональности
 - Обновите документацию
+- Используйте `uv run` для запуска команд Python
 
-### 4. **Проверьте безопасность**
+### 5. **Проверьте безопасность**
 ```bash
 # ОБЯЗАТЕЛЬНО перед коммитом!
 ./check_before_commit.sh
 ```
 
-### 5. **Commit & Push**
+### 6. **Commit & Push**
 ```bash
 git add -A
 git commit -m "feat: your feature description"
 git push origin feature/your-feature-name
 ```
 
-### 6. **Create Pull Request**
+### 7. **Create Pull Request**
 - Опишите изменения
 - Приложите скриншоты (если UI)
 - Укажите связанные issues

@@ -138,8 +138,8 @@ class QualityAnalysisConfig(BaseModel):
     retry_attempts: int = Field(default=3, ge=1, le=10)
     scripts: dict = Field(
         default={
-            "script_type_a": "script_evaluation_type_A.md",
-            "script_type_b": "script_evaluation_type_B.md",
+            "script_template_a": "script_evaluation_template_a.md",
+            "script_template_b": "script_evaluation_template_b.md",
         }
     )
     paths: dict = Field(

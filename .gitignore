@@ -3,6 +3,7 @@
 
 # Virtual Environment
 venv/
+.venv/
 __pycache__/
 *.pyc
 *.pyo
@@ -102,6 +103,11 @@ htmlcov/
 ~/.cache/huggingface/
 models_cache/
 temp_models/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
 
 # Uploads и downloads
 uploads/

@@ -1,0 +1,55 @@
+# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-case-conflict
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.15
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: https://github.com/microsoft/pyright
+    rev: v1.1.348
+    hooks:
+      - id: pyright
+        additional_dependencies: [pyright]
+        args: [--pythonversion=3.12]
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.6
+    hooks:
+      - id: bandit
+        args: [-r, src/, -ll]
+        exclude: ^tests/
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        args: [--ignore-words-list, "te,adres,filial,admin"]
+        exclude: ^(CHANGELOG.md|uv.lock|.venv/)
+
+  - repo: local
+    hooks:
+      - id: check-security
+        name: Check security before commit
+        entry: bash -c './check_before_commit.sh'
+        language: system
+        pass_filenames: false
+        always_run: true
+

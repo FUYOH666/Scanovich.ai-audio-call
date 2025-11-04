@@ -34,17 +34,17 @@ cd ASR-4.5
 ## 🐍 Шаг 2: Установка Python зависимостей
 
 ```bash
-# Создать виртуальное окружение
-python3.12 -m venv venv
+# Установить uv (если не установлен)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 
-# Обновить pip
-./venv/bin/python -m pip install --upgrade pip==25.2
-
-# Установить зависимости
-./venv/bin/pip install -r requirements.txt
+# Синхронизировать зависимости из uv.lock
+uv sync
 ```
 
-**Ожидаемое время:** 5-10 минут (зависит от скорости интернета)
+**Ожидаемое время:** 5-10 минут (зависит от скорости интернета и загрузки PyTorch)
+
+**Примечание:** PyTorch с CUDA устанавливается автоматически через `uv.toml` конфигурацию
 
 ---
 
@@ -116,11 +116,11 @@ cd vLLm
 
 ```bash
 # Создать venv
-python3.12 -m venv venv
-./venv/bin/python -m pip install --upgrade pip
+# Виртуальное окружение создается автоматически через uv sync
+uv run python -m pip install --upgrade pip
 
 # Установить VLLM
-./venv/bin/pip install vllm
+uv pip install vllm
 ```
 
 ### 4.3. Скачать модель LLM
@@ -143,7 +143,7 @@ huggingface-cli download YOUR_MODEL_NAME --local-dir models/YOUR_MODEL_NAME
 cd /path/to/project/ASR-4.5
 
 # Проверить здоровье системы
-./venv/bin/python main.py health
+uv run python main.py health
 ```
 
 **Ожидаемый вывод:**
@@ -159,7 +159,7 @@ cd /path/to/project/ASR-4.5
 ```bash
 # Запустить VLLM вручную (в отдельном терминале)
 cd /path/to/project/vLLm
-./venv/bin/python -m vllm.entrypoints.openai.api_server \
+uv run python -m vllm.entrypoints.openai.api_server \
     --model models/YOUR_MODEL_NAME \
     --dtype float16 \
     --max-model-len 16384 \
@@ -180,7 +180,7 @@ cd /path/to/project/vLLm
 cd /path/to/project/ASR-4.5
 
 # Запустить daemon
-./venv/bin/python main.py run
+uv run python main.py run
 ```
 
 **Остановка:** `Ctrl+C`
@@ -264,10 +264,10 @@ tail -f logs/asr-watcher.log
 
 ```bash
 # Отправить тестовый Telegram отчет
-./venv/bin/python main.py telegram-report --type daily
+uv run python main.py telegram-report --type daily
 
 # Обновить Dashboard
-./venv/bin/python main.py update-dashboard
+uv run python main.py update-dashboard
 ```
 
 ---
@@ -286,8 +286,8 @@ nvcc --version
 
 # Переустановить VLLM
 cd /path/to/project/vLLm
-./venv/bin/pip uninstall vllm
-./venv/bin/pip install vllm
+uv pip uninstall vllm
+uv pip install vllm
 ```
 
 ### Проблема: Whisper не находит модель
@@ -295,7 +295,7 @@ cd /path/to/project/vLLm
 **Решение:**
 ```bash
 # Скачать модель вручную
-./venv/bin/python -c "from faster_whisper import WhisperModel; WhisperModel('large-v3', device='cuda')"
+uv run python -c "from faster_whisper import WhisperModel; WhisperModel('large-v3', device='cuda')"
 ```
 
 ### Проблема: Google Sheets ошибка доступа
@@ -306,7 +306,7 @@ cd /path/to/project/vLLm
 cat credentials/google_credentials.json
 
 # Проверить доступ
-./venv/bin/python main.py test-sheets
+uv run python main.py test-sheets
 ```
 
 ### Проблема: Telegram не отправляется
@@ -562,14 +562,14 @@ sudo systemctl daemon-reload
 ls -la /path/to/working/directory
 
 # 2. Проверить наличие venv
-ls -la /path/to/venv/bin/python
+ls -la /path/tuv run python
 
 # 3. Проверить переменные окружения
 systemctl show service-name.service | grep Environment
 
 # 4. Запустить вручную для отладки
 cd /path/to/working/directory
-./venv/bin/python script.py
+uv run python script.py
 ```
 
 #### Проблема: GPU не доступен в systemd сервисе
@@ -607,13 +607,13 @@ nvidia-smi
 - [ ] CUDA 12.4+ установлен
 - [ ] GPU доступен (nvidia-smi)
 - [ ] Репозиторий склонирован
-- [ ] Зависимости установлены (requirements.txt)
+- [ ] Зависимости установлены (pyproject.toml + uv.lock)
 - [ ] config.yaml настроен
 - [ ] Google credentials добавлены
 - [ ] branches.yaml настроен
 - [ ] VLLM сервер запущен
 - [ ] LLM модель скачана
-- [ ] `./venv/bin/python main.py health` проходит
+- [ ] `uv run python main.py health` проходит
 - [ ] Systemd сервисы установлены
 - [ ] Автологаут отключен (disable_autologout.sh выполнен)
 - [ ] Система перезагружена
