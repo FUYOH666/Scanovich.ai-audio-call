@@ -832,7 +832,6 @@ pytest-asyncio==0.24.0
 - 🌐 Website: [](https:///)
 - 📧 Email: iamfuyoh666@gmail.com
 - 💬 Telegram: [@ScanovichAI](https://t.me/ScanovichAI)
-- 📱 Phone: 
 
 ---
 
