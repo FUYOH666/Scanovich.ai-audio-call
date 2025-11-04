@@ -8,11 +8,6 @@ license = {text = "MIT"}
 authors = [
     {name = "Aleksandr Mordvinov", email = "iamfuyoh@gmail.com"}
 ]
-urls = {
-    Homepage = "https://scanovich.ai",
-    Documentation = "https://github.com/FUYOH666/Scanovich.ai-audio-call#readme",
-    Repository = "https://github.com/FUYOH666/Scanovich.ai-audio-call",
-}
 keywords = [
     "asr",
     "speech-to-text",
@@ -72,6 +67,11 @@ dependencies = [
     "gspread>=6.1.0,<7.0.0",
     "google-auth>=2.36.0,<3.0.0",
 ]
+
+[project.urls]
+Homepage = "https://scanovich.ai"
+Documentation = "https://github.com/FUYOH666/Scanovich.ai-audio-call#readme"
+Repository = "https://github.com/FUYOH666/Scanovich.ai-audio-call"
 
 [project.optional-dependencies]
 dev = [
