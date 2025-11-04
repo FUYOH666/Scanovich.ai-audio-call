@@ -1,206 +1,151 @@
 # GitHub Repository Best Practices
 
-<i>Универсальный свод правил для оформления репозиториев на GitHub</i>
+**Универсальная инструкция по оформлению репозиториев на GitHub**
 
 ---
 
-## 📝 About секция (метаданные репозитория)
+## 📝 About секция (метаданные)
 
-### Description (описание)
+### Description
+- **Длина:** до 160 символов
+- **Формат:** краткое описание функциональности + ключевые технологии
+- **Пример:** `Production-ready система автоматической транскрипции и анализа качества телефонных звонков. Whisper, LLM, локальное развертывание.`
 
-**Формат:**
-- Краткое описание (до 160 символов)
-- Указывает основную функцию/назначение проекта
-- Использует ключевые слова для поиска
-- Можно добавить поддерживаемые платформы/технологии
+### Website
+- Указывать если есть: `https://scanovich.ai`
+- Если нет — оставить пустым
 
-**Примеры:**
-```
-✅ Python библиотека для работы с API: асинхронные запросы, кэширование, retry логика. Простая интеграция.
-✅ Веб-приложение для управления задачами: React, FastAPI, PostgreSQL. Drag-and-drop интерфейс.
-✅ CLI инструмент для автоматизации: обработка файлов, интеграции с сервисами. Кроссплатформенный.
-```
-
-**Плохие примеры:**
-```
-❌ Моя программа
-❌ Проект для курса
-❌ Тестовый репозиторий
-```
-
-### Website (веб-сайт)
-
-- Если есть отдельный сайт проекта — указывайте его
-- Если нет — можно оставить пустым или указать ссылку на репозиторий
-- Для документации — ссылка на GitHub Pages или другой хостинг
-
-### Topics (теги)
-
-**Количество:** 5-15 тегов оптимально
-
-**Категории тегов:**
-
-1. **Язык программирования:**
-   - `python`, `javascript`, `typescript`, `go`, `rust`, `java`, `cpp`
-
-2. **Тип проекта:**
-   - `cli`, `library`, `framework`, `web-app`, `api`, `tool`, `script`
-
-3. **Технологии/фреймворки:**
-   - `react`, `fastapi`, `django`, `flask`, `vue`, `nextjs`
-   - `docker`, `kubernetes`, `aws`, `terraform`
-
-4. **Назначение:**
-   - `automation`, `security-audit`, `data-processing`
-   - `machine-learning`, `web-scraping`, `monitoring`
-
-5. **Платформы:**
-   - `macos`, `linux`, `windows`, `cross-platform`
-
-6. **Особенности:**
-   - `open-source`, `mit-license`, `cli-tool`
-   - `pydantic`, `typer`, `rich` (если используете)
+### Topics (5-15 тегов)
+**Категории:**
+1. **Язык:** `python`, `javascript`, `typescript`, `go`, `rust`
+2. **Тип:** `cli`, `library`, `web-app`, `api`, `tool`
+3. **Технологии:** `react`, `fastapi`, `docker`, `kubernetes`
+4. **Назначение:** `automation`, `machine-learning`, `data-processing`
+5. **Платформа:** `linux`, `macos`, `windows`, `cross-platform`
+6. **Особенности:** `open-source`, `mit-license`, `production-ready`
 
 **Правила:**
-- Используйте общепринятые теги (легче найти)
-- Комбинируйте общие и специфичные теги
-- Избегайте слишком длинных или уникальных тегов
-- Проверяйте популярность тега на GitHub перед использованием
+- Используйте популярные теги (проверяйте на GitHub)
+- Комбинируйте общие и специфичные
+- Избегайте уникальных/длинных тегов
 
 ---
 
-## 📄 README.md
+## 📄 README.md - Стандартная структура
 
-### Структура README
-
-1. **Заголовок с badge'ами**
-   ```markdown
-   # Project Name
-   
-   [![Language](badge-url)](link)
-   [![License](badge-url)](link)
-   [![Platform](badge-url)](link)
-   ```
-
-2. **Краткое описание** (1-2 предложения)
-   - Что делает проект
-   - Для кого предназначен
-
-3. **Проблемы, которые решает** (опционально)
-   - Конкретные проблемы
-   - Примеры использования
-
-4. **Возможности** (Features)
-   - Список ключевых функций
-   - Используйте эмодзи для визуального разделения
-
-5. **Требования**
-   - Версии языков/инструментов
-   - Зависимости
-
-6. **Установка**
-   - Пошаговые инструкции
-   - Примеры команд
-
-7. **Использование**
-   - Примеры команд
-   - Примеры кода
-
-8. **Конфигурация** (если нужно)
-   - Описание конфигурационных файлов
-   - Примеры
-
-9. **Документация**
-   - Ссылки на подробную документацию
-   - API reference
-
-10. **Contributing**
-    - Как внести вклад
-    - Требования к коду
-
-11. **Лицензия**
-    - Тип лицензии
-    - Ссылка на LICENSE файл
-
-12. **Автор/Контакты**
-    - Информация об авторе
-    - Способы связи
-
-### Badge'ы
-
-**Популярные сервисы:**
-- **Shields.io** — https://shields.io/
-- **GitHub Badges** — стандартные badge'ы GitHub
-
-**Примеры:**
 ```markdown
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/user/repo)
+# Project Name
+
+[![License](badge)](link)
+[![Language](badge)](link)
+[![Platform](badge)](link)
+
+**Краткое описание (1-2 предложения)**
+
+---
+
+## Краткое описание
+Что делает проект, для кого предназначен.
+
+## Проблемы, которые решает (опционально)
+Конкретные проблемы и примеры использования.
+
+## Возможности
+- ✅ Функция 1
+- ✅ Функция 2
+
+## Требования
+- Версии языков/инструментов
+- Зависимости
+
+## Установка
+```bash
+# Пошаговые команды
 ```
 
----
-
-## 📋 Структура файлов
-
-### Обязательные файлы
-
-- `README.md` — основная документация
-- `LICENSE` — лицензия проекта
-- `.gitignore` — исключения для git
-- `CHANGELOG.md` — история изменений (рекомендуется)
-
-### Конфигурационные файлы
-
-- `pyproject.toml` — для Python проектов
-- `package.json` — для Node.js проектов
-- `Cargo.toml` — для Rust проектов
-- `go.mod` — для Go проектов
-- `requirements.txt` — для Python (если не используется pyproject.toml)
-
-### Дополнительные файлы
-
-- `CONTRIBUTING.md` — руководство для контрибьюторов
-- `CODE_OF_CONDUCT.md` — кодекс поведения
-- `SECURITY.md` — политика безопасности
-- `.github/` — GitHub workflows, templates, issues
-
----
-
-## 🏷️ Версионирование
-
-### Semantic Versioning (SemVer)
-
-Формат: `MAJOR.MINOR.PATCH`
-
-- **MAJOR** — несовместимые изменения API
-- **MINOR** — новая функциональность с обратной совместимостью
-- **PATCH** — исправления багов с обратной совместимостью
-
-**Примеры:**
-- `1.0.0` — первый стабильный релиз
-- `1.1.0` — добавлена новая функция
-- `1.1.1` — исправлен баг
-- `2.0.0` — breaking changes
-
-### Git Tags
-
+## Использование
 ```bash
-# Создать тег
+# Примеры команд
+```
+
+## Конфигурация (если нужно)
+Описание конфигурационных файлов и примеры.
+
+## Документация
+Ссылки на подробную документацию.
+
+## Contributing
+Как внести вклад (или ссылка на CONTRIBUTING.md).
+
+## Лицензия
+Тип лицензии и ссылка на LICENSE.
+
+## Контакты
+**Автор:** Имя (ScanovichAI)
+
+**Для коммерческих запросов:**
+- 🌐 **Website:** [scanovich.ai](https://scanovich.ai)
+- 💬 **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
+- 📧 **Email:** iamfuyoh@gmail.com
+
+**Для open-source вопросов:**
+- 🐙 **GitHub:** [@FUYOH666](https://github.com/FUYOH666) - создавайте issues
+
+---
+
+**© 2025 Project Name | [ScanovichAI](https://scanovich.ai)**
+```
+
+### Badge'ы (опционально)
+```markdown
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![Platform: Linux](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](https://github.com/USER/REPO)
+[![Website](https://img.shields.io/badge/website-scanovich.ai-blue)](https://scanovich.ai)
+```
+
+**Генератор:** https://shields.io/
+
+---
+
+## 📋 Обязательные файлы
+
+### Базовые
+- `README.md` — основная документация
+- `LICENSE` — лицензия (MIT для open-source)
+- `.gitignore` — исключения для git
+
+### Рекомендуемые
+- `CHANGELOG.md` — история изменений (формат: [Keep a Changelog](https://keepachangelog.com/))
+- `CONTRIBUTING.md` — руководство для контрибьюторов
+- `SECURITY.md` — политика безопасности
+- `.github/` — workflows, templates, issues
+
+### Конфигурационные (по типу проекта)
+- `pyproject.toml` — Python (PEP 621)
+- `package.json` — Node.js
+- `Cargo.toml` — Rust
+- `go.mod` — Go
+
+---
+
+## 🏷️ Версионирование (SemVer)
+
+**Формат:** `MAJOR.MINOR.PATCH`
+
+- **MAJOR** — breaking changes
+- **MINOR** — новая функциональность (обратная совместимость)
+- **PATCH** — исправления багов
+
+**Git Tags:**
+```bash
 git tag -a v1.0.0 -m "Release version 1.0.0"
-
-# Push тега
 git push origin v1.0.0
-
-# Push все теги
-git push origin --tags
 ```
 
 ---
 
 ## 📝 CHANGELOG.md
-
-### Формат
 
 ```markdown
 # Changelog
@@ -209,11 +154,9 @@ git push origin --tags
 
 ### Added
 - Новая функция X
-- Поддержка платформы Y
 
 ### Changed
 - Улучшена производительность
-- Обновлен API
 
 ### Fixed
 - Исправлен баг Z
@@ -221,139 +164,130 @@ git push origin --tags
 ### Removed
 - Удалена устаревшая функция
 
-[1.0.0]: https://github.com/user/repo/compare/v0.9.0...v1.0.0
+[1.0.0]: https://github.com/USER/REPO/compare/v0.9.0...v1.0.0
 ```
 
 ---
 
 ## 🔒 Безопасность
 
-### Не коммитить в репозиторий:
+### ❌ НЕ коммитить:
+- Секреты (API keys, токены, пароли)
+- Персональные данные (PII)
+- Конфигурации с секретами
+- Временные файлы
+- Большие бинарные файлы
 
-- ❌ Секреты (API keys, токены, пароли)
-- ❌ Персональные данные
-- ❌ Конфигурационные файлы с секретами
-- ❌ Временные файлы
-- ❌ Большие бинарные файлы
+### ✅ Добавить в .gitignore:
+```
+.env, .env.*
+*.key, *.pem, *.crt
+venv/, .venv/, __pycache__/
+node_modules/, dist/, build/
+*.log, *.tmp, .DS_Store
+```
 
-### Добавить в .gitignore:
-
-- `.env`, `.env.local`
-- `*.key`, `*.pem`
-- `node_modules/`, `__pycache__/`
-- `.venv/`, `venv/`
-- `*.log`
-- `dist/`, `build/`
+### Проверка перед коммитом:
+```bash
+# Проверить на секреты
+./check_before_commit.sh  # если есть скрипт
+git diff --cached | grep -iE "password|token|secret|key"
+```
 
 ---
 
 ## 🌟 GitHub Features
 
 ### Issues
-
-- Используйте шаблоны для issues
+- Используйте шаблоны (`.github/ISSUE_TEMPLATE/`)
 - Добавляйте labels (bug, feature, enhancement)
-- Привязывайте issues к PR через `Fixes #123`
+- Привязывайте к PR через `Fixes #123`
 
 ### Pull Requests
-
-- Описывайте изменения подробно
-- Ссылайтесь на связанные issues
-- Добавляйте скриншоты/примеры если нужно
-- Проверяйте перед merge
+- Подробное описание изменений
+- Ссылки на связанные issues
+- Скриншоты/примеры если нужно
 
 ### Releases
+- Создавать через GitHub Releases
+- Привязывать к git tags
+- Добавлять release notes
+- Прикреплять артефакты сборки
 
-- Создавайте релизы через GitHub Releases
-- Привязывайте к git tags
-- Добавляйте release notes
-- Прикрепляйте артефакты сборки
-
-### GitHub Actions
-
-- Настройте CI/CD для автоматических проверок
+### GitHub Actions (CI/CD)
 - Тесты, линтинг, проверка типов
 - Автоматические релизы
+- Пример: `.github/workflows/ci.yml`
 
 ---
 
-## 📊 Статистика и метрики
+## 🔧 Автоматизация
 
-### Что делает репозиторий привлекательным:
+### GitHub CLI (gh)
+```bash
+# Обновить описание
+gh repo edit USER/REPO --description "Описание"
 
-- ✅ Четкое описание
-- ✅ Хорошая документация
-- ✅ Активные issues и PR
-- ✅ Регулярные коммиты
-- ✅ Звезды и форки
-- ✅ CI/CD настроен
-- ✅ Примеры использования
+# Добавить topics
+gh repo edit USER/REPO --add-topic python --add-topic automation
+
+# Создать release
+gh release create v1.0.0 --title "Version 1.0.0" --notes "Release notes"
+```
+
+### GitHub API
+```bash
+# Обновить описание
+curl -X PATCH https://api.github.com/repos/USER/REPO \
+  -H "Authorization: token TOKEN" \
+  -d '{"description":"Описание"}'
+
+# Обновить topics
+curl -X PUT https://api.github.com/repos/USER/REPO/topics \
+  -H "Authorization: token TOKEN" \
+  -H "Accept: application/vnd.github.mercy-preview+json" \
+  -d '{"names":["tag1","tag2"]}'
+```
 
 ---
 
-## 🎯 Quick Checklist
+## ✅ Quick Checklist
 
 Перед публикацией репозитория:
 
-- [ ] Описание в About секции заполнено
-- [ ] Topics добавлены (5-15 тегов)
-- [ ] README.md содержит всю необходимую информацию
-- [ ] LICENSE файл добавлен
-- [ ] .gitignore настроен правильно
-- [ ] Нет секретов в коде
-- [ ] Нет временных файлов
-- [ ] CHANGELOG.md создан (опционально)
-- [ ] Примеры использования в README
-- [ ] Badge'ы добавлены (опционально)
-
----
-
-## 🔧 Автоматизация через GitHub API
-
-### Обновление метаданных через API:
-
-```bash
-# Описание
-curl -X PATCH https://api.github.com/repos/OWNER/REPO \
-  -H "Authorization: token TOKEN" \
-  -H "Accept: application/vnd.github.v3+json" \
-  -d '{"description":"Описание проекта"}'
-
-# Topics
-curl -X PUT https://api.github.com/repos/OWNER/REPO/topics \
-  -H "Authorization: token TOKEN" \
-  -H "Accept: application/vnd.github.mercy-preview+json" \
-  -d '{"names":["tag1","tag2","tag3"]}'
-```
-
-### Через GitHub CLI (gh):
-
-```bash
-# Описание
-gh repo edit OWNER/REPO --description "Описание"
-
-# Topics
-gh repo edit OWNER/REPO --add-topic tag1 --add-topic tag2
-```
+- [ ] **About секция:** описание, website, topics (5-15)
+- [ ] **README.md:** полная структура, примеры использования
+- [ ] **LICENSE:** файл добавлен (MIT для open-source)
+- [ ] **.gitignore:** настроен правильно, секреты исключены
+- [ ] **CHANGELOG.md:** создан (если проект активно развивается)
+- [ ] **CONTRIBUTING.md:** создан (если принимаете вклад)
+- [ ] **SECURITY.md:** создан (если обрабатываете данные)
+- [ ] **Badge'ы:** добавлены (опционально)
+- [ ] **CI/CD:** настроен (опционально, но рекомендуется)
+- [ ] **Контакты:** единый блок в конце README (без дублирования)
 
 ---
 
 ## 📚 Полезные ссылки
 
-- **GitHub Docs**: https://docs.github.com/
-- **Shields.io**: https://shields.io/
-- **Semantic Versioning**: https://semver.org/
-- **Keep a Changelog**: https://keepachangelog.com/
-- **Choose a License**: https://choosealicense.com/
+- **GitHub Docs:** https://docs.github.com/
+- **Shields.io:** https://shields.io/ (badge генератор)
+- **Semantic Versioning:** https://semver.org/
+- **Keep a Changelog:** https://keepachangelog.com/
+- **Choose a License:** https://choosealicense.com/
 
 ---
 
-## 👤 Контакты автора
+## 👤 Стандартные контакты для всех проектов
 
-- **Сайт**: https://scanovich.ai
-- **Telegram**: [@ScanovichAI](https://t.me/ScanovichAI)
+**Для коммерческих запросов:**
+- 🌐 **Website:** [scanovich.ai](https://scanovich.ai)
+- 💬 **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
+- 📧 **Email:** iamfuyoh@gmail.com
+
+**Для open-source вопросов:**
+- 🐙 **GitHub:** [@FUYOH666](https://github.com/FUYOH666) - создавайте issues в репозитории
 
 ---
 
-<i>Последнее обновление: 2025-11-04</i>
-
+**Последнее обновление:** 2025-11-04
