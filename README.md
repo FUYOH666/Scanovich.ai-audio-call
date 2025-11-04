@@ -7,8 +7,6 @@
 
 **Production-ready система для автоматической транскрипции и анализа качества телефонных звонков**
 
-🌐 **Официальный сайт:** [scanovich.ai](https://scanovich.ai) | 💬 **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
-
 ---
 
 ## Краткое описание
@@ -304,26 +302,7 @@ cp branches.example.yaml branches.yaml
 - ✅ **Гибкость** — легко адаптируется под любую отрасль и бизнес-процессы
 - ✅ **Production-ready** — проверенная архитектура, работающая 24/7
 
-### Контакты для коммерческих запросов:
-
-- 🌐 **Website:** [scanovich.ai](https://scanovich.ai) - полная информация о коммерческих услугах
-- 📧 **Email:** iamfuyoh@gmail.com
-- 💬 **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
-
-**💼 Для бизнес-запросов:** посетите [scanovich.ai](https://scanovich.ai) для получения подробной информации о коммерческих услугах, ценах и условиях сотрудничества.
-
----
-
-## Автор и контакты
-
-### Автор:
-**Aleksandr Mordvinov** (ScanovichAI)
-
-### Open Source контакты:
-- 🐙 **GitHub:** [@FUYOH666](https://github.com/FUYOH666)
-- 📧 **Email:** iamfuyoh@gmail.com
-
-Для вопросов по open-source проекту создавайте issues в репозитории.
+**💼 Для коммерческих запросов:** посетите [scanovich.ai](https://scanovich.ai) для получения подробной информации о коммерческих услугах, ценах и условиях сотрудничества.
 
 ---
 
@@ -455,10 +434,20 @@ uv run pytest tests/ --cov=src --cov-report=html
 
 ---
 
-**© 2025 ASR Call Quality Analyzer | [ScanovichAI](https://scanovich.ai)**
+## Контакты
 
-🌐 [scanovich.ai](https://scanovich.ai) | 💬 [Telegram](https://t.me/ScanovichAI) | 🐙 [GitHub](https://github.com/FUYOH666/Scanovich.ai-audio-call)
+**Автор:** Aleksandr Mordvinov (ScanovichAI)
+
+**Для коммерческих запросов:**
+- 🌐 **Website:** [scanovich.ai](https://scanovich.ai)
+- 💬 **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
+- 📧 **Email:** iamfuyoh@gmail.com
+
+**Для open-source вопросов:**
+- 🐙 **GitHub:** [@FUYOH666](https://github.com/FUYOH666) - создавайте issues в репозитории
 
 ---
+
+**© 2025 ASR Call Quality Analyzer | [ScanovichAI](https://scanovich.ai)**
 
 **Этот проект является open-source демонстрацией возможностей автоматизации анализа качества звонков. Для коммерческого внедрения и кастомизации обращайтесь через [официальный сайт](https://scanovich.ai).**
