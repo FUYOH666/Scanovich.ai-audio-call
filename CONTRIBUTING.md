@@ -35,6 +35,33 @@ uv sync
 - Обновите документацию
 - Используйте `uv run` для запуска команд Python
 
+### 4.1. **Консультации с Context-7 перед использованием библиотек**
+
+**КРИТИЧНО**: Перед использованием любой библиотеки из списка ниже - ОБЯЗАТЕЛЬНО консультируйтесь с MCP Context-7 для получения актуальной документации и best practices.
+
+**Ключевые библиотеки, требующие консультации:**
+- **uv** (`/astral-sh/uv`) - менеджер пакетов
+- **pydantic** (`/pydantic/pydantic`) - валидация данных
+- **pydantic-settings** (`/pydantic/pydantic-settings`) - управление настройками
+- **fastapi** (`/tiangolo/fastapi`) - веб-фреймворк (если используется)
+- **pytest** (`/pytest-dev/pytest`) - тестирование
+- **ruff** (`/astral-sh/ruff`) - линтинг и форматирование
+- **pyright** (`/microsoft/pyright`) - проверка типов
+- **bandit** (`/pycqa/bandit`) - безопасность
+- **typer** (`/tiangolo/typer`) - CLI инструменты
+
+**Процесс консультации:**
+1. Определить библиотеку, которую планируете использовать
+2. Найти Context-7 ID через `resolve-library-id`
+3. Получить документацию через `get-library-docs` с нужным topic
+4. Применить актуальные best practices из документации
+
+**Правило "Консультируйся, не угадывай":**
+- ❌ НЕ использовать устаревшие паттерны из памяти
+- ❌ НЕ предполагать API библиотеки без проверки
+- ✅ ВСЕГДА консультироваться с Context-7 перед использованием библиотеки
+- ✅ ВСЕГДА проверять актуальность документации
+
 ### 5. **Проверьте безопасность**
 ```bash
 # ОБЯЗАТЕЛЬНО перед коммитом!
@@ -102,13 +129,13 @@ chore: Update dependencies
 
 ```bash
 # Запустить все тесты
-./venv/bin/pytest tests/
+uv run pytest tests/
 
 # Запустить конкретный тест
-./venv/bin/pytest tests/test_config_validation.py
+uv run pytest tests/test_config_validation.py
 
 # С coverage
-./venv/bin/pytest --cov=src tests/
+uv run pytest --cov=src tests/
 ```
 
 ---
@@ -157,14 +184,12 @@ chore: Update dependencies
 
 ### Python:
 ```bash
-# Форматирование
-./venv/bin/black src/
-
-# Линтинг
-./venv/bin/ruff check src/
+# Форматирование и линтинг
+uv run ruff check src/
+uv run ruff format src/
 
 # Type checking (опционально)
-./venv/bin/mypy src/
+uv run pyright src/
 ```
 
 ### Docstrings:

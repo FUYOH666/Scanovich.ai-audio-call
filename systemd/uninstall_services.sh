@@ -47,6 +47,6 @@ echo "=================================================="
 echo ""
 echo "Теперь можно запускать процессы вручную:"
 echo "  cd /path/to/project/ASR-4.5"
-echo "  ./venv/bin/python main.py run"
+echo "  uv run python main.py run"
 echo ""
 

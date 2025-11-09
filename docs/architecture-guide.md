@@ -159,9 +159,13 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.cargo/bin:/root/.local/bin:$PATH"
+
+# Install Python dependencies using uv
+COPY pyproject.toml uv.lock uv.toml ./
+RUN uv sync --frozen --no-dev
 
 # Copy application code
 COPY . .
@@ -541,8 +545,12 @@ jobs:
         python-version: '3.12'
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        # Install uv
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+        
+        # Install dependencies using uv
+        uv sync --frozen
     - name: Run tests
       run: pytest tests/ -v --cov=src/
     - name: Type checking

@@ -122,32 +122,26 @@
 - **Systemd** — управление сервисами (daemon mode)
 - **Git** — версионирование (GitHub private repo)
 
-### Полный список зависимостей (requirements.txt):
+### Управление зависимостями
 
+Проект использует **uv** для управления зависимостями. Все зависимости зафиксированы в `pyproject.toml` и `uv.lock`.
+
+**Основные зависимости:**
+- `faster-whisper==1.0.3` - ASR транскрипция
+- `openai==1.54.0` - VLLM клиент
+- `pydantic==2.10.3` - валидация данных
+- `pydantic-settings==2.6.1` - управление конфигурацией
+- `watchdog>=4.0.0,<5.0.0` - мониторинг файлов
+- `tenacity>=8.5.0,<9.0.0` - retry логика
+- `gspread>=6.1.0,<7.0.0` - Google Sheets интеграция
+- И другие (см. `pyproject.toml`)
+
+**Установка:**
+```bash
+uv sync  # Установка из uv.lock
 ```
-faster-whisper==1.1.0
-openai==1.59.7
-pydantic==2.10.3
-pydantic-settings==2.6.1
-watchdog==6.0.0
-python-dotenv==1.0.1
-tenacity==9.0.0
-psutil==6.1.0
-pandas==2.2.3
-gspread==6.1.4
-google-auth==2.37.0
-google-auth-oauthlib==1.2.1
-google-auth-httplib2==0.2.0
-pyyaml==6.0.2
-requests==2.32.3
-numpy==2.2.0
-scipy==1.14.1
-librosa==0.10.2.post1
-soundfile==0.12.1
-pydub==0.25.1
-colorlog==6.9.0
-pytest==8.3.4
-pytest-asyncio==0.24.0
+
+Полный список зависимостей см. в `pyproject.toml` и `uv.lock`.
 ```
 
 **Итого:** 25 пинованных зависимостей для детерминированности.
