@@ -62,7 +62,7 @@ dependencies = [
     # ⭐ Task Scheduling - диапазон
     "schedule>=1.2.0,<2.0.0",
     # ⭐ Telegram Bot - диапазон
-    "python-telegram-bot>=21.7,<22.0.0",
+    "python-telegram-bot>=21.7,<23.0.0",
     # ⭐ Google Sheets Integration - диапазоны
     "gspread>=6.1.0,<7.0.0",
     "google-auth>=2.36.0,<3.0.0",
