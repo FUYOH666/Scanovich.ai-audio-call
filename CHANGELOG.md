@@ -5,6 +5,31 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 и проект придерживается [Semantic Versioning](https://semver.org/lang/ru/).
 
+## [4.5.1] - 2025-01-XX
+
+### Added
+- CI/CD workflow (`.github/workflows/ci.yml`) с автоматической проверкой кода
+- Английская версия README (`README_EN.md`) для англоговорящих пользователей
+- Документация о консультациях с Context-7 перед использованием библиотек
+
+### Changed
+- Dockerfile переписан для использования `uv sync --frozen` вместо `pip install`
+- Multi-stage build в Dockerfile для оптимизации размера образа
+- Все ссылки на `venv` обновлены на `uv run` в документации и примерах
+- Systemd сервисы обновлены для использования `uv` вместо `venv`
+
+### Removed
+- `requirements.txt` - заменен на `pyproject.toml` + `uv.lock`
+- Примеры портфолио: `src/ai_service_example.py`, `src/data_processor_example.py`
+- Тесты для примеров: `tests/test_ai_service.py`, `tests/test_data_processor.py`
+- Временные файлы: `vc_post.md`, `vc_rules.md`, `github.md`
+- `docker-compose.yml` - пример портфолио, не используется в production
+
+### Fixed
+- Обновлены все инструкции установки для использования `uv`
+- Исправлены ссылки на удаленные файлы в документации
+- Обновлены примеры команд в документации
+
 ## [4.5.0] - 2025-11-04
 
 ### Added
@@ -73,6 +98,7 @@
 - **MINOR** — новая функциональность с обратной совместимостью
 - **PATCH** — исправления багов с обратной совместимостью
 
+[4.5.1]: https://github.com/FUYOH666/Scanovich.ai-audio-call/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/FUYOH666/Scanovich.ai-audio-call/releases/tag/v4.5.0
 [4.0.0]: https://github.com/FUYOH666/Scanovich.ai-audio-call/releases/tag/v4.0.0
 

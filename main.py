@@ -73,7 +73,7 @@ def process_file(audio_file, config):
     Обработать один аудиофайл.
 
     Пример:
-        ./venv/bin/python main.py process-file input/звонок.mp3
+        uv run python main.py process-file input/звонок.mp3
     """
     try:
         # Загрузка конфигурации
@@ -355,7 +355,7 @@ def analyze_quality(transcription_file, show_reasoning, config):
     Использует Commercial LLM API для оценки по 30 критериям скрипта.
 
     Пример:
-        ./venv/bin/python main.py analyze-quality output/звонок.txt
+        uv run python main.py analyze-quality output/звонок.txt
     """
     try:
         # Загрузка конфигурации
@@ -426,8 +426,8 @@ def analyze_batch(admin_name, min_score, config):
     Обрабатывает все .txt файлы и генерирует оценки качества.
 
     Пример:
-        ./venv/bin/python main.py analyze-batch
-        ./venv/bin/python main.py analyze-batch --admin-name "Анастасия"
+        uv run python main.py analyze-batch
+        uv run python main.py analyze-batch --admin-name "Анастасия"
     """
     try:
         # Загрузка конфигурации
@@ -541,7 +541,7 @@ def report(admin_name, period, config):
     Генерирует Markdown отчёт с анализом работы за период.
 
     Пример:
-        ./venv/bin/python main.py report "Анастасия" --period week
+        uv run python main.py report "Анастасия" --period week
     """
     try:
         # Загрузка конфигурации
@@ -590,7 +590,7 @@ def compare_models(transcription_file, config):
     о выборе модели для production.
 
     Пример:
-        ./venv/bin/python main.py compare-models output/звонок.txt
+        uv run python main.py compare-models output/звонок.txt
     """
     try:
         # Загрузка конфигурации
@@ -652,8 +652,8 @@ def cost_stats(config, period):
     Показывает сколько потрачено на анализ качества через Commercial LLM API.
 
     Пример:
-        ./venv/bin/python main.py cost-stats
-        ./venv/bin/python main.py cost-stats --period month
+        uv run python main.py cost-stats
+        uv run python main.py cost-stats --period month
     """
     try:
         # Загрузка конфигурации
@@ -687,8 +687,8 @@ def aggregate(period, config):
     Генерирует витрины с метриками ERR, MissRate, Top-3 провалов.
 
     Пример:
-        ./venv/bin/python main.py aggregate --period day
-        ./venv/bin/python main.py aggregate --period week
+        uv run python main.py aggregate --period day
+        uv run python main.py aggregate --period week
     """
     try:
         config_manager = ConfigManager(config)
@@ -728,8 +728,8 @@ def telegram_report(type, chat_id, config):
     Отправка отчёта в Telegram (ручной запуск).
 
     Пример:
-        ./venv/bin/python main.py telegram-report --type daily --chat-id YOUR_ID
-        ./venv/bin/python main.py telegram-report --type weekly
+        uv run python main.py telegram-report --type daily --chat-id YOUR_ID
+        uv run python main.py telegram-report --type weekly
     """
     try:
         config_manager = ConfigManager(config)
@@ -791,8 +791,8 @@ def update_dashboard(config, date):
     с ключевыми метриками: апсейл, ошибки, рейтинг админов/филиалов.
     
     Пример:
-        ./venv/bin/python main.py update-dashboard
-        ./venv/bin/python main.py update-dashboard --date 2025-10-20
+        uv run python main.py update-dashboard
+        uv run python main.py update-dashboard --date 2025-10-20
     """
     try:
         # Загрузка конфигурации
@@ -856,8 +856,8 @@ def export_csv(period, output, admin, config):
     Экспорт ошибок в CSV для Excel-анализа.
 
     Пример:
-        ./venv/bin/python main.py export-csv --period week --output report.csv
-        ./venv/bin/python main.py export-csv --admin "Дарья"
+        uv run python main.py export-csv --period week --output report.csv
+        uv run python main.py export-csv --admin "Дарья"
     """
     try:
         config_manager = ConfigManager(config)
@@ -893,7 +893,7 @@ def error_stats(config):
     Показывает общее количество ошибок, топ-провалы, админов требующих обучения.
 
     Пример:
-        ./venv/bin/python main.py error-stats
+        uv run python main.py error-stats
     """
     try:
         config_manager = ConfigManager(config)
@@ -927,8 +927,8 @@ def sync_sheets(dashboard_only, config):
     Обновляет все звонки из БД в Google Sheets таблицу.
 
     Пример:
-        ./venv/bin/python main.py sync-sheets
-        ./venv/bin/python main.py sync-sheets --dashboard-only
+        uv run python main.py sync-sheets
+        uv run python main.py sync-sheets --dashboard-only
     """
     try:
         config_manager = ConfigManager(config)
@@ -978,7 +978,7 @@ def test_sheets(config):
     Тестирует аутентификацию и доступ к таблице.
 
     Пример:
-        ./venv/bin/python main.py test-sheets
+        uv run python main.py test-sheets
     """
     try:
         config_manager = ConfigManager(config)
@@ -1018,8 +1018,8 @@ def cleanup_sheets(apply, config):
     Используйте --apply для фактического удаления.
 
     Пример:
-        ./venv/bin/python main.py cleanup-sheets           # Dry run
-        ./venv/bin/python main.py cleanup-sheets --apply   # Удалить
+        uv run python main.py cleanup-sheets           # Dry run
+        uv run python main.py cleanup-sheets --apply   # Удалить
     """
     try:
         config_manager = ConfigManager(config)

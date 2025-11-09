@@ -13,37 +13,40 @@
 git clone https://github.com/FUYOH666/ScanovichAI.git scanovich-ai-portfolio
 cd scanovich-ai-portfolio
 
-# 2. Создание виртуального окружения
-python3.12 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# или
-venv\Scripts\activate     # Windows
+# 2. Установка uv (если не установлен)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 
-# 3. Установка зависимостей
-pip install -r requirements.txt
+# 3. Установка зависимостей через uv
+uv sync
 
-# 4. Запуск AI сервиса
-python src/ai_service_example.py
+# 4. Запуск ASR системы
+uv run python main.py run
 
 # 5. Проверка работоспособности
-curl http://localhost:8000/health
+uv run python main.py health
 ```
 
 ### Docker запуск
 
 ```bash
-# Сборка и запуск всех сервисов
-docker-compose up -d
+# Сборка Docker образа
+docker build -t asr-4.5:latest .
+
+# Запуск контейнера
+docker run -d \
+  --name asr-4.5 \
+  --gpus all \
+  -v $(pwd)/input:/home/asruser/app/input \
+  -v $(pwd)/output:/home/asruser/app/output \
+  -v $(pwd)/config.yaml:/home/asruser/app/config.yaml:ro \
+  asr-4.5:latest
 
 # Проверка логов
-docker-compose logs ai-service
+docker logs asr-4.5
 
 # Проверка здоровья
-curl http://localhost:8000/health
-
-# Доступ к мониторингу
-# Grafana: http://localhost:3000 (admin/admin)
-# Prometheus: http://localhost:9090
+docker exec asr-4.5 python main.py health
 ```
 
 ---
@@ -393,7 +396,7 @@ class CacheManager:
 ### **Load Testing**
 ```bash
 # Использование locust для нагрузочного тестирования
-pip install locust
+uv run pip install locust
 
 # locustfile.py
 from locust import HttpUser, task
@@ -501,32 +504,22 @@ print(f'Inference time: {end-start:.3f}s')
 # Check model files
 ls -la models/
 
-# Test model loading
-python -c "
-from src.ai_service_example import SimpleModelManager
-import asyncio
+# Test ASR system health
+uv run python main.py health
 
-async def test():
-    manager = SimpleModelManager('/app/models')
-    await manager.load_model()
-    print('Model loaded successfully')
-
-asyncio.run(test())
-"
+# Test VLLM connection
+curl http://localhost:8000/v1/models
 ```
 
 ### **Emergency Procedures**
 
 #### **Service Restart**
 ```bash
-# Docker restart
-docker-compose restart ai-service
-
 # Systemd restart (если используется)
-sudo systemctl restart ai-service
+sudo systemctl restart asr-watcher.service
 
 # Manual restart
-pkill -f "python.*ai_service" && python src/ai_service_example.py
+pkill -f "python.*main.py" && uv run python main.py run
 ```
 
 #### **Data Recovery**
@@ -538,7 +531,9 @@ pg_dump -h localhost -U ai_user ai_db > backup_$(date +%Y%m%d_%H%M%S).sql
 cp -r models/ models_backup_$(date +%Y%m%d_%H%M%S)/
 
 # Log collection
-docker-compose logs ai-service > logs/ai_service_$(date +%Y%m%d_%H%M%S).log
+docker logs asr-4.5 > logs/asr_$(date +%Y%m%d_%H%M%S).log
+# Или для systemd:
+journalctl -u asr-watcher.service > logs/asr_$(date +%Y%m%d_%H%M%S).log
 ```
 
 ---

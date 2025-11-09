@@ -10,31 +10,31 @@ git add -A
 git status
 
 # 2. Создать коммит с описанием изменений
-git commit -m "feat: Полная переработка проекта для production-ready состояния
+git commit -m "feat: Приведение проекта в соответствие с user rules и очистка
 
-- Миграция на uv + pyproject.toml для управления зависимостями
-- Унификация терминологии (Type-A/B → Template A/B)
-- Удаление специфичных деталей клиентов
-- Добавление разделов Commercial Support и документации
-- Настройка CI/CD и pre-commit hooks
-- Обновление документации согласно стандартам GitHub
+- Миграция Dockerfile на uv sync --frozen
+- Удаление requirements.txt и устаревших примеров портфолио
+- Создание CI/CD workflow (.github/workflows/ci.yml)
+- Добавление английской версии README (README_EN.md)
+- Обновление документации о Context-7 консультациях
+- Очистка проекта от временных и неактуальных файлов
+- Обновление всех ссылок на venv → uv run
 
 Website: https://scanovich.ai"
 
-# 3. Если нужно обновить remote (если репозиторий называется по-другому)
-# git remote set-url origin git@github.com:FUYOH666/Scanovich.ai-audio-call.git
-
-# 4. Push в репозиторий
+# 3. Push в репозиторий
 git push origin main
 ```
 
 ## Что было сделано:
 
-✅ Миграция на uv + pyproject.toml
-✅ Унификация всех специфичных терминов
-✅ Удаление упоминаний клиентов
-✅ Добавление ссылок на scanovich.ai
-✅ Настройка CI/CD
-✅ Обновление документации
-✅ Проверка безопасности
+✅ Dockerfile переписан для использования uv
+✅ requirements.txt удален
+✅ Удалены примеры портфолио (ai_service_example.py, data_processor_example.py)
+✅ Удалены тесты для примеров
+✅ Удалены временные файлы (vc_post.md, vc_rules.md, github.md, docker-compose.yml)
+✅ Создан CI/CD workflow
+✅ Создана английская версия README
+✅ Обновлена документация о Context-7
+✅ Все ссылки на venv обновлены на uv run
 
