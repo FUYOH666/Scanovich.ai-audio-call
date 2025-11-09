@@ -6,7 +6,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     reviewers:
       - "FUYOH666"
     labels:
@@ -15,3 +15,11 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
+    # Auto-merge for patch updates (safe)
+    versioning-strategy: increase
+    # Group updates to reduce number of PRs
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+      production-dependencies:
+        dependency-type: "production"
