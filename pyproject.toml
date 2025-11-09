@@ -33,7 +33,7 @@ dependencies = [
     "faster-whisper==1.0.3",
     # ⭐ PyTorch with CUDA 12.4 (RTX 5090) - критичные версии
     # Требует uv.toml с index pytorch-cu124 для установки CUDA-версий
-    "torch==2.5.1",
+    "torch==2.9.0",
     "torchaudio==2.5.1",
     # ⭐ Configuration & Validation - критичные версии
     "pydantic==2.10.3",
