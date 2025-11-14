@@ -19,8 +19,8 @@
 1. Перейдите в "APIs & Services" > "Credentials"
 2. Нажмите "Create credentials" > "Service account"
 3. Заполните:
-   - **Service account name:** `stend-vllm-service`
-   - **Description:** `Service account for stendVLLM Google Sheets integration`
+   - **Service account name:** `asr-call-quality-service`
+   - **Description:** `Service account for ASR Call Quality Analyzer Google Sheets integration`
 4. Нажмите "Create and continue"
 
 ### Шаг 3: Создание ключа
@@ -41,21 +41,21 @@
 5. Нажмите "Send" (Отправить)
 
 ### Шаг 5: Размещение файла ключа
-1. Переименуйте скачанный JSON файл в `service_account.json`
+1. Переименуйте скачанный JSON файл в `google_credentials.json`
 2. Поместите файл в папку `credentials/`:
    ```
-   stendVLLM/
+   ASR-4.5/
    ├── credentials/
-   │   └── service_account.json  ← сюда
+   │   └── google_credentials.json  ← сюда
    ```
 
 ### Шаг 6: Проверка настройки
 ```bash
-# Запустите интегратор
-cd data_integrator_components && python main.py
+# Проверьте доступ к Google Sheets
+uv run python main.py test-sheets
 
 # Должны увидеть сообщение об успешной аутентификации
-✅ Успешная аутентификация с Google Sheets
+✅ Google Sheets доступна
 ```
 
 ## 🔧 Структура service_account.json
@@ -67,7 +67,7 @@ cd data_integrator_components && python main.py
   "project_id": "your-project-id",
   "private_key_id": "...",
   "private_key": "-----BEGIN PRIVATE KEY-----\n...",
-  "client_email": "stend-vllm-service@project.iam.gserviceaccount.com",
+  "client_email": "asr-call-quality-service@project.iam.gserviceaccount.com",
   "client_id": "...",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://oauth2.googleapis.com/token",
@@ -89,7 +89,7 @@ cd data_integrator_components && python main.py
 
 ### Troubleshooting:
 - **Ошибка аутентификации:** Проверьте права доступа к таблице
-- **Файл не найден:** Убедитесь в правильном пути `credentials/service_account.json`
+- **Файл не найден:** Убедитесь в правильном пути `credentials/google_credentials.json`
 - **API disabled:** Включите Google Sheets API в GCP
 
 ## 📞 Поддержка
