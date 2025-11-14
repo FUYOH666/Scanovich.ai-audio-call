@@ -51,7 +51,7 @@ echo "4️⃣ Проверка на приватные email адреса..."
 if grep -rE "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" \
     --include="*.md" --include="*.py" --include="*.yaml" \
     --exclude-dir=venv --exclude-dir=.git . 2>/dev/null | \
-    grep -v "iamfuyoh666@gmail.com" | grep -v "example@" | grep -v "user@" | \
+    grep -v "iamfuyoh@gmail.com" | grep -v "example@" | grep -v "user@" | \
     grep -v "admin@" | grep -v "git@github.com" | grep -v "client_email" | \
     grep -v "@project.iam.gserviceaccount.com"; then
     echo "⚠️  Найдены email адреса (проверьте вручную)"
