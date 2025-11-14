@@ -10,7 +10,6 @@
 ### Added
 - CI/CD workflow (`.github/workflows/ci.yml`) с автоматической проверкой кода
 - Английская версия README (`README_EN.md`) для англоговорящих пользователей
-- Документация о консультациях с Context-7 перед использованием библиотек
 
 ### Changed
 - Dockerfile переписан для использования `uv sync --frozen` вместо `pip install`

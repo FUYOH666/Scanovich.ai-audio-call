@@ -163,7 +163,7 @@ Checklist:
 **НЕ создавайте публичный issue!**
 
 Свяжитесь напрямую:
-- 📧 Email: iamfuyoh666@gmail.com
+- 📧 Email: iamfuyoh@gmail.com
 - 💬 Telegram: [@ScanovichAI](https://t.me/ScanovichAI)
 
 Я отвечу в течение 24 часов и исправлю проблему.

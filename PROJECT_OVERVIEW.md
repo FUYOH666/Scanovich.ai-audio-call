@@ -823,8 +823,8 @@ uv sync  # Установка из uv.lock
 **GitHub:** https://github.com/YOUR_USERNAME/analyze-calls-AI
 
 **Для коммерческих запросов:**
-- 🌐 Website: [](https:///)
-- 📧 Email: iamfuyoh666@gmail.com
+- 🌐 Website: [scanovich.ai](https://scanovich.ai)
+- 📧 Email: iamfuyoh@gmail.com
 - 💬 Telegram: [@ScanovichAI](https://t.me/ScanovichAI)
 
 ---
