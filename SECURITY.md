@@ -57,7 +57,7 @@ grep -r "79[0-9]\{9\}" --include="*.py" --include="*.md" --include="*.yaml" \
 # Проверить на email (кроме публичных)
 grep -r "@" --include="*.py" --include="*.md" --include="*.yaml" \
   --exclude-dir=venv --exclude-dir=.git . | \
-  grep -v "example\|placeholder\|Author\|Copyright\|LICENSE\|iamfuyoh666"
+  grep -v "example\|placeholder\|Author\|Copyright\|LICENSE\|iamfuyoh"
 ```
 
 ### 2. **Проверка на секреты**

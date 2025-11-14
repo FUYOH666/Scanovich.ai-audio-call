@@ -38,7 +38,7 @@ echo ""
 echo "2️⃣  Проверка на email адреса..."
 EMAILS=$(grep -r "@" --include="*.py" --include="*.md" --include="*.yaml" \
   --exclude-dir=venv --exclude-dir=.git . 2>/dev/null | \
-  grep -v "example\|placeholder\|Author\|Copyright\|LICENSE\|iamfuyoh666\|scanovich.ai\|ScanovichAI\|@FUYOH666" || true)
+  grep -v "example\|placeholder\|Author\|Copyright\|LICENSE\|iamfuyoh\|scanovich.ai\|ScanovichAI\|@FUYOH666" || true)
 
 if [ -n "$EMAILS" ]; then
     echo "   ⚠️  НАЙДЕНЫ EMAIL АДРЕСА (проверьте вручную):"
