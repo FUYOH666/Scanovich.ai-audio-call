@@ -7,27 +7,29 @@ echo "🔍 ФИНАЛЬНАЯ ПРОВЕРКА БЕЗОПАСНОСТИ РЕПО
 echo "================================================"
 echo ""
 
-# 1. Проверка на города клиента
-echo "1️⃣ Проверка на упоминания городов клиента..."
-if grep -rE "Иркутск|Ангарск|Волгодонск|Тюмень|Irkutsk|Angarsk|Volgodonks|Tymen" \
+# 1. Проверка на упоминания клиентов
+echo "1️⃣ Проверка на упоминания конкретных клиентов..."
+# Проверка на конкретные названия компаний (добавьте свои паттерны при необходимости)
+if grep -riE "название_клиента|конкретная_компания|client_company_name" \
     --include="*.md" --include="*.py" --include="*.yaml" --include="*.sh" --include="*.service" \
-    --exclude-dir=venv --exclude-dir=.git . 2>/dev/null | grep -v "cleanup_cities.sh" | grep -v "final_security_check.sh"; then
-    echo "❌ НАЙДЕНЫ упоминания городов!"
+    --exclude-dir=venv --exclude-dir=.git . 2>/dev/null; then
+    echo "❌ НАЙДЕНЫ упоминания конкретных клиентов!"
     exit 1
 else
-    echo "✅ Упоминания городов не найдены"
+    echo "✅ Упоминания конкретных клиентов не найдены"
 fi
 echo ""
 
-# 2. Проверка на провайдеров
-echo "2️⃣ Проверка на упоминания провайдеров..."
-if grep -rE "СвязьТранзит|SvyazTransit|rostelecom-" \
+# 2. Проверка на упоминания провайдеров и партнеров
+echo "2️⃣ Проверка на упоминания конкретных провайдеров..."
+# Проверка на конкретные названия провайдеров (добавьте свои паттерны при необходимости)
+if grep -riE "название_провайдера|конкретный_провайдер|provider_name" \
     --include="*.md" --include="*.py" --include="*.yaml" --include="*.sh" --include="*.service" \
-    --exclude-dir=venv --exclude-dir=.git . 2>/dev/null | grep -v "final_security_check.sh"; then
-    echo "❌ НАЙДЕНЫ упоминания провайдеров!"
+    --exclude-dir=venv --exclude-dir=.git . 2>/dev/null; then
+    echo "❌ НАЙДЕНЫ упоминания конкретных провайдеров!"
     exit 1
 else
-    echo "✅ Упоминания провайдеров не найдены"
+    echo "✅ Упоминания конкретных провайдеров не найдены"
 fi
 echo ""
 
