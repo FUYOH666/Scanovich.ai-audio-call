@@ -210,7 +210,7 @@ services:
     environment:
       - POSTGRES_DB=ai_db
       - POSTGRES_USER=ai_user
-      - POSTGRES_PASSWORD=ai_password
+      - POSTGRES_PASSWORD=<REPLACE_WITH_SECURE_PASSWORD>
 ```
 
 ---

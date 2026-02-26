@@ -49,7 +49,7 @@ class CityAccount:
         return all([
             self.name,
             self.login,
-            self.password and self.password != 'ЗАПОЛНИТЕ_ПАРОЛЬ',
+            self.password and not self.password.startswith('<'),
             self.domain
         ])
 

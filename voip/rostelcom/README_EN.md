@@ -101,7 +101,7 @@ Open the `.env` file in any text editor and fill in your data.
 ```bash
 CITY_1_NAME=Your_Account_Name
 CITY_1_LOGIN=your_login
-CITY_1_PASSWORD=your_password
+CITY_1_PASSWORD=<YOUR_PASSWORD>
 CITY_1_DOMAIN=your_domain.rt.ru
 ```
 
@@ -112,12 +112,12 @@ Fill in data for each account (from CITY_1 to CITY_16):
 ```bash
 CITY_1_NAME=Account_Name_1
 CITY_1_LOGIN=login1
-CITY_1_PASSWORD=password1
+CITY_1_PASSWORD=<YOUR_PASSWORD>
 CITY_1_DOMAIN=XXXXXX.XX.rt.ru
 
 CITY_2_NAME=Account_Name_2
 CITY_2_LOGIN=login2
-CITY_2_PASSWORD=password2
+CITY_2_PASSWORD=<YOUR_PASSWORD>
 CITY_2_DOMAIN=XXXXXX.XX.rt.ru
 
 # ... and so on for all needed accounts

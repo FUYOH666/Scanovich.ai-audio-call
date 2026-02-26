@@ -1,0 +1,9 @@
+# GitGuardian config - exclude example/placeholder files from secret detection
+# https://docs.gitguardian.com/secrets-detection/customize-detection/exclusion-rules
+version: 2
+
+secret:
+  ignored_paths:
+    - "**/.env.example"
+    - "**/config.example.yaml"
+    - "**/branches.example.yaml"

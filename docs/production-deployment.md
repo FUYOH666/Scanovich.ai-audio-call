@@ -139,11 +139,11 @@ BATCH_SIZE=1000
 MAX_FEATURES=1000
 
 # Security
-SECRET_KEY=your-secret-key-here
+SECRET_KEY=<REPLACE_WITH_SECURE_RANDOM_KEY>
 ENCRYPTION_KEY=your-encryption-key-here
 
 # External Services (optional)
-TELEGRAM_TOKEN=your-telegram-bot-token
+TELEGRAM_TOKEN=<REPLACE_WITH_BOT_TOKEN>
 GOOGLE_SHEETS_ID=your-google-sheets-id
 REDIS_URL=redis://redis:6379
 DATABASE_URL=postgresql://postgres:5432/ai_db

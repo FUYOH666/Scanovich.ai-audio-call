@@ -103,7 +103,7 @@ cp .env.example .env
 ```bash
 CITY_1_NAME=Название_вашего_аккаунта
 CITY_1_LOGIN=ваш_логин
-CITY_1_PASSWORD=ваш_пароль
+CITY_1_PASSWORD=<YOUR_PASSWORD>
 CITY_1_DOMAIN=ваш_домен.rt.ru
 ```
 
@@ -114,12 +114,12 @@ CITY_1_DOMAIN=ваш_домен.rt.ru
 ```bash
 CITY_1_NAME=Название_аккаунта_1
 CITY_1_LOGIN=логин1
-CITY_1_PASSWORD=пароль1
+CITY_1_PASSWORD=<YOUR_PASSWORD>
 CITY_1_DOMAIN=XXXXXX.XX.rt.ru
 
 CITY_2_NAME=Название_аккаунта_2
 CITY_2_LOGIN=логин2
-CITY_2_PASSWORD=пароль2
+CITY_2_PASSWORD=<YOUR_PASSWORD>
 CITY_2_DOMAIN=XXXXXX.XX.rt.ru
 
 # ... и так далее для всех нужных аккаунтов
