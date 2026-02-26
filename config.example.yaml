@@ -3,9 +3,12 @@
 # ШАБЛОН БЕЗОПАСНОЙ КОНФИГУРАЦИИ
 # Скопируйте в config.yaml и заполните реальными значениями
 
-# ⭐ ASR-конфигурация (Whisper Large V3)
+# ⭐ ASR configuration (Whisper)
+# model_preset: "auto" = detect GPU VRAM and select best model
+# Or set explicitly: tiny, base, small, medium, large-v3, large-v3-turbo
 asr:
   model: "large-v3"
+  model_preset: ""  # Set to "auto" for hardware-based selection
   device: "cuda"
   compute_type: "float16"
   cpu_threads: 16

@@ -1,0 +1,103 @@
+# 🔒 КРИТИЧНЫЕ БЕЗОПАСНЫЕ ФАЙЛЫ (НИКОГДА НЕ КОММИТИТЬ!)
+.env
+.env.local
+.env.production
+.env.staging
+credentials.json
+credentials.*
+*.key
+*.pem
+*.crt
+*.p12
+*secret*
+*token*
+
+# 📝 ЛОГИ С ПОТЕНЦИАЛЬНО ЧУВСТВИТЕЛЬНОЙ ИНФОРМАЦИЕЙ
+*.log
+logs/
+security.log
+audit.log
+access.log
+error.log
+
+# 💾 БАЗЫ ДАННЫХ И КЭШ
+*.db
+*.sqlite
+*.sqlite3
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.cache/
+.pytest_cache/
+
+# 📦 ПАКЕТЫ И ДИСТРИБУТИВЫ
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 🛠️ IDE И РЕДАКТОРЫ
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 🖥️ ОС
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# 📁 ПРОЕКТНЫЕ ФАЙЛЫ
+# Скачанные аудио файлы
+downloads/
+audio/
+temp/
+tmp/
+*.mp3
+*.wav
+*.m4a
+*.ogg
+
+# 🔐 ДОПОЛНИТЕЛЬНЫЕ ПАТТЕРНЫ БЕЗОПАСНОСТИ
+.htpasswd
+.htaccess
+nginx.conf
+apache.conf
+config.local.*
+secrets.*
+private.*
+internal.*
+
+# 📊 ТЕСТИРОВАНИЕ
+.coverage
+htmlcov/
+.tox/
+.nox/
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# 🚀 ПРОДАКШЕН
+Procfile
+.envrc
+direnv/

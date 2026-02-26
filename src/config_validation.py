@@ -27,11 +27,21 @@ class ASRPreprocessingConfig(BaseModel):
 
 
 class ASRConfig(BaseModel):
-    """Конфигурация ASR (Whisper)."""
+    """ASR configuration (Whisper)."""
 
-    model: str = Field(default="large-v3", description="Модель Whisper")
-    device: str = Field(default="cuda", description="Устройство (cuda/cpu)")
-    compute_type: str = Field(default="float16", description="Тип вычислений")
+    model: str = Field(
+        default="large-v3",
+        description="Whisper model: tiny, base, small, medium, large-v3, large-v3-turbo",
+    )
+    model_preset: str = Field(
+        default="",
+        description="Hardware preset: auto (detect VRAM), or explicit model name",
+    )
+    device: str = Field(default="cuda", description="Device (cuda/cpu)")
+    compute_type: str = Field(
+        default="float16",
+        description="Compute type: float16, int8 (int8 for low VRAM)",
+    )
     cpu_threads: int = Field(default=16, ge=1, le=64, description="Потоки CPU")
     beam_size: int = Field(default=1, ge=1, le=10, description="Beam size")
     temperature: List[float] = Field(

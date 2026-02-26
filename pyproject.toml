@@ -1,7 +1,7 @@
 [project]
-name = "asr-call-quality-analyzer"
-version = "4.5.0"
-description = "Production-ready система автоматической транскрипции и анализа качества телефонных звонков"
+name = "call-analytics-platform"
+version = "5.0.0"
+description = "End-to-end call analytics: VoIP download, Whisper transcription, quality analysis, dashboards"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = {text = "MIT"}
@@ -9,14 +9,15 @@ authors = [
     {name = "Aleksandr Mordvinov", email = "iamfuyoh@gmail.com"}
 ]
 keywords = [
+    "call-analytics",
+    "voip",
+    "whisper",
     "asr",
     "speech-to-text",
-    "whisper",
-    "call-analytics",
     "quality-analysis",
     "voice-analytics",
-    "nlp",
-    "ai"
+    "cloudpbx",
+    "rostelcom",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",

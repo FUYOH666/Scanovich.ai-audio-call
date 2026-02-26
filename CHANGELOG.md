@@ -1,9 +1,26 @@
 # Changelog
 
-Все значимые изменения в проекте документируются в этом файле.
+All notable changes are documented in this file.
 
-Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
-и проект придерживается [Semantic Versioning](https://semver.org/lang/ru/).
+Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+[Semantic Versioning](https://semver.org/).
+
+## [5.0.0] - 2026-02-26
+
+### Added
+- **VoIP integration** — Rostelcom and Svyaztransit downloaders merged into main repo
+- **Hardware-based model selection** — `model_preset: "auto"` detects GPU VRAM and selects Whisper model (tiny → large-v3)
+- **VoIP → ASR pipeline** — Downloaders write to `input/`; ASR daemon processes automatically
+- `voip/rostelcom/` — CloudPBX Rostelecom call records downloader
+- `voip/svyaztransit/` — Svyaztransit call records downloader
+- `src/model_resolver.py` — GPU VRAM detection and model preset resolution
+- English README as primary documentation
+
+### Changed
+- Project renamed to `call-analytics-platform`
+- README restructured for end-to-end platform overview
+- VoIP `.env.example`: `DOWNLOAD_DIR=../../input` for ASR integration
+- `config.example.yaml`: added `model_preset` for hardware selection
 
 ## [4.5.1] - 2025-01-XX
 

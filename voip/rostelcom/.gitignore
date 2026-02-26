@@ -1,0 +1,57 @@
+# CloudPBX RT Calls Downloader - Git Ignore
+
+# === СЕКРЕТЫ И ЧУВСТВИТЕЛЬНЫЕ ДАННЫЕ ===
+.env
+*.env
+!env_example.txt
+
+# === БАЗЫ ДАННЫХ ===
+*.db
+*.sqlite
+*.sqlite3
+
+# === ЛОГИ ===
+*.log
+watcher.log
+
+# === СКАЧАННЫЕ ФАЙЛЫ ===
+downloads/
+*.mp3
+*.wav
+
+# === ВРЕМЕННЫЕ И ТЕСТОВЫЕ ФАЙЛЫ ===
+research_*
+test_*.json
+test_*.html
+test_*.js
+test_*.mp3
+*.tmp
+*.temp
+
+# === PYTHON ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# === PYTEST ===
+.pytest_cache/
+.coverage
+htmlcov/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini

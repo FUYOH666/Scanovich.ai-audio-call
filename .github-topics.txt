@@ -1,0 +1,16 @@
+call-analytics
+voip
+whisper
+speech-to-text
+asr
+quality-analysis
+voice-analytics
+cloudpbx
+rostelcom
+svyaztransit
+business-intelligence
+automation
+python
+machine-learning
+healthcare
+call-center

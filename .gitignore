@@ -13,6 +13,7 @@ __pycache__/
 # Environment Variables
 .env
 .env.*
+!**/.env.example
 
 # ⚠️ ПЕРСОНАЛЬНЫЕ ДАННЫЕ КЛИЕНТОВ (PII - Personal Identifiable Information)
 # ======================================================================

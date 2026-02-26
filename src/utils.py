@@ -41,7 +41,21 @@ class ConfigManager:
         try:
             self.config = AppConfig(**yaml_data)
         except Exception as e:
-            raise ValueError(f"Ошибка валидации конфига: {e}") from e
+            raise ValueError(f"Config validation error: {e}") from e
+
+        # Hardware-based model resolution when model_preset is set
+        if self.config.asr.model_preset:
+            from src.model_resolver import resolve_model_for_hardware
+
+            model, compute_type = resolve_model_for_hardware(
+                model_preset=self.config.asr.model_preset,
+                device=self.config.asr.device,
+            )
+            self.config.asr.model = model
+            self.config.asr.compute_type = compute_type
+            logging.getLogger(__name__).info(
+                f"Model resolved: {model} (compute_type={compute_type})"
+            )
 
         # Создание директорий
         self.config.ensure_directories()
