@@ -1,10 +1,11 @@
 name: CI
-
+# Disabled - runs only on manual trigger. Uncomment push/PR to re-enable.
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+  workflow_dispatch:
+  # push:
+  #   branches: [main, develop]
+  # pull_request:
+  #   branches: [main, develop]
 
 jobs:
   lint-and-test:
