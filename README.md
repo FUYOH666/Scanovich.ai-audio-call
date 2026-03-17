@@ -4,53 +4,22 @@
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Platform: Linux](https://img.shields.io/badge/platform-Linux%20%7C%20macOS-lightgrey.svg)](https://github.com/FUYOH666/Scanovich.ai-audio-call)
 
-**End-to-end call analytics: VoIP recording download → transcription → quality analysis → dashboards**
-
-Production-ready platform for automated phone call transcription, quality scoring, and business intelligence. 100% local AI — no external APIs, full data sovereignty.
+**Turn 100% of your call recordings into actionable quality reports — automatically.**
 
 ---
 
-## Overview
+## The Problem
 
-Call Analytics Platform unifies two critical pipelines:
+Your QA team listens to 3% of calls. The other 97% are a black box. Bad calls slip through, customers churn, and you find out too late. Cloud solutions cost $100K and send your data elsewhere.
 
-1. **VoIP Downloaders** — Automatic recording fetch from CloudPBX (Rostelecom) and Svyaztransit
-2. **ASR Quality Analyzer** — Whisper transcription, LLM post-processing, 30-criteria quality scoring
+## The Solution
 
-Recordings flow directly from VoIP providers into the ASR pipeline. Scale from 1K to 100K+ calls/month on a single GPU.
+VoIP recordings flow into local Whisper transcription → LLM quality scoring (30 criteria) → dashboards, Telegram reports, Google Sheets. 100% coverage. Your data stays on your servers. No external APIs.
 
----
+## Results
 
-## Architecture
-
-```
-┌─────────────────────┐     ┌─────────────────────┐     ┌─────────────────────┐
-│  VoIP Downloaders   │     │   ASR Pipeline      │     │   Analytics         │
-│  (Rostelcom,        │────▶│   input/            │────▶│   SQLite, Sheets,   │
-│   Svyaztransit)     │     │   Whisper + VLLM    │     │   Telegram          │
-└─────────────────────┘     └─────────────────────┘     └─────────────────────┘
-```
-
----
-
-## Features
-
-### Core
-- **Hardware-adaptive models** — Set `model_preset: "auto"` to auto-select Whisper model by GPU VRAM (tiny → large-v3)
-- **VoIP integration** — Downloaders write to `input/`; ASR daemon processes automatically
-- **30-criteria quality scoring** — Objective 0–100 assessment per call
-- **PII masking** — Automatic redaction of personal data
-- **Multi-format** — MP3, WAV, M4A, JSON (Asterisk, VoIP)
-
-### Analytics
-- **Telegram reports** — Daily (09:00) and weekly summaries
-- **Google Sheets** — Time-series dashboard, upsell metrics
-- **CSV export** — Error analysis, branch rankings
-
-### Scalability
-- **RTF < 0.1** — 10× faster than real-time transcription
-- **100K+ calls/month** — Single GPU (24GB VRAM)
-- **systemd/cron** — 24/7 operation
+- **Before:** 3% manual sampling, $51K/year in missed issues, reactive firefighting
+- **After:** 100% coverage, $51K/year saved, real-time alerts, PII masking
 
 ---
 
@@ -108,68 +77,27 @@ uv run python main.py run
 
 ---
 
-## Project Structure
+## Deploy This For Your Business
 
-```
-call-analytics/
-├── src/                    # ASR engine, VLLM postprocessor, quality analyzer
-├── voip/
-│   ├── rostelcom/          # CloudPBX Rostelecom downloader
-│   └── svyaztransit/       # Svyaztransit downloader
-├── input/                  # VoIP writes here → ASR reads
-├── output/                 # Transcriptions
-├── analytics/              # SQLite, dashboards
-├── main.py                 # CLI (18 commands)
-├── config.example.yaml
-└── README.md
-```
+This is open-source. You can run it yourself.
+
+Or I can deploy, customize, and integrate it for your company in **2 weeks**.
+
+**Fixed price: $5,000** — Voice Intelligence package. Includes VoIP integration, customization, deployment, and 30 days of support.
+
+→ **Email:** iamfuyoh@gmail.com  
+→ **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
 
 ---
 
-## Hardware Presets
+## Tech Stack
 
-| Preset        | Model          | VRAM   | Use case              |
-|---------------|----------------|--------|------------------------|
-| `auto`        | Detected       | —      | Best for your GPU     |
-| `tiny`        | tiny           | ~1 GB  | CPU / low VRAM        |
-| `base`        | base           | ~1 GB  | Light workloads       |
-| `small`       | small          | ~2 GB  | Balanced               |
-| `medium`      | medium         | ~5 GB  | Good accuracy         |
-| `large-v3`    | large-v3       | ~10 GB | Best accuracy         |
-| `large-v3-turbo` | large-v3-turbo | ~3 GB | Fast, good accuracy   |
+**Architecture:** VoIP Downloaders (Rostelecom, Svyaztransit) → ASR pipeline (Whisper + VLLM) → SQLite, Google Sheets, Telegram reports.
 
----
+**Features:** Hardware-adaptive Whisper models, 30-criteria quality scoring, PII masking, multi-format (MP3, WAV, M4A). RTF < 0.1, 100K+ calls/month on single GPU.
 
-## Requirements
+**Requirements:** NVIDIA 8GB+ VRAM, Python 3.12, VLLM (port 8000), uv.
 
-- **GPU:** NVIDIA 8GB+ VRAM (24GB recommended for large-v3)
-- **Python:** 3.12
-- **VLLM:** Port 8000 (LLM for post-processing, 30B+ recommended)
-- **uv:** `curl -LsSf https://astral.sh/uv/install.sh | sh`
+**CLI:** `main.py run` (daemon), `main.py process-file`, `main.py health`, `main.py telegram-report`, `main.py sync-sheets`.
 
----
-
-## CLI Commands
-
-| Command | Description |
-|---------|-------------|
-| `main.py run` | Start ASR daemon (24/7) |
-| `main.py process-file input/call.mp3` | Process single file |
-| `main.py health` | System diagnostics |
-| `main.py analyze-quality` | Quality analysis |
-| `main.py telegram-report` | Send Telegram report |
-| `main.py sync-sheets` | Sync to Google Sheets |
-
----
-
-## License
-
-MIT. Copyright (c) 2025–2026 Aleksandr Mordvinov (ScanovichAI).
-
----
-
-## Links
-
-- **Website:** [scanovich.ai](https://scanovich.ai)
-- **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
-- **GitHub:** [@FUYOH666](https://github.com/FUYOH666)
+**License:** MIT. [scanovich.ai](https://scanovich.ai) · [@FUYOH666](https://github.com/FUYOH666)
