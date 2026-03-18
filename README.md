@@ -83,7 +83,7 @@ This is open-source. You can run it yourself.
 
 Or I can deploy, customize, and integrate it for your company in **2 weeks**.
 
-**Fixed price: $5,000** — Voice Intelligence package. Includes VoIP integration, customization, deployment, and 30 days of support.
+**Free consultation** — tell me your data and goals, I'll tell you if it fits and how fast we can move.
 
 → **Email:** iamfuyoh@gmail.com  
 → **Telegram:** [@ScanovichAI](https://t.me/ScanovichAI)
