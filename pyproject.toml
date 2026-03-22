@@ -32,7 +32,7 @@ classifiers = [
 
 dependencies = [
     # ⭐ ASR Core - критичные версии
-    "faster-whisper==1.0.3",
+    "faster-whisper==1.2.1",
     # ⭐ PyTorch with CUDA 12.4 (RTX 5090) - критичные версии
     # Требует uv.toml с index pytorch-cu124 для установки CUDA-версий
     "torch==2.5.1",
