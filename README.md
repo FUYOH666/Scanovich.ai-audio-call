@@ -21,6 +21,7 @@ flowchart LR
 - **Example transcript + JSON** (synthetic, no PII): [`docs/examples/`](docs/examples/README.md).
 - **10-criteria starter template** (generic sales/support): [`templates/generic_sales_support.md`](templates/generic_sales_support.md) with matching [`config.generic.example.yaml`](config.generic.example.yaml).
 - **LLM on another machine** (Tailscale/VPN): [`docs/REMOTE_ASR_AND_LLM.md`](docs/REMOTE_ASR_AND_LLM.md).
+- **Doc index** (architecture, roadmap): [`docs/README.md`](docs/README.md).
 
 ---
 
