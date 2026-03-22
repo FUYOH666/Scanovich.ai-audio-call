@@ -1,6 +1,7 @@
 call-analytics
 voip
 whisper
+faster-whisper
 speech-to-text
 asr
 quality-analysis
@@ -14,3 +15,12 @@ python
 machine-learning
 healthcare
 call-center
+self-hosted
+vllm
+telephony
+open-source
+russian
+pydantic
+sqlite
+telegram-bot
+google-sheets

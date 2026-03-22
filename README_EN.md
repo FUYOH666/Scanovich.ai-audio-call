@@ -21,6 +21,24 @@ ASR Call Quality Analyzer is a fully automated system for analyzing customer ser
 
 ---
 
+## At a glance
+
+```mermaid
+flowchart LR
+  voip[VoIP_or_files] --> input[input_folder]
+  input --> asr[Whisper_ASR]
+  asr --> llm[OpenAI_compatible_LLM]
+  llm --> qa[Quality_scores]
+  qa --> out[Sheets_Telegram_CSV]
+```
+
+- **Telephony audio:** typical **8 kHz mono** VoIP is normalized and resampled (default **16 kHz** mono before ASR) — see `asr.preprocessing` in [`config.example.yaml`](config.example.yaml).
+- **Synthetic examples** (transcript + JSON shape): [`docs/examples/`](docs/examples/README.md).
+- **10-criteria starter pack** for any industry: [`templates/generic_sales_support.md`](templates/generic_sales_support.md) + [`config.generic.example.yaml`](config.generic.example.yaml).
+- **Remote LLM** (GPU server / VPN): [`docs/REMOTE_ASR_AND_LLM.md`](docs/REMOTE_ASR_AND_LLM.md).
+
+---
+
 ## Problems It Solves
 
 ### Main Problems:
@@ -58,7 +76,7 @@ ASR Call Quality Analyzer is a fully automated system for analyzing customer ser
 
 ### 🔒 Security and Performance
 
-- ✅ **100% local** — no external APIs, full data control
+- ✅ **Your data, your machines** — recordings and transcripts stay on infrastructure you control; LLM can be local **or** your own OpenAI-compatible server ([remote setup](docs/REMOTE_ASR_AND_LLM.md))
 - ✅ **Production-ready** — systemd services, graceful shutdown, error handling
 - ✅ **$51K/year savings** — compared to commercial solutions
 - ✅ **Multi-format support** — JSON/MP3/WAV/M4A (Asterisk, VoIP systems)
@@ -225,21 +243,25 @@ cp branches.example.yaml branches.yaml
 
 ### Main Documentation:
 
-- **`README.md`** — this guide
+- **`README.md`** — English quick-start (repo default)
 - **`DEPLOYMENT_GUIDE.md`** — complete deployment guide
 - **`PROJECT_OVERVIEW.md`** — project description, technologies, architecture
 - **`CHANGELOG.md`** — change history
 - **`SECURITY.md`** — security policy
 - **`CONTRIBUTING.md`** — contributor guide
+- **`docs/REMOTE_ASR_AND_LLM.md`** — LLM on another host / CPU ASR notes
+- **`docs/examples/README.md`** — synthetic sample outputs
 
 ### Evaluation Scripts:
 
 - **`script_evaluation_template_a.md`** — Template A evaluation script (extended)
 - **`script_evaluation_template_b.md`** — Template B evaluation script (standard)
+- **`templates/generic_sales_support.md`** — 10-criteria starter pack (see `templates/README.md`)
 
 ### Configuration:
 
 - **`config.example.yaml`** — configuration example
+- **`config.generic.example.yaml`** — example `analytics` + `scripts` for the generic template
 - **`branches.example.yaml`** — address and admin normalization example
 
 ---

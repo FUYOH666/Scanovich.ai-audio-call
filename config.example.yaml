@@ -89,7 +89,7 @@ quality_analysis:
   timeout: 120
   retry_attempts: 3
 
-  # Скрипты оценки (ЗАМЕНИТЕ НА СВОИ)
+  # Скрипты оценки (ЗАМЕНИТЕ НА СВОИ). См. также templates/generic_sales_support.md и config.generic.example.yaml
   scripts:
     script_template_a: "script_evaluation_template_a.md"  # Шаблон оценки Template A (расширенный)
     script_template_b: "script_evaluation_template_b.md"  # Шаблон оценки Template B (стандартный)

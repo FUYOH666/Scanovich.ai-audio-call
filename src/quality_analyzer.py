@@ -50,23 +50,28 @@ class ScriptParser:
         with open(self.script_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        # Парсинг основных сущностей (1-20)
-        main_section = re.search(
-            r"### Основные сущности(.+?)(?=###|$)", content, re.DOTALL
+        # Парсинг основного блока критериев (поддерживаются оба стиля заголовков в .md)
+        main_patterns = (
+            r"### Основные сущности[^\n]*\n(.+?)(?=^### |\Z)",
+            r"### Основные критерии оценки[^\n]*\n(.+?)(?=^### |\Z)",
         )
-        if main_section:
-            self._parse_criteria_section(main_section.group(1), block="main")
+        for pattern in main_patterns:
+            main_section = re.search(pattern, content, re.DOTALL | re.MULTILINE)
+            if main_section:
+                self._parse_criteria_section(main_section.group(1), block="main")
+                break
 
-        # Парсинг дополнительных сущностей (21-30)
-        additional_section = re.search(
-            r"### Дополнительные расширенные сущности(.+?)(?=###|$)",
-            content,
-            re.DOTALL,
+        additional_patterns = (
+            r"### Дополнительные расширенные сущности[^\n]*\n(.+?)(?=^### |\Z)",
+            r"### Дополнительные критерии[^\n]*\n(.+?)(?=^### |\Z)",
         )
-        if additional_section:
-            self._parse_criteria_section(
-                additional_section.group(1), block="additional"
-            )
+        for pattern in additional_patterns:
+            additional_section = re.search(pattern, content, re.DOTALL | re.MULTILINE)
+            if additional_section:
+                self._parse_criteria_section(
+                    additional_section.group(1), block="additional"
+                )
+                break
 
         logger.info(f"Парсинг скрипта {self.script_path.name}: {len(self.criteria)} критериев")
 

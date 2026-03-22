@@ -5,6 +5,23 @@ All notable changes are documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [Semantic Versioning](https://semver.org/).
 
+## [5.0.1] - 2026-03-22
+
+### Added
+- `docs/examples/` — synthetic sample transcript and quality JSON for onboarding ([`docs/examples/README.md`](docs/examples/README.md))
+- `docs/REMOTE_ASR_AND_LLM.md` — remote OpenAI-compatible LLM and CPU/small-model ASR notes
+- `templates/generic_sales_support.md` — 10-criteria starter evaluation template for generic sales/support calls
+- `config.generic.example.yaml` — analytics criteria aligned with the generic template
+- `templates/README.md` — index of evaluation templates
+- `tests/test_script_parser.py` — regression tests for script Markdown parsing
+
+### Changed
+- `.gitignore` — exceptions so synthetic `docs/examples/*.txt` and `*.json` can be versioned (still excludes real `output/` / `metadata/` data)
+- `ScriptParser` in `quality_analyzer.py` accepts both legacy headings (`### Основные сущности`, …) and the headings used in shipped templates (`### Основные критерии оценки`, `### Дополнительные критерии`)
+- `README.md`, `README_EN.md` — pipeline diagram (Mermaid), links to examples, generic template, telephony/resampling note, remote LLM doc
+- `PROJECT_OVERVIEW.md` — correct GitHub URL, author, MIT alignment (removed conflicting proprietary footer)
+- `.github-topics.txt` — extra discovery topics (`self-hosted`, `vllm`, `telephony`, …)
+
 ## [5.0.0] - 2026-02-26
 
 ### Added

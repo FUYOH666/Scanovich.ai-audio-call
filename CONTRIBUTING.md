@@ -205,6 +205,13 @@ def analyze_quality(transcript: str, script: str) -> dict:
 
 ---
 
+## Good first issues / topics (maintainers)
+
+- Ищите задачи с префиксом **`[good first issue]`** в [Issues](https://github.com/FUYOH666/Scanovich.ai-audio-call/issues).
+- **Topics** репозитория на GitHub: список для копирования в настройках репозитория лежит в [`.github-topics.txt`](.github-topics.txt) (одна тема на строку).
+
+---
+
 ## 🏆 Признание вклада
 
 Все contributors будут добавлены в:

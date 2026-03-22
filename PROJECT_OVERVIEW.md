@@ -1,6 +1,6 @@
 # 🚀 ASR Call Quality Analyzer: Проект автоматизации анализа качества обслуживания
 
-**Author:**   
+**Author:** Aleksandr Mordvinov (ScanovichAI)  
 **Project:** ASR Call Quality Analyzer ASR-4.5  
 **Дата создания:** Сентябрь 2025  
 **Последнее обновление:** Октябрь 2025
@@ -818,9 +818,9 @@ uv sync  # Установка из uv.lock
 
 ## 📞 Контакты и поддержка
 
-**Author:**   
+**Author:** Aleksandr Mordvinov (ScanovichAI)  
 **Project:** ASR Call Quality Analyzer  
-**GitHub:** https://github.com/YOUR_USERNAME/analyze-calls-AI
+**GitHub:** https://github.com/FUYOH666/Scanovich.ai-audio-call
 
 **Для коммерческих запросов:**
 - 🌐 Website: [scanovich.ai](https://scanovich.ai)
@@ -829,6 +829,6 @@ uv sync  # Установка из uv.lock
 
 ---
 
-**© 2025 ASR Call Quality Analyzer | **
+**© 2025 ASR Call Quality Analyzer**
 
-**Лицензия:** Proprietary (коммерческое использование требует лицензии)
+**Открытый исходный код:** проект распространяется под лицензией [MIT](LICENSE). Коммерческие услуги (внедрение, поддержка, кастомизация) доступны отдельно через [scanovich.ai](https://scanovich.ai).

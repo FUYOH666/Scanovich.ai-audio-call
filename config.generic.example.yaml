@@ -1,0 +1,12 @@
+# Пример конфигурации под короткий шаблон templates/generic_sales_support.md
+# Скопируйте нужные секции в свой config.yaml или объедините с config.example.yaml
+
+quality_analysis:
+  scripts:
+    script_template_a: "templates/generic_sales_support.md"
+    script_template_b: "templates/generic_sales_support.md"
+
+analytics:
+  # Должны соответствовать критериям в generic_sales_support.md (1–8 основные, 9–10 доп.)
+  required_criteria: [1, 2, 3, 4, 5, 6, 7, 8]
+  optional_criteria: [9, 10]
