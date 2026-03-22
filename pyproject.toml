@@ -53,7 +53,7 @@ dependencies = [
     # ⭐ File System Monitoring - диапазон
     "watchdog>=4.0.0,<5.0.0",
     # ⭐ GPU Monitoring - критичная версия
-    "nvidia-ml-py==12.560.30",
+    "nvidia-ml-py==13.595.45",
     # ⭐ Retry & Networking - диапазоны
     "tenacity>=8.5.0,<9.0.0",
     "httpx>=0.27.0,<1.0.0",
