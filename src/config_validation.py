@@ -148,8 +148,8 @@ class QualityAnalysisConfig(BaseModel):
     retry_attempts: int = Field(default=3, ge=1, le=10)
     scripts: dict = Field(
         default={
-            "script_template_a": "script_evaluation_template_a.md",
-            "script_template_b": "script_evaluation_template_b.md",
+            "script_template_a": "templates/script_evaluation_template_a.md",
+            "script_template_b": "templates/script_evaluation_template_b.md",
         }
     )
     paths: dict = Field(
@@ -206,6 +206,21 @@ class SecurityConfig(BaseModel):
     rate_limit_per_hour: int = Field(default=1000, ge=1, le=10000)
 
 
+class WebConfig(BaseModel):
+    """Конфигурация demo/pilot web слоя."""
+
+    host: str = Field(default="127.0.0.1", description="Host for web UI/API")
+    port: int = Field(default=8080, ge=1, le=65535, description="Port for web UI/API")
+    require_api_key: bool = Field(
+        default=False,
+        description="Require X-API-Key for protected pilot deployments",
+    )
+    api_key: str = Field(
+        default="",
+        description="API key for the web layer (prefer environment override)",
+    )
+
+
 class AppConfig(BaseSettings):
     """Главная конфигурация приложения."""
 
@@ -224,6 +239,7 @@ class AppConfig(BaseSettings):
     paths: PathsConfig = Field(default_factory=PathsConfig)
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     security: SecurityConfig = Field(default_factory=SecurityConfig)
+    web: WebConfig = Field(default_factory=WebConfig)
     quality_analysis: QualityAnalysisConfig = Field(
         default_factory=QualityAnalysisConfig
     )
@@ -241,8 +257,8 @@ class AppConfig(BaseSettings):
         ]:
             Path(path_str).mkdir(parents=True, exist_ok=True)
         
-        # Директории для анализа качества
-        if self.quality_analysis.enabled or True:  # Всегда создавать
+        # Директории для анализа качества создаём только если функция включена.
+        if self.quality_analysis.enabled:
             for path_str in self.quality_analysis.paths.values():
                 Path(path_str).mkdir(parents=True, exist_ok=True)
 

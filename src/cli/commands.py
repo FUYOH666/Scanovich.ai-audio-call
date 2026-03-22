@@ -72,48 +72,29 @@ def register(cli: click.Group) -> None:
 
             logger.info(f"Обработка файла: {audio_file}")
 
-            # Инициализация компонентов
-            from src.audio_preprocessor import AudioPreprocessor
-            from src.asr import ASREngine
-            from src.vllm_postprocessor import VLLMPostprocessor
+            from src.pipeline_service import CallAnalysisPipeline
 
-            gpu_monitor = GPUMonitor(gpu_index=0)
-            gpu_monitor.check_device(app_config.asr.device)
-
-            audio_preprocessor = AudioPreprocessor(app_config.asr)
-            asr_engine = ASREngine(app_config.asr, gpu_monitor)
-            vllm_postprocessor = VLLMPostprocessor(app_config.vllm)
-
-            # Предобработка
-            preprocessed = audio_preprocessor.preprocess(audio_file)
-            duration = audio_preprocessor.get_audio_duration(audio_file)
-
-            # ASR
-            raw_text, metrics = asr_engine.transcribe(preprocessed, duration)
-            logger.info(f"ASR завершён: {len(raw_text)} символов")
-            logger.info(f"Метрики: RTF={metrics.get('rtf', 'N/A')}, время={metrics.get('elapsed_time')}s")
-
-            # VLLM постобработка
-            cleaned_text, classification = vllm_postprocessor.process(
-                raw_text, Path(audio_file).name
+            pipeline = CallAnalysisPipeline(app_config)
+            result = pipeline.analyze_file(audio_file, persist=False, analyze_quality=False)
+            logger.info(f"ASR завершён: {len(result.raw_transcription)} символов")
+            logger.info(
+                "Метрики: RTF=%s, время=%ss",
+                result.asr_metrics.get("rtf", "N/A"),
+                result.asr_metrics.get("elapsed_time"),
             )
 
             # Вывод результата
             print("\n" + "=" * 60)
             print("РЕЗУЛЬТАТ ТРАНСКРИПЦИИ:")
             print("=" * 60)
-            print(cleaned_text)
+            print(result.cleaned_text)
             print("\n" + "=" * 60)
 
-            if classification:
+            if result.classification:
                 print("КЛАССИФИКАЦИЯ:")
                 print("=" * 60)
-                import json
-                print(json.dumps(classification, ensure_ascii=False, indent=2))
+                print(json.dumps(result.classification, ensure_ascii=False, indent=2))
                 print("=" * 60)
-
-            # Удаление временного файла
-            Path(preprocessed).unlink(missing_ok=True)
 
             logger.info("✓ Обработка завершена успешно")
 
@@ -147,19 +128,22 @@ def register(cli: click.Group) -> None:
 
             # 2. GPU
             print("\n2️⃣ GPU...")
-            try:
-                gpu_monitor = GPUMonitor(gpu_index=0)
-                gpu_monitor.check_device("cuda")
-                mem_info = gpu_monitor.get_memory_info()
-                temp = gpu_monitor.get_temperature()
+            if app_config.asr.device == "cuda":
+                try:
+                    gpu_monitor = GPUMonitor(gpu_index=0)
+                    gpu_monitor.check_device(app_config.asr.device)
+                    mem_info = gpu_monitor.get_memory_info()
+                    temp = gpu_monitor.get_temperature()
 
-                print(f"   ✓ GPU: {gpu_monitor.gpu_name}")
-                print(f"   ✓ Память: {mem_info['used_mb']} / {mem_info['total_mb']} MB ({mem_info['utilization_percent']}%)")
-                if temp:
-                    print(f"   ✓ Температура: {temp}°C")
-            except Exception as e:
-                print(f"   ❌ GPU недоступна: {e}")
-                sys.exit(1)
+                    print(f"   ✓ GPU: {gpu_monitor.gpu_name}")
+                    print(f"   ✓ Память: {mem_info['used_mb']} / {mem_info['total_mb']} MB ({mem_info['utilization_percent']}%)")
+                    if temp:
+                        print(f"   ✓ Температура: {temp}°C")
+                except Exception as e:
+                    print(f"   ❌ GPU недоступна: {e}")
+                    sys.exit(1)
+            else:
+                print(f"   ✓ Используется {app_config.asr.device.upper()} режим")
 
             # 3. VLLM
             print("\n3️⃣ VLLM API...")
@@ -214,6 +198,63 @@ def register(cli: click.Group) -> None:
         except Exception as e:
             print(f"\n❌ Критическая ошибка health check: {e}")
             sys.exit(1)
+
+    @cli.command()
+    @click.option("--config", default="config.yaml", help="Путь к config.yaml")
+    @click.option("--host", default=None, help="Host для web UI/API")
+    @click.option("--port", default=None, type=int, help="Port для web UI/API")
+    @click.option(
+        "--allow-insecure-public-bind",
+        is_flag=True,
+        help="Разрешить запуск на 0.0.0.0 без API key (только если вы точно понимаете риск)",
+    )
+    def web(config, host, port, allow_insecure_public_bind):
+        """
+        Запустить browser UI и HTTP API для demo/pilot сценария.
+
+        Пример:
+            uv run python main.py web
+            uv run python main.py web --host 0.0.0.0 --port 8080
+        """
+        try:
+            config_manager = ConfigManager(config)
+            app_config = config_manager.get()
+            setup_logging(app_config)
+
+            host = host or app_config.web.host
+            port = port or app_config.web.port
+
+            is_public_bind = host not in {"127.0.0.1", "localhost", "::1"}
+            if is_public_bind and not app_config.web.require_api_key and not allow_insecure_public_bind:
+                raise click.ClickException(
+                    "Публичный bind без API key запрещён. "
+                    "Включите web.require_api_key и задайте WEB__API_KEY, "
+                    "или явно используйте --allow-insecure-public-bind для временного demo."
+                )
+
+            from src.web.app import create_app
+            import uvicorn
+
+            app = create_app(config)
+            logger.info("Запуск web UI/API: host=%s port=%s", host, port)
+            if app_config.web.require_api_key:
+                logger.info("Защита web слоя включена: требуется X-API-Key")
+            elif is_public_bind:
+                logger.warning("⚠️ Web слой запущен без API key на публичном адресе")
+            else:
+                logger.info("Web слой запущен в локальном demo режиме")
+
+            uvicorn.run(
+                app,
+                host=host,
+                port=port,
+                log_level=app_config.logging.level.lower(),
+            )
+        except click.ClickException:
+            raise
+        except Exception as e:
+            logger.error(f"Ошибка запуска web UI/API: {e}", exc_info=True)
+            raise click.ClickException(str(e)) from e
 
 
     @cli.command()
@@ -971,15 +1012,15 @@ def register(cli: click.Group) -> None:
             config_manager = ConfigManager(config)
             app_config = config_manager.get()
 
-            if not hasattr(app_config, 'google_sheets') or not app_config.google_sheets.get('enabled', False):
+            if not app_config.google_sheets.enabled:
                 print("❌ Google Sheets интеграция отключена в config.yaml")
                 sys.exit(1)
 
             from src.google_sheets_integrator import GoogleSheetsIntegrator
 
             integrator = GoogleSheetsIntegrator(
-                app_config.google_sheets["credentials_path"],
-                app_config.google_sheets["spreadsheet_id"],
+                app_config.google_sheets.credentials_path,
+                app_config.google_sheets.spreadsheet_id,
                 app_config.analytics.db_path,
             )
 

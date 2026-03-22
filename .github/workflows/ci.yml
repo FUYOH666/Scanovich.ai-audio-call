@@ -24,5 +24,11 @@ jobs:
         run: uv sync --frozen --extra dev
 
       # Full-tree ruff is not enforced yet (legacy Cyrillic strings in CLI output, etc.).
+      - name: Ruff (new web and pipeline slice)
+        run: uv run ruff check src/web src/pipeline_service.py tests/test_api.py tests/test_cli_web.py
+
+      - name: Pilot-ready web checks
+        run: uv run pytest tests/test_api.py tests/test_cli_web.py -q --tb=short
+
       - name: Pytest
         run: uv run pytest tests/ -q --tb=short

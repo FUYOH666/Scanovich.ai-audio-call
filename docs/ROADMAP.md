@@ -26,9 +26,21 @@ Backlog and direction for [Scanovich.ai-audio-call](https://github.com/FUYOH666/
 
 **UX / ops**
 
-- [ ] Optional web UI for browsing results
-- [ ] HTTP API for external orchestration
+- [x] Minimal web UI for upload-and-review demos (`src/web/`)
+- [x] HTTP API for single-file analysis and orchestration (`/healthz`, `/analyze`)
+- [x] Recent analyses page backed by persisted artifacts in `output/`, `metadata/`, and `quality_analysis/`
+- [ ] Pilot hardening for web/API: rate limiting, upload quotas, audit-friendly logs, and clearer protected-demo operations
+- [x] One-command web launch and clearer deployment path via `main.py web`
+- [x] Filtering, pagination, and search for recent analyses
+- [ ] Better detail views and export/share actions for saved analyses
 - [ ] CI/CD hardening (already: GitHub Actions)
+
+**Local-first deployment**
+
+- [ ] Optional HTTP ASR backend for LAN / VPN GPU hosts
+- [ ] Clear deployment profiles: all-local GPU, CPU worker + remote ASR, remote LLM
+- [ ] Shared config defaults to reduce drift between `vllm` and `quality_analysis`
+- [ ] Public website to protected pilot bridge with a clean demo URL strategy and no shared runtime code
 
 ## Longer term (3–12 months)
 
@@ -49,4 +61,4 @@ Backlog and direction for [Scanovich.ai-audio-call](https://github.com/FUYOH666/
 2. Follow [CONTRIBUTING.md](../CONTRIBUTING.md) (ruff, tests)  
 3. Update docs when behavior or config changes  
 
-_Last updated: 2026-03-22 (merged from former `next_steps.md`)_
+_Last updated: 2026-03-22 (docs refresh and recent-analyses update)_

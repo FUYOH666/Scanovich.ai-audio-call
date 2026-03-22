@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Call Analytics Demo</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <p class="eyebrow">Call Analytics Platform</p>
+        <h1>Demo: загрузка звонка и история последних разборов</h1>
+        <p class="lead">
+          Этот экран показывает текущий pilot-ready web слой: новый upload, детали
+          последнего разбора и список уже сохранённых анализов на основе артефактов
+          из `output/`, `metadata/` и `quality_analysis/`.
+        </p>
+      </section>
+
+      <section class="split-grid">
+        <section class="card">
+          <h2>Новый анализ</h2>
+          <form id="analyze-form" class="upload-form">
+            <div>
+              <label class="file-label" for="audio-file">Аудиофайл</label>
+              <input
+                id="audio-file"
+                name="file"
+                type="file"
+                accept=".mp3,.wav,.m4a,.ogg,.flac"
+                required
+              />
+            </div>
+            <div>
+              <label class="file-label" for="api-key">API key для protected pilot режима</label>
+              <input
+                id="api-key"
+                name="api-key"
+                type="password"
+                placeholder="Оставьте пустым для локального demo"
+              />
+            </div>
+            <button id="submit-button" type="submit">Запустить анализ</button>
+          </form>
+          <p id="status" class="status">Ожидание файла</p>
+        </section>
+
+        <section class="card">
+          <div class="section-header">
+            <h2>Последние анализы</h2>
+            <button id="refresh-history" type="button" class="secondary-button">
+              Обновить список
+            </button>
+          </div>
+          <p class="section-copy">
+            Список строится из уже сохранённых артефактов, без повторного анализа.
+          </p>
+          <div class="history-controls">
+            <input
+              id="history-query"
+              class="text-input"
+              type="search"
+              placeholder="Поиск по имени файла, ID или preview"
+            />
+            <label class="toggle">
+              <input id="history-has-quality" type="checkbox" />
+              <span>Только с quality</span>
+            </label>
+            <button id="apply-history-filters" type="button" class="secondary-button">
+              Применить
+            </button>
+          </div>
+          <p id="history-meta" class="section-copy">
+            История загружается автоматически при открытии страницы.
+          </p>
+          <div id="recent-analyses" class="history-list"></div>
+          <button id="load-more-history" type="button" class="secondary-button hidden">
+            Показать ещё
+          </button>
+        </section>
+      </section>
+
+      <section id="result-card" class="card hidden">
+        <div class="section-header">
+          <div>
+            <h2 id="result-title">Результат</h2>
+            <p id="result-meta" class="section-copy">Выберите анализ из списка справа.</p>
+          </div>
+        </div>
+        <div id="result-summary" class="summary-grid"></div>
+        <div class="grid">
+          <article>
+            <h3>Транскрипт</h3>
+            <pre id="transcript-output" class="output-block"></pre>
+          </article>
+          <article>
+            <h3>Классификация</h3>
+            <pre id="classification-output" class="output-block"></pre>
+          </article>
+          <article>
+            <h3>Метрики ASR</h3>
+            <pre id="metrics-output" class="output-block"></pre>
+          </article>
+          <article>
+            <h3>Анализ качества</h3>
+            <pre id="quality-output" class="output-block"></pre>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

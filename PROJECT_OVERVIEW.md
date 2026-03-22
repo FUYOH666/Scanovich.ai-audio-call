@@ -1,4 +1,4 @@
-# Call Analytics Platform — обзор
+# Call Analytics Platform — Russian overview
 
 **Автор:** Aleksandr Mordvinov (ScanovichAI)  
 **Репозиторий:** [github.com/FUYOH666/Scanovich.ai-audio-call](https://github.com/FUYOH666/Scanovich.ai-audio-call)  
@@ -16,8 +16,12 @@ Production-ориентированная система: **записи зво�
 | Полное руководство (EN) | [README_EN.md](README_EN.md) |
 | Развёртывание 24/7, systemd | [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) |
 | Пайплайн и модули | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
+| Граница между сайтом и продуктом | [docs/PRODUCT_SURFACES.md](docs/PRODUCT_SURFACES.md) |
 | Планы развития | [docs/ROADMAP.md](docs/ROADMAP.md) |
+| Product strategy и приоритеты | [docs/PRODUCTIZATION_PLAN.md](docs/PRODUCTIZATION_PLAN.md) |
+| Быстрая оценка перед пилотом | [docs/EVALUATION_GUIDE.md](docs/EVALUATION_GUIDE.md) |
 | Удалённый LLM / CPU ASR | [docs/REMOTE_ASR_AND_LLM.md](docs/REMOTE_ASR_AND_LLM.md) |
+| Поддержка и спонсорство | [FUNDING.md](FUNDING.md) |
 | Индекс docs | [docs/README.md](docs/README.md) |
 
 ## Технологии (кратко)
@@ -35,6 +39,11 @@ Production-ориентированная система: **записи зво�
 
 - Идеи и чеклист: [docs/ROADMAP.md](docs/ROADMAP.md) и [Issues](https://github.com/FUYOH666/Scanovich.ai-audio-call/issues).  
 - Кастомизация под отрасль, on-prem внедрение, поддержка: [scanovich.ai](https://scanovich.ai).
+- Публичный сайт и deployable app intentionally разделены; см. [docs/PRODUCT_SURFACES.md](docs/PRODUCT_SURFACES.md).
+
+## Примечание по роли файла
+
+Если вы впервые открыли репозиторий, начните с [README.md](README.md). Этот файл нужен как русскоязычный обзор и краткая карта материалов, а не как основной public entrypoint.
 
 ---
 

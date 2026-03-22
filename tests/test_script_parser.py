@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_parse_template_b_headers_yields_thirty_criteria():
-    path = REPO_ROOT / "script_evaluation_template_b.md"
+    path = REPO_ROOT / "templates" / "script_evaluation_template_b.md"
     criteria = ScriptParser(str(path)).parse()
     assert len(criteria) == 30
     assert criteria[0]["id"] == 1

@@ -1,650 +1,259 @@
-# 🚀 Руководство по развертыванию ASR Call Quality Analyzer
+# Руководство по развертыванию
 
-**Полное руководство по установке и настройке для 24/7 работы**
+Актуальное руководство для текущего состояния репозитория: daemon-режим, web/API вход через `main.py web`, pilot-safe API key режим и история последних анализов на основе уже сохранённых артефактов.
 
----
+## Что разворачивается
 
-## 📋 Предварительные требования
+В репозитории есть два основных режима:
 
-### Аппаратные:
-- ✅ NVIDIA GPU (RTX 5090 или аналог с 24GB+ VRAM)
-- ✅ 16GB+ RAM
-- ✅ 100GB+ свободного места на диске
-- ✅ Стабильное интернет-соединение (для загрузки моделей)
+1. `uv run python main.py run` для непрерывной обработки файлов из `input/`.
+2. `uv run python main.py web` для browser UI и HTTP API поверх того же shared pipeline.
 
-### Программные:
-- ✅ Ubuntu 22.04+ (или другой Linux)
-- ✅ Python 3.12
-- ✅ CUDA 12.4+
-- ✅ Git
-- ✅ SSH ключ для GitHub
+Web/API слой сейчас умеет:
 
----
+- `GET /healthz`
+- `POST /analyze`
+- `GET /analyses`
+- `GET /analyses/{result_id}`
+- `/` для browser UI
 
-## 🔧 Шаг 1: Клонирование репозитория
+Поверх истории результатов уже есть базовые pilot-friendly возможности:
+
+- поиск по имени файла, ID и preview,
+- фильтр только по звонкам с quality-analysis,
+- пагинация списка,
+- базовое ограничение частоты upload-запросов.
+
+## Предварительные требования
+
+### Базовый production-хост
+
+- Linux
+- Python 3.12
+- `uv`
+- NVIDIA GPU для production ASR и локального LLM-сценария
+
+### Важное по моделям
+
+- ASR сегодня работает через in-process Faster-Whisper.
+- LLM уже может быть локальным или удалённым OpenAI-compatible endpoint.
+- Если LLM вынесен на другой хост, настройте `vllm.base_url` и `quality_analysis.base_url`.
+
+## Установка
 
 ```bash
 git clone https://github.com/FUYOH666/Scanovich.ai-audio-call.git call-analytics
 cd call-analytics
-```
-
----
-
-## 🐍 Шаг 2: Установка Python зависимостей
-
-```bash
-# Установить uv (если не установлен)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
-
-# Синхронизировать зависимости из uv.lock
 uv sync
-```
-
-**Ожидаемое время:** 5-10 минут (зависит от скорости интернета и загрузки PyTorch)
-
-**Примечание:** PyTorch с CUDA устанавливается автоматически через `uv.toml` конфигурацию
-
-### Альтернатива: Docker (GPU-хост)
-
-Образ собирается из корня репозитория ([`Dockerfile`](Dockerfile)). LLM (vLLM и т.п.) обычно запускается **отдельно** на хосте или в другом контейнере; в контейнере приложения — ASR-пайплайн и CLI.
-
-```bash
-docker build -t call-analytics:local .
-
-docker run --rm -it --gpus all \
-  -v "$(pwd)/input:/home/asruser/app/input" \
-  -v "$(pwd)/output:/home/asruser/app/output" \
-  -v "$(pwd)/config.yaml:/home/asruser/app/config.yaml:ro" \
-  call-analytics:local \
-  python main.py health
-```
-
-Подставьте нужные тома для `metadata`, `archive`, `logs` при полном цикле. Пользователь в образе: `asruser`, рабочая директория: `/home/asruser/app`.
-
----
-
-## ⚙️ Шаг 3: Настройка конфигураций
-
-### 3.1. Основной конфиг (config.yaml)
-
-```bash
-# Скопировать пример
 cp config.example.yaml config.yaml
-
-# Отредактировать config.yaml
-nano config.yaml
-```
-
-**Что нужно настроить:**
-- `analytics.telegram.chat_id` — ваш Telegram chat ID
-- `google_sheets.spreadsheet_id` — ID вашей Google таблицы
-- Остальное можно оставить по умолчанию
-
-### 3.2. Google Sheets credentials
-
-```bash
-# Положить файл с credentials в директорию
-cp /path/to/your/google_credentials.json credentials/google_credentials.json
-```
-
-**Как получить credentials:**
-1. Перейти в [Google Cloud Console](https://console.cloud.google.com/)
-2. Создать проект
-3. Включить Google Sheets API
-4. Создать Service Account
-5. Скачать JSON ключ
-
-### 3.3. Эталонные адреса и админы (branches.yaml)
-
-```bash
-# Создать файл с эталонными данными
 cp branches.example.yaml branches.yaml
-
-# Отредактировать branches.yaml
-nano branches.yaml
 ```
 
-**Структура:**
-```yaml
-branches:
-  - address: "Street Name, Building 123"
-    variants: ["street example 123", "street example"]
-    
-admins:
-  - canonical_name: "Admin Name"
-    variants: ["Variant1", "Variant2", "Variant3"]
-```
-
----
-
-## 🤖 Шаг 4: Установка VLLM сервера
-
-### 4.1. Клонировать VLLM проект
+Минимальная первичная проверка:
 
 ```bash
-cd /path/to/project
-git clone https://github.com/vllm-project/vllm.git vLLm
-cd vLLm
-```
-
-### 4.2. Установить VLLM
-
-```bash
-# Создать venv
-# Виртуальное окружение создается автоматически через uv sync
-uv run python -m pip install --upgrade pip
-
-# Установить VLLM
-uv pip install vllm
-```
-
-### 4.3. Скачать модель LLM
-
-```bash
-# Создать директорию для моделей
-mkdir -p models
-
-# Скачать модель (через huggingface-cli или wget)
-huggingface-cli download YOUR_MODEL_NAME --local-dir models/YOUR_MODEL_NAME
-```
-
-**Ожидаемое время:** 30-60 минут (модель ~15GB)
-
----
-
-## 🔍 Шаг 5: Проверка установки
-
-```bash
-cd /path/to/project/call-analytics
-
-# Проверить здоровье системы
 uv run python main.py health
 ```
 
-**Ожидаемый вывод:**
-```
-✓ Config валиден
-✓ GPU: NVIDIA GeForce RTX 5090
-✓ VLLM доступен
-✓ Telegram бот активен
-✓ Google Sheets доступна
-```
+## Конфигурация
 
-**Если VLLM недоступен:**
-```bash
-# Запустить VLLM вручную (в отдельном терминале)
-cd /path/to/project/vLLm
-uv run python -m vllm.entrypoints.openai.api_server \
-    --model models/YOUR_MODEL_NAME \
-    --dtype float16 \
-    --max-model-len 16384 \
-    --tensor-parallel-size 1 \
-    --gpu-memory-utilization 0.8 \
-    --max-num-seqs 1 \
-    --host 0.0.0.0 \
-    --port 8000
-```
+Основные источники истины:
 
----
+- `config.example.yaml`
+- `.env.example`
+- `branches.example.yaml`
 
-## 🚀 Шаг 6: Запуск системы
+Ключевые настройки:
 
-### Вариант A: Ручной запуск (для тестирования)
+- `web.host`, `web.port`
+- `web.require_api_key`, `web.api_key`
+- `vllm.base_url`, `vllm.model`
+- `quality_analysis.base_url`, `quality_analysis.model`
+- `paths.output`, `paths.metadata`
+- `quality_analysis.paths.individual`
+
+Для секретов и env overrides используйте nested env names, например:
 
 ```bash
-cd /path/to/project/call-analytics
+export WEB__REQUIRE_API_KEY=true
+export WEB__API_KEY=replace-with-a-strong-key
+export VLLM__BASE_URL=http://your-llm-host:8005/v1
+export QUALITY_ANALYSIS__BASE_URL=http://your-llm-host:8005/v1
+```
 
-# Запустить daemon
+## Вариант A: локальный demo / pilot через web UI
+
+Основной запуск:
+
+```bash
+uv run python main.py web
+```
+
+Откройте `http://127.0.0.1:8080`.
+
+Browser UI позволяет:
+
+- загрузить один файл,
+- посмотреть transcript, classification, ASR metrics и quality output,
+- открыть список последних анализов,
+- перейти к деталям уже сохранённого анализа без повторной загрузки файла,
+- фильтровать и догружать историю результатов.
+
+### Protected pilot deployment
+
+```bash
+export WEB__REQUIRE_API_KEY=true
+export WEB__API_KEY=replace-with-a-strong-key
+uv run python main.py web --host 0.0.0.0 --port 8080
+```
+
+Ключ передаётся через `X-API-Key`. В browser UI для этого есть отдельное поле.
+
+### Альтернативный продвинутый запуск
+
+```bash
+uv run uvicorn src.web.app:app --host 0.0.0.0 --port 8080
+```
+
+Используйте этот вариант только если осознанно хотите обойти CLI-обёртку. Для большинства сценариев основной entrypoint — `main.py web`.
+
+## Вариант B: Docker для web/API слоя
+
+Контейнер по умолчанию запускает именно web/API слой.
+
+```bash
+docker build -t call-analytics:pilot .
+
+docker run --rm -it --gpus all \
+  -p 8080:8080 \
+  -e WEB__REQUIRE_API_KEY=true \
+  -e WEB__API_KEY=replace-with-a-strong-key \
+  -v "$(pwd)/config.yaml:/home/asruser/app/config.yaml:ro" \
+  -v "$(pwd)/branches.yaml:/home/asruser/app/branches.yaml:ro" \
+  -v "$(pwd)/output:/home/asruser/app/output" \
+  -v "$(pwd)/metadata:/home/asruser/app/metadata" \
+  -v "$(pwd)/quality_analysis:/home/asruser/app/quality_analysis" \
+  call-analytics:pilot
+```
+
+Почему эти volume важны:
+
+- `output/`, `metadata/`, `quality_analysis/` нужны не только для новых запусков,
+- они же питают страницу последних анализов и detail view.
+
+## Вариант C: daemon для непрерывной обработки
+
+```bash
 uv run python main.py run
 ```
 
-**Остановка:** `Ctrl+C`
+Используйте этот режим, если записи уже попадают в `input/` из АТС или другого upstream процесса.
 
-### Вариант B: Systemd сервисы (для 24/7 работы)
+## VoIP-интеграции
 
-**Рекомендуется для production!** Подробности в разделе [Настройка systemd сервисов](#настройка-systemd-сервисов-для-247-работы).
+В `voip/` лежат отдельные загрузчики для Rostelcom и Svyaztransit. Их задача — положить записи в общий `input/` проекта. Дальше работает общий daemon pipeline.
 
----
+## Артефакты и история результатов
 
-## 📥 Шаг 7: Загрузчики записей с АТС (опционально)
+После успешной обработки формируются артефакты:
 
-В этом репозитории: каталог [`voip/`](voip/) — интеграции **Rostelcom** и **Svyaztransit**. Укажите в `.env` каждого загрузчика вывод в общий `input/` проекта (см. README в `voip/rostelcom` и `voip/svyaztransit`).
+- `output/<result_id>.txt`
+- `metadata/<result_id>.json`
+- `quality_analysis/individual/<result_id>.json`
 
-```bash
-cd /path/to/project/call-analytics/voip/rostelcom
-cp .env.example .env
-# DOWNLOAD_DIR=../../input и credentials АТС
+Именно эти файлы использует:
 
-cd /path/to/project/call-analytics
-sudo ./systemd/install_all_services.sh   # при необходимости
-```
+- daemon-экосистема,
+- web/API ответы,
+- recent-analyses список в UI.
 
----
+Отдельная база для web history сейчас не нужна.
 
-## 🛡️ Шаг 8: Защита от автологаута (критично!)
+## 24/7 эксплуатация
 
-```bash
-cd /path/to/project/call-analytics
+Для production daemon-режима по-прежнему подходят systemd unit-файлы из `systemd/`.
 
-# Отключить автоматические logout/suspend
-sudo ./systemd/disable_autologout.sh
+Типичный набор:
 
-# Финальная настройка systemd-logind
-sudo ./systemd/finish_setup.sh
+- `vllm.service` для локального LLM-сервера, если он живёт на том же хосте
+- `asr-watcher.service` для `main.py run`
+- VoIP downloader services при необходимости
 
-# Перезагрузить систему
-sudo reboot
-```
+Если ваша архитектура уже использует удалённый OpenAI-compatible LLM, локальный `vllm.service` может быть не нужен.
 
-**После перезагрузки:**
-```bash
-# Проверить настройки
-./systemd/check_session_settings.sh
-```
+## Проверка после запуска
 
-**Должно вывести:**
-```
-✅ Все настройки корректны!
-   Система настроена для 24/7 работы.
-```
-
----
-
-## 📊 Шаг 9: Проверка работы
-
-### 9.1. Добавить тестовый аудиофайл
+### Web/API слой
 
 ```bash
-# Скопировать MP3 файл в input/
+curl http://127.0.0.1:8080/healthz
+```
+
+Затем:
+
+1. Загрузите один тестовый файл через UI.
+2. Убедитесь, что он появился в списке последних анализов.
+3. Проверьте, что поиск и фильтр по истории работают ожидаемо.
+4. Проверьте, что на диске появились `output/`, `metadata/` и при включённом качестве `quality_analysis/individual/` файлы.
+
+### Daemon
+
+```bash
 cp /path/to/test.mp3 input/
-
-# Проверить логи
-tail -f logs/asr-watcher.log
+uv run python main.py metrics
 ```
 
-**Ожидаемый результат:**
-- Файл обработан (~45 секунд)
-- Транскрипция в `output/test.txt`
-- Метаданные в `metadata/test.json`
-- Анализ качества в `quality_analysis/individual/test.json`
-- Запись в Google Sheets
+## Troubleshooting
 
-### 9.2. Проверить отчеты
+### `main.py web` не стартует на публичном адресе
+
+CLI блокирует public bind без API key. Включите:
 
 ```bash
-# Отправить тестовый Telegram отчет
-uv run python main.py telegram-report --type daily
-
-# Обновить Dashboard
-uv run python main.py update-dashboard
+export WEB__REQUIRE_API_KEY=true
+export WEB__API_KEY=replace-with-a-strong-key
 ```
 
----
+Или явно используйте `--allow-insecure-public-bind` только для временного demo.
 
-## 🔧 Troubleshooting
+### История анализов пустая
 
-### Проблема: VLLM не запускается
+Проверьте:
 
-**Решение:**
-```bash
-# Проверить GPU
-nvidia-smi
+- был ли хотя бы один успешный анализ,
+- доступны ли каталоги `output/`, `metadata/`, `quality_analysis/individual/`,
+- не указывают ли `paths.*` на другой путь, чем вы ожидаете.
 
-# Проверить CUDA
-nvcc --version
+### `429 Rate limit exceeded`
 
-# Переустановить VLLM
-cd /path/to/project/vLLm
-uv pip uninstall vllm
-uv pip install vllm
-```
+Web upload flow теперь ограничивается по `security.rate_limit_per_hour`.
 
-### Проблема: Whisper не находит модель
+Если вы запускаете короткий pilot и боитесь abuse на публичном URL, это полезно. Если ваш внутренний demo-host используется только вашей командой и лимит слишком строгий, поднимите значение в `config.yaml`.
 
-**Решение:**
-```bash
-# Скачать модель вручную
-uv run python -c "from faster_whisper import WhisperModel; WhisperModel('large-v3', device='cuda')"
-```
+### LLM недоступен
 
-### Проблема: Google Sheets ошибка доступа
+Проверьте `vllm.base_url` и `quality_analysis.base_url`. Это может быть localhost, LAN/VPN/Tailscale хост или другой OpenAI-compatible server.
 
-**Решение:**
-```bash
-# Проверить credentials
-cat credentials/google_credentials.json
+### Нужен remote ASR
 
-# Проверить доступ
-uv run python main.py test-sheets
-```
+В текущем коде HTTP ASR ещё не реализован. Текущий безопасный путь — запускать worker на GPU-хосте или временно использовать `device: cpu` для экспериментов.
 
-### Проблема: Telegram не отправляется
+## Чеклист production-ready пилота
 
-**Решение:**
-```bash
-# Проверить chat_id в config.yaml
-grep chat_id config.yaml
-
-# Проверить бот токен
-curl https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getMe
-```
-
----
-
-## 🛡️ Настройка systemd сервисов для 24/7 работы
-
-### Зачем нужны systemd сервисы?
-
-**Проблема:** Если запускать процессы вручную через терминал, они привязаны к пользовательской сессии и остановятся при:
-- Logout пользователя
-- Перезагрузке системы
-- Сбое GNOME сессии
-- Закрытии терминала
-
-**Решение:** Миграция на systemd сервисы дает:
-- ✅ Независимость от пользовательской сессии
-- ✅ Автозапуск при загрузке системы
-- ✅ Автоматический перезапуск при падении
-- ✅ Централизованное логирование
-- ✅ Управление зависимостями
-
----
-
-### Архитектура системы
-
-Система состоит из следующих компонентов:
-
-1. **VLLM Server** — LLM постобработка (порт 8000)
-2. **ASR watcher** — главный процесс транскрипции
-3. **Загрузчики аудиозвонков** (опционально, 4 процесса)
-
----
-
-### Установка всех сервисов
-
-#### Быстрая установка (рекомендуется):
-
-```bash
-cd /path/to/project/call-analytics
-
-# Установить все сервисы одной командой
-sudo ./systemd/install_all_services.sh
-
-# Запустить все сервисы
-sudo systemctl start vllm.service
-sudo systemctl start asr-watcher.service
-sudo systemctl start call-downloader-provider-a-city1.service
-sudo systemctl start call-downloader-provider-b-city1.service
-sudo systemctl start call-downloader-provider-b-city2.service
-sudo systemctl start call-downloader-provider-a-city2.service
-```
-
-#### Ручная установка:
-
-**1. VLLM Server:**
-```bash
-# Установить сервис
-sudo cp systemd/vllm.service /etc/systemd/system/
-sudo systemctl daemon-reload
-
-# Включить автозапуск
-sudo systemctl enable vllm.service
-
-# Запустить
-sudo systemctl start vllm.service
-
-# Проверить статус
-sudo systemctl status vllm.service
-```
-
-**2. ASR watcher:**
-```bash
-# Установить сервис
-sudo cp systemd/asr-watcher.service /etc/systemd/system/
-sudo systemctl daemon-reload
-
-# Включить автозапуск
-sudo systemctl enable asr-watcher.service
-
-# Запустить
-sudo systemctl start asr-watcher.service
-
-# Проверить статус
-sudo systemctl status asr-watcher.service
-```
-
-**3. Загрузчики аудиозвонков (опционально):**
-```bash
-# Установить все 4 сервиса
-sudo cp systemd/call-downloader-*.service /etc/systemd/system/
-sudo systemctl daemon-reload
-
-# Включить автозапуск
-sudo systemctl enable call-downloader-provider-a-city1.service
-sudo systemctl enable call-downloader-provider-b-city1.service
-sudo systemctl enable call-downloader-provider-b-city2.service
-sudo systemctl enable call-downloader-provider-a-city2.service
-
-# Запустить все
-sudo systemctl start call-downloader-provider-a-city1.service
-sudo systemctl start call-downloader-provider-b-city1.service
-sudo systemctl start call-downloader-provider-b-city2.service
-sudo systemctl start call-downloader-provider-a-city2.service
-```
-
----
-
-### Мониторинг и управление сервисами
-
-#### Проверка статуса всех сервисов
-
-```bash
-# Все сразу
-sudo systemctl status vllm.service asr-watcher.service call-downloader-*.service
-
-# По отдельности
-sudo systemctl status vllm.service
-sudo systemctl status asr-watcher.service
-```
-
-#### Просмотр логов
-
-```bash
-# В реальном времени
-journalctl -u vllm.service -f
-journalctl -u asr-watcher.service -f
-journalctl -u call-downloader-provider-a-city1.service -f
-
-# Последние 100 строк
-journalctl -u vllm.service -n 100
-journalctl -u asr-watcher.service -n 100
-
-# За сегодня
-journalctl -u vllm.service --since today
-journalctl -u asr-watcher.service --since today
-
-# Только ошибки
-journalctl -u vllm.service -p err
-journalctl -u asr-watcher.service -p err
-```
-
-#### Управление сервисами
-
-```bash
-# Запуск
-sudo systemctl start vllm.service
-sudo systemctl start asr-watcher.service
-
-# Остановка
-sudo systemctl stop vllm.service
-sudo systemctl stop asr-watcher.service
-
-# Перезапуск
-sudo systemctl restart vllm.service
-sudo systemctl restart asr-watcher.service
-
-# Включить автозапуск
-sudo systemctl enable vllm.service
-
-# Отключить автозапуск
-sudo systemctl disable vllm.service
-```
-
----
-
-### Исправление проблем с отключением сессии пользователя
-
-#### Проблема
-
-Система автоматически завершала пользовательские сессии из-за настроек энергосбережения GNOME, что приводило к остановке всех процессов.
-
-#### Найденные проблемы
-
-1. `org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout` = 3600 сек (1 час)
-2. `org.gnome.desktop.screensaver logout-delay` = 7200 сек (2 часа)
-3. `org.gnome.settings-daemon.plugins.power idle-dim` = true
-
-#### Исправления
-
-Все настройки исправлены на значения, предотвращающие автоматический сон и выход из сессии через скрипт `disable_autologout.sh`.
-
-#### Проверка настроек
-
-```bash
-cd /path/to/project/call-analytics
-./systemd/check_session_settings.sh
-```
-
-**Должно вывести:**
-```
-✅ Все настройки корректны!
-```
-
-#### Применение исправлений
-
-Если найдены проблемы, запустите:
-
-```bash
-sudo ./systemd/disable_autologout.sh
-sudo reboot
-```
-
-#### Критически важные настройки
-
-```bash
-# Должны быть установлены в 0/false:
-gsettings get org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout     # 0
-gsettings get org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout # 0
-gsettings get org.gnome.desktop.screensaver logout-delay                             # 0
-gsettings get org.gnome.desktop.screensaver logout-enabled                           # false
-gsettings get org.gnome.settings-daemon.plugins.power idle-dim                       # false
-
-# systemd-logind должен содержать:
-# IdleAction=ignore
-# IdleActionSec=0
-```
-
----
-
-### Troubleshooting systemd сервисов
-
-#### Проблема: Сервис не запускается
-
-```bash
-# 1. Проверить статус
-sudo systemctl status service-name.service
-
-# 2. Проверить логи
-journalctl -u service-name.service -n 50
-
-# 3. Проверить синтаксис сервиса
-systemd-analyze verify /etc/systemd/system/service-name.service
-
-# 4. Перезагрузить systemd
-sudo systemctl daemon-reload
-```
-
-#### Проблема: Сервис падает при запуске
-
-```bash
-# 1. Проверить права доступа
-ls -la /path/to/working/directory
-
-# 2. Проверить наличие venv
-ls -la /path/tuv run python
-
-# 3. Проверить переменные окружения
-systemctl show service-name.service | grep Environment
-
-# 4. Запустить вручную для отладки
-cd /path/to/working/directory
-uv run python script.py
-```
-
-#### Проблема: GPU не доступен в systemd сервисе
-
-```bash
-# Добавить в сервис:
-Environment="CUDA_VISIBLE_DEVICES=0"
-
-# Проверить доступность GPU
-nvidia-smi
-```
-
----
-
-## 📊 Системные ресурсы
-
-### GPU:
-- **Модель:** NVIDIA GeForce RTX 5090 (или аналог)
-- **VRAM:** 32GB (используется ~30GB для VLLM)
-- **Утилизация:** 0% (idle), до 100% при инференсе
-
-### Диск:
-- **Рекомендуется:** 1TB+ свободного места
-- **Автоочистка:** включена
-- **Хранение входных файлов:** 30 дней
-- **Сжатие архивов:** после 7 дней
-- **Максимальное использование диска:** 80%
-- **Время запуска:** 03:00 каждый день
-
----
-
-## ✅ Чеклист готовности к production
-
-- [ ] Python 3.12 установлен
-- [ ] CUDA 12.4+ установлен
-- [ ] GPU доступен (nvidia-smi)
-- [ ] Репозиторий склонирован
-- [ ] Зависимости установлены (pyproject.toml + uv.lock)
-- [ ] config.yaml настроен
-- [ ] Google credentials добавлены
-- [ ] branches.yaml настроен
-- [ ] VLLM сервер запущен
-- [ ] LLM модель скачана
 - [ ] `uv run python main.py health` проходит
-- [ ] Systemd сервисы установлены
-- [ ] Автологаут отключен (disable_autologout.sh выполнен)
-- [ ] Система перезагружена
-- [ ] Настройки сессии проверены (check_session_settings.sh)
-- [ ] Тестовый файл обработан успешно
-- [ ] Telegram отчет отправлен
-- [ ] Google Sheets обновлена
+- [ ] `main.py web` поднимается на нужном host/port
+- [ ] При публичном bind включён API key
+- [ ] Настроен разумный `security.rate_limit_per_hour`
+- [ ] Хотя бы один тестовый файл успешно проанализирован
+- [ ] Новый анализ появляется в recent-analyses списке
+- [ ] Поиск, фильтр и пагинация истории проверены на реальных saved artifacts
+- [ ] `output/`, `metadata/`, `quality_analysis/` подключены как persistent volumes
+- [ ] LLM endpoint стабилен и задокументирован вне git
 
----
+## Дополнительные документы
 
-## 📚 Дополнительные ресурсы
-
-- **`README.md`** / **`README_EN.md`** — быстрый старт и полное руководство
-- **`docs/README.md`** — индекс технической документации
-- **`docs/ARCHITECTURE.md`** — пайплайн и модули
-- **`PROJECT_OVERVIEW.md`** — краткий обзор продукта
-- **`CONTRIBUTING.md`** — для контрибьюторов
-- **`SECURITY.md`** — политика безопасности
-
-Файлы, попавшие в **`quarantine/`**, можно вернуть вручную или скриптом **`restore_from_quarantine.py`** (см. справку в скрипте).
-
----
-
-**© 2025 Call Analytics Platform**
+- [`README.md`](README.md) / [`README_EN.md`](README_EN.md)
+- [`docs/README.md`](docs/README.md)
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`docs/EVALUATION_GUIDE.md`](docs/EVALUATION_GUIDE.md)
+- [`docs/REMOTE_ASR_AND_LLM.md`](docs/REMOTE_ASR_AND_LLM.md)

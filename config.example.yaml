@@ -12,15 +12,12 @@ asr:
   device: "cuda"
   compute_type: "float16"
   cpu_threads: 16
-  device_index: 0
   beam_size: 1
   temperature: [0.0, 0.1, 0.3]
   vad_filter: false
   # ЗАМЕНИТЕ НА СВОЙ ПРОМПТ для вашего бизнеса
   initial_prompt: "Ваша компания, администратор, запись на прием, диагностика, консультация"
   language: "ru"
-  word_timestamps: false
-  condition_on_previous_text: false
 
   # Предобработка аудио
   preprocessing:
@@ -91,8 +88,8 @@ quality_analysis:
 
   # Скрипты оценки (ЗАМЕНИТЕ НА СВОИ). См. также templates/generic_sales_support.md и config.generic.example.yaml
   scripts:
-    script_template_a: "script_evaluation_template_a.md"  # Шаблон оценки Template A (расширенный)
-    script_template_b: "script_evaluation_template_b.md"  # Шаблон оценки Template B (стандартный)
+    script_template_a: "templates/script_evaluation_template_a.md"  # Шаблон оценки Template A (расширенный)
+    script_template_b: "templates/script_evaluation_template_b.md"  # Шаблон оценки Template B (стандартный)
 
   # Пути (оставьте как есть)
   paths:
@@ -138,7 +135,7 @@ google_sheets:
   worksheet_trends: "📈 Тренды"
 
   # Настройки обновления
-  realtime_update: true
+  batch_sync_time: "23:00"
   dashboard_update_interval: 60
   trends_update_day: "monday"
 
@@ -147,6 +144,18 @@ security:
   allowed_extensions: [".mp3", ".wav", ".m4a", ".ogg", ".flac"]
   max_file_size_mb: 100
   rate_limit_per_hour: 1000
+
+# ⭐ Demo / pilot web UI and API
+web:
+  host: "127.0.0.1"
+  port: 8080
+  require_api_key: false
+  api_key: ""  # Prefer WEB__API_KEY via environment for protected pilot deployments
+
+# Примечание:
+# - `main.py web` использует тот же shared pipeline, что и CLI.
+# - Успешные web-запросы сохраняют артефакты в `output/`, `metadata/`,
+#   и `quality_analysis/individual/`, а UI затем показывает их в истории.
 
 # ======================================================================
 # ⚠️  ИНСТРУКЦИИ ПО НАСТРОЙКЕ:

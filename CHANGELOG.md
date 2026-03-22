@@ -5,6 +5,51 @@ All notable changes are documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+## [5.1.0] - 2026-03-22
+
+### Added
+- `docs/PRODUCTIZATION_PLAN.md` — product audit, monetization model, prioritized backlog, and execution phases
+- `docs/EVALUATION_GUIDE.md` — quick path for fit checks and first pilots before full deployment
+- `FUNDING.md` — support, pilot, and sponsorship options that preserve the MIT open-source core
+- `.github/ISSUE_TEMPLATE/bug_report.md`, `.github/ISSUE_TEMPLATE/feature_request.md` — GitHub issue templates for reproducible bugs and feature proposals
+- `.github/pull_request_template.md` — lightweight PR checklist for summary, test plan, docs, and security review
+- `src/pipeline_service.py` — shared single-file analysis pipeline reused by CLI and the new web layer
+- `src/web/app.py` and `src/web/static/` — minimal FastAPI demo API and browser UI for single-file analysis
+- `tests/test_api.py` — HTTP contract tests for `/healthz`, `/analyze`, upload validation, file-size limits, auth boundary, and safe 500 responses
+- `tests/test_cli_web.py` — CLI tests for `main.py web` launch behavior and public-bind safety checks
+- `GET /analyses` and `GET /analyses/{result_id}` in `src/web/app.py` — filesystem-backed history endpoints over persisted artifacts from `output/`, `metadata/`, and `quality_analysis/individual/`
+- recent-analyses browser workflow in `src/web/static/` — users can reopen saved results without re-uploading the original file
+- seeded history tests in `tests/test_api.py` — recent-list ordering, orphan artifact handling, detail retrieval, and API-key protection for saved results
+- `docs/DEPLOYMENT_PROFILES.md` — operator-facing deployment profiles for all-local GPU, remote LLM, and future remote ASR
+- `docs/PILOT_OUTREACH_PLAYBOOK.md` — solo-founder outreach and first-pilot conversation playbook
+- `docs/WORKING_TOGETHER.md` — simple collaboration paths that preserve the open-source core
+- `CODE_OF_CONDUCT.md` — public collaboration norms for contributors and discussions
+- `.github/ISSUE_TEMPLATE/config.yml` — issue template routing with links for security reports and support paths
+- `.github/FUNDING.yml`, `CODEOWNERS`, and `.github/dependabot.yml` — public community signals and lightweight maintenance automation
+- `templates/script_evaluation_template_a.md` and `templates/script_evaluation_template_b.md` — moved full evaluation templates out of the repository root
+
+### Changed
+- `README.md`, `README_EN.md`, `docs/README.md`, and `PROJECT_OVERVIEW.md` — linked evaluation, product strategy, and funding docs; added CI badge to public READMEs
+- `README.md` — clarified hardware wording: 24GB+ VRAM recommended for large models, 8GB+ workable with smaller presets
+- `CONTRIBUTING.md` — mentions GitHub templates for bug reports, feature requests, and pull requests
+- `src/cli/commands.py` — `process-file` now uses the shared pipeline, `health` respects `asr.device`, and `test-sheets` uses Pydantic config fields correctly
+- `src/config_validation.py` — quality-analysis directories are created only when the feature is enabled
+- `docs/ARCHITECTURE.md`, `README.md`, and `README_EN.md` — document the new demo API/UI entrypoint and shared pipeline
+- `src/web/app.py` — web layer now supports protected pilot deployments with optional `X-API-Key` and hides internal 500 details from clients
+- `src/cli/commands.py`, `Dockerfile`, and `DEPLOYMENT_GUIDE.md` — aligned around `main.py web` and the pilot-ready web/API deployment story
+- `config.example.yaml` and `.env.example` — added `web` settings for host, port, and optional API key protection
+- `docs/ROADMAP.md`, `docs/EVALUATION_GUIDE.md`, `docs/examples/README.md`, and `FUNDING.md` — updated to reflect shipped API/UI MVP, pilot checklist, sample report flow, and stronger mission/sponsorship framing
+- `.github/workflows/ci.yml` — added selective Ruff and pilot-ready web/API checks without enforcing full-tree linting
+- `README.md`, `README_EN.md`, `DEPLOYMENT_GUIDE.md`, `docs/README.md`, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `docs/EVALUATION_GUIDE.md`, `docs/examples/README.md`, `FUNDING.md`, `config.example.yaml`, `.env.example`, and `docs/REMOTE_ASR_AND_LLM.md` — refreshed to match the shared pipeline, web/API entrypoint, recent-analyses flow, and current local-first deployment story
+- `src/web/app.py`, `src/web/static/index.html`, `src/web/static/app.js`, and `src/web/static/styles.css` — added rate limiting for uploads, history search/filter/pagination, and a clearer operator-facing detail summary
+- `tests/test_api.py` — added coverage for upload rate limits and recent-analysis filtering/pagination
+- `DEPLOYMENT_GUIDE.md`, `docs/ROADMAP.md`, `docs/EVALUATION_GUIDE.md`, and `FUNDING.md` — aligned with pilot hardening, deployment profiles, outreach, and collaboration model
+- `README.md`, `README_EN.md`, `docs/README.md`, `PROJECT_OVERVIEW.md`, `CONTRIBUTING.md`, `SECURITY.md`, and `pyproject.toml` — aligned around a cleaner public entrypoint, consistent project naming, stronger community links, and less public-facing drift
+- `config.example.yaml`, `src/config_validation.py`, `tests/test_script_parser.py`, and `templates/README.md` — updated for the new `templates/` locations of the full script evaluation templates
+- `.github-topics.txt` — trimmed niche topics and aligned discovery tags with the current public product surface
+
 ## [5.0.2] - 2026-03-22
 
 ### Added
