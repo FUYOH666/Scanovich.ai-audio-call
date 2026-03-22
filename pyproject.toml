@@ -1,7 +1,7 @@
 [project]
 name = "call-analytics-platform"
-version = "5.0.0"
-description = "End-to-end call analytics: VoIP download, Whisper transcription, quality analysis, dashboards"
+version = "5.1.0"
+description = "Local-first call analytics platform with shared pipeline, pilot-ready API/UI, and on-prem deployment paths"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = {text = "MIT"}
@@ -16,8 +16,9 @@ keywords = [
     "speech-to-text",
     "quality-analysis",
     "voice-analytics",
-    "cloudpbx",
-    "rostelcom",
+    "self-hosted",
+    "fastapi",
+    "call-center",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -67,6 +68,9 @@ dependencies = [
     # ⭐ Google Sheets Integration - диапазоны
     "gspread>=6.1.0,<7.0.0",
     "google-auth>=2.36.0,<3.0.0",
+    "fastapi>=0.135.1",
+    "uvicorn>=0.42.0",
+    "python-multipart>=0.0.22",
 ]
 
 [project.urls]

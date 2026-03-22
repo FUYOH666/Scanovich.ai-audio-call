@@ -1,2 +1,2 @@
-"""Тесты для ASR-4.5."""
+"""Tests for Call Analytics Platform."""
 

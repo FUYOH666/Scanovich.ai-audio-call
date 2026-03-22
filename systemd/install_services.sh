@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Установка systemd сервисов для ASR-4.5
+# Install systemd units — Call Analytics Platform
 # 
 # Author: 
 # Project: ASR Call Quality Analyzer
@@ -8,10 +8,10 @@
 
 set -e
 
-PROJECT_DIR="/path/to/project/ASR-4.5"
+PROJECT_DIR="/path/to/project/call-analytics"
 
 echo "=================================================="
-echo "Установка systemd сервисов ASR-4.5"
+echo "Установка systemd сервисов Call Analytics Platform"
 echo "=================================================="
 
 # 1. VLLM сервис

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Удаление systemd сервисов ASR-4.5
+# Remove systemd units — Call Analytics Platform
 # 
 # Author: 
 # Project: ASR Call Quality Analyzer
@@ -9,7 +9,7 @@
 set -e
 
 echo "=================================================="
-echo "Удаление systemd сервисов ASR-4.5"
+echo "Удаление systemd сервисов Call Analytics Platform"
 echo "=================================================="
 
 # 1. Остановить сервисы
@@ -46,7 +46,7 @@ echo "✅ Удаление завершено!"
 echo "=================================================="
 echo ""
 echo "Теперь можно запускать процессы вручную:"
-echo "  cd /path/to/project/ASR-4.5"
+echo "  cd /path/to/project/call-analytics"
 echo "  uv run python main.py run"
 echo ""
 

@@ -1,4 +1,4 @@
-# 🐳 ASR-4.5 Production Container
+# Call Analytics Platform — production container
 #
 # Production-ready Docker образ для ASR Call Quality Analyzer
 # Использует uv для детерминированной установки зависимостей из uv.lock
@@ -32,8 +32,8 @@ FROM python:3.12-slim
 
 # Метаданные образа
 LABEL maintainer="ScanovichAI <contact@scanovich.ai>"
-LABEL version="4.5.0"
-LABEL description="ASR-4.5 Production System - Call Quality Analyzer"
+LABEL version="5.1.0"
+LABEL description="Call Analytics Platform — call transcription and quality analysis"
 
 # Установка минимальных системных зависимостей для runtime
 RUN apt-get update && apt-get install -y \
@@ -63,9 +63,11 @@ ENV PYTHONPATH="/home/asruser/app"
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# Health check (для CLI приложения проверяем доступность модуля)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import src.config_validation; print('OK')" || exit 1
+EXPOSE 8080
 
-# По умолчанию запускаем health check
-CMD ["python", "main.py", "health"]
+# Health check for the pilot-ready web layer
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=5).read(); print('OK')" || exit 1
+
+# По умолчанию запускаем web UI/API
+CMD ["python", "main.py", "web", "--host", "0.0.0.0", "--port", "8080"]

@@ -98,3 +98,28 @@ def test_config_ensures_directories():
         assert Path(config.paths.logs).exists()
         assert Path(config.paths.input).exists()
 
+
+def test_quality_directories_created_only_when_enabled():
+    """Тест условного создания директорий quality analysis."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        base_path = Path(tmpdir)
+
+        config = AppConfig()
+        config.paths.output = str(base_path / "output")
+        config.paths.metadata = str(base_path / "metadata")
+        config.paths.archive = str(base_path / "archive")
+        config.paths.logs = str(base_path / "logs")
+        config.paths.input = str(base_path / "input")
+        config.quality_analysis.enabled = False
+        config.quality_analysis.paths = {
+            "individual": str(base_path / "quality" / "individual"),
+            "aggregated": str(base_path / "quality" / "aggregated"),
+            "reports": str(base_path / "quality" / "reports"),
+        }
+
+        config.ensure_directories()
+
+        assert not Path(config.quality_analysis.paths["individual"]).exists()
+        assert not Path(config.quality_analysis.paths["aggregated"]).exists()
+        assert not Path(config.quality_analysis.paths["reports"]).exists()
+

@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.6.3"
+
+      - name: Python 3.12
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --frozen --extra dev
+
+      # Full-tree ruff is not enforced yet (legacy Cyrillic strings in CLI output, etc.).
+      - name: Ruff (new web and pipeline slice)
+        run: uv run ruff check src/web src/pipeline_service.py tests/test_api.py tests/test_cli_web.py
+
+      - name: Pilot-ready web checks
+        run: uv run pytest tests/test_api.py tests/test_cli_web.py -q --tb=short
+
+      - name: Pytest
+        run: uv run pytest tests/ -q --tb=short

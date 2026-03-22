@@ -2,8 +2,8 @@
 Модуль A/B тестирования моделей для анализа качества.
 
 Сравнивает:
-- LLM-30B (локальный VLLM) - бесплатно
-- Commercial LLM Sonnet 4.5 (OpenRouter) - ~$0.07/звонок
+- локальный LLM (VLLM / OpenAI-compatible) — без API-стоимости
+- облачный LLM (часто OpenRouter) — по тарифам провайдера
 """
 
 import json
@@ -15,7 +15,7 @@ from typing import Dict, Optional, Tuple
 from openai import OpenAI
 
 from src.config_validation import QualityAnalysisConfig, VLLMConfig
-from src.quality_analyzer import CommercialLLMAnalyzer, EquipmentDetector, ScriptParser
+from src.quality_analyzer import EquipmentDetector, OpenRouterAnalyzer, ScriptParser
 
 logger = logging.getLogger(__name__)
 
@@ -103,8 +103,8 @@ class ModelComparator:
             quality_config: Конфигурация анализа качества
             vllm_config: Конфигурация VLLM
         """
-        self.claude_analyzer = CommercialLLMAnalyzer(quality_config)
-        self.qwen_analyzer = LLMAnalyzer(vllm_config)
+        self.openrouter_analyzer = OpenRouterAnalyzer(quality_config)
+        self.local_llm_analyzer = LLMAnalyzer(vllm_config)
 
         # Загрузка скриптов
         self.scripts = {}
@@ -140,31 +140,31 @@ class ModelComparator:
         script_criteria = self.scripts[script_key]
 
         # Построение промптов (одинаковые для обеих моделей)
-        system_prompt = self.claude_analyzer.build_system_prompt(
+        system_prompt = self.openrouter_analyzer.build_system_prompt(
             script_criteria, equipment_type
         )
-        user_prompt = self.claude_analyzer.build_user_prompt(transcription, metadata)
+        user_prompt = self.openrouter_analyzer.build_user_prompt(transcription, metadata)
 
-        # Тест 1: Commercial LLM Sonnet 4.5
-        logger.info("Тест 1/2: Commercial LLM Sonnet 4.5...")
+        # Тест 1: облачный LLM (OpenRouter / …)
+        logger.info("Тест 1/2: облачный LLM (OpenRouter-compatible)...")
         try:
-            claude_response, claude_stats = self.claude_analyzer._call_claude(
+            claude_response, claude_stats = self.openrouter_analyzer._call_claude(
                 system_prompt, user_prompt
             )
-            claude_result = self.claude_analyzer._parse_response(claude_response)
+            claude_result = self.openrouter_analyzer._parse_response(claude_response)
             if claude_result:
                 claude_result.update(claude_stats)
         except Exception as e:
-            logger.error(f"Ошибка Commercial LLM анализа: {e}")
+            logger.error(f"Ошибка облачного LLM анализа: {e}")
             claude_result = {"error": str(e)}
 
-        # Тест 2: LLM-30B
-        logger.info("Тест 2/2: LLM-30B (Local VLLM)...")
+        # Тест 2: локальный VLLM
+        logger.info("Тест 2/2: локальный LLM (VLLM)...")
         try:
-            qwen_response, qwen_metrics = self.qwen_analyzer.analyze(
+            qwen_response, qwen_metrics = self.local_llm_analyzer.analyze(
                 system_prompt, user_prompt
             )
-            qwen_result = self.claude_analyzer._parse_response(qwen_response)
+            qwen_result = self.openrouter_analyzer._parse_response(qwen_response)
             if qwen_result:
                 qwen_result.update(qwen_metrics)
             else:
@@ -199,17 +199,17 @@ class ModelComparator:
             comparison: Результаты от compare()
         """
         print("\n" + "=" * 80)
-        print("🔬 A/B ТЕСТ: Commercial LLM Sonnet 4.5 vs LLM-30B")
+        print("🔬 A/B ТЕСТ: облачный LLM (OpenRouter-compatible) vs локальный VLLM")
         print("=" * 80)
 
         print(f"\n📋 Параметры теста:")
         print(f"  Оборудование: {comparison['equipment_type']}")
         print(f"  Длина транскрипции: {comparison['transcription_length']} символов")
 
-        # Commercial LLM результаты
+        # Облачный LLM
         claude = comparison["claude_sonnet_4_5"]
         print(f"\n{'=' * 80}")
-        print("🌟 МОДЕЛЬ A: Commercial LLM Sonnet 4.5 (OpenRouter)")
+        print("🌟 МОДЕЛЬ A: облачный LLM (OpenRouter / OpenAI-compatible)")
         print("=" * 80)
 
         if "error" in claude:
@@ -252,7 +252,7 @@ class ModelComparator:
         print("📊 СРАВНИТЕЛЬНАЯ ТАБЛИЦА")
         print("=" * 80)
 
-        print(f"\n| Критерий | Commercial LLM Sonnet 4.5 | LLM-30B |")
+        print(f"\n| Критерий | Облачный LLM | Локальный VLLM |")
         print(f"|----------|-------------------|-----------|")
 
         claude_score = claude.get("overall_score", "ERROR")
@@ -278,7 +278,7 @@ class ModelComparator:
 
         if "error" in qwen:
             print(f"\n❌ LLM-30B не справился с задачей")
-            print(f"\n✅ Рекомендация: Использовать Commercial LLM Sonnet 4.5")
+            print(f"\n✅ Рекомендация: Использовать облачный LLM")
             print(f"   Причина: Локальная модель не может обработать сложный промпт")
         elif claude_score == qwen_score:
             print(f"\n✅ Обе модели показали одинаковый результат!")
@@ -293,12 +293,12 @@ class ModelComparator:
                 print(f"   Качество: Достаточное для задачи")
             else:
                 print(f"\n⚠️ Существенная разница в оценках: {diff:.1f} баллов")
-                print(f"\n✅ Рекомендация: Использовать Commercial LLM Sonnet 4.5")
+                print(f"\n✅ Рекомендация: Использовать облачный LLM")
                 print(f"   Причина: Более точный и объективный анализ")
                 print(f"   Стоимость: ${claude.get('cost_usd', 0):.4f}/звонок - приемлемо для качества")
         else:
             print(f"\n⚠️ Невозможно сравнить результаты")
-            print(f"\n✅ Рекомендация: Использовать Commercial LLM Sonnet 4.5")
+            print(f"\n✅ Рекомендация: Использовать облачный LLM")
             print(f"   Причина: Гарантированная стабильность и качество")
 
         print("\n" + "=" * 80 + "\n")

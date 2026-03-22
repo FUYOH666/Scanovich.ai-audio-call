@@ -1,4 +1,4 @@
-"""ASR-4.5 Production System - Автоматическая транскрипция аудиозвонков."""
+"""Call Analytics Platform — transcription and call-quality analysis."""
 
-__version__ = "4.5.0"
+__version__ = "5.1.0"
 

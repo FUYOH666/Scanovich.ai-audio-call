@@ -1,228 +1,146 @@
-# 🤝 Contributing to ASR Call Quality Analyzer
+# Contributing to Call Analytics Platform
 
-Спасибо за интерес к проекту! Я открыт для вклада от сообщества.
+Thank you for considering a contribution.
 
----
+This repository is public, but it works in a privacy-sensitive domain. Good contributions improve the product without exposing real customer data or adding avoidable operational risk.
 
-## 🎯 Как внести вклад
+## Before you start
 
-### 1. **Fork & Clone**
+Please read:
+
+- [`README.md`](README.md) for the public product overview
+- [`docs/README.md`](docs/README.md) for the documentation map
+- [`SECURITY.md`](SECURITY.md) for responsible reporting and data-handling rules
+
+For non-trivial changes, opening an issue first is the safest path.
+
+## Local setup
+
 ```bash
-# Форкните репозиторий на GitHub
-# Затем клонируйте свой fork
 git clone git@github.com:YOUR_USERNAME/Scanovich.ai-audio-call.git
 cd Scanovich.ai-audio-call
-```
-
-### 2. **Создайте feature branch**
-```bash
-git checkout -b feature/your-feature-name
-```
-
-### 3. **Установка зависимостей**
-```bash
-# Установить uv (если не установлен)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
-
-# Синхронизировать зависимости
 uv sync
 ```
 
-### 4. **Внесите изменения**
-- Следуйте стилю кода (ruff для форматирования и линтинга)
-- Добавьте тесты для новой функциональности
-- Обновите документацию
-- Используйте `uv run` для запуска команд Python
+Create a feature branch:
 
-### 4.1. **Использование библиотек и документация**
-
-**Важно**: Перед использованием новых библиотек рекомендуется ознакомиться с их актуальной документацией и best practices.
-
-**Ключевые библиотеки проекта:**
-- **uv** - менеджер пакетов и окружений
-- **pydantic** - валидация данных
-- **pydantic-settings** - управление настройками
-- **pytest** - тестирование
-- **ruff** - линтинг и форматирование
-- **pyright** - проверка типов
-- **bandit** - безопасность
-
-**Рекомендации:**
-- ✅ Изучайте официальную документацию перед использованием библиотек
-- ✅ Следуйте best practices из документации
-- ✅ Проверяйте актуальность версий и API
-- ✅ Используйте примеры из официальных источников
-
-### 5. **Проверьте безопасность**
 ```bash
-# ОБЯЗАТЕЛЬНО перед коммитом!
+git checkout -b feature/your-change
+```
+
+## Development expectations
+
+When you make a change:
+
+- keep the implementation small and clear,
+- add or update tests when behavior changes,
+- update docs when user-visible behavior or configuration changes,
+- prefer `uv run ...` for Python commands,
+- avoid introducing hidden fallbacks or silent degradation.
+
+## Safety rules
+
+Never commit:
+
+- real call recordings,
+- real transcripts or metadata,
+- credentials or secrets,
+- customer names or private branch addresses,
+- internal hostnames or private infrastructure details.
+
+Use:
+
+- `config.example.yaml`,
+- `.env.example`,
+- `branches.example.yaml`,
+- synthetic examples,
+- mock data in tests.
+
+## Recommended checks
+
+Run the checks that match your change.
+
+Common commands:
+
+```bash
+uv run pytest tests/
+uv run ruff check src tests
+uv run ruff format src tests
+uv run pyright src
+```
+
+If you changed web/API behavior, at minimum run:
+
+```bash
+uv run pytest tests/test_api.py tests/test_cli_web.py
+```
+
+If you changed script parsing, run:
+
+```bash
+uv run pytest tests/test_script_parser.py
+```
+
+If your environment supports it, run the repository security helper before opening a PR:
+
+```bash
 ./check_before_commit.sh
 ```
 
-### 6. **Commit & Push**
-```bash
-git add -A
-git commit -m "feat: your feature description"
-git push origin feature/your-feature-name
+## Commit style
+
+Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```text
+feat: add search for recent analyses
+fix: reject invalid analysis ids
+docs: clarify pilot deployment guide
+refactor: simplify shared pipeline helpers
+test: add saved-artifact API coverage
 ```
 
-### 7. **Create Pull Request**
-- Опишите изменения
-- Приложите скриншоты (если UI)
-- Укажите связанные issues
+## Pull requests
 
----
+Use the pull request template and include:
 
-## 🔒 Правила безопасности
+- what changed,
+- why it matters,
+- how it was tested,
+- whether docs were updated,
+- whether any UI screenshots help.
 
-### ❌ НИКОГДА не коммитьте:
+Good PRs are focused and easy to review.
 
-1. **Персональные данные (PII)**
-   - Аудиозаписи звонков
-   - Транскрипции с реальными ФИО/телефонами
-   - Логи с реальными данными
+## Reporting bugs and proposing features
 
-2. **Секреты**
-   - API keys, tokens
-   - Credentials файлы
-   - Пароли, chat_id
+Use the GitHub issue templates for:
 
-3. **Упоминания клиентов**
-   - Названия конкретных компаний
-   - Реальные адреса филиалов
-   - Имена реальных сотрудников
+- reproducible bugs,
+- workflow improvements,
+- feature requests.
 
-### ✅ Используйте:
+Before opening an issue:
 
-- `config.example.yaml` для примеров
-- `branches.example.yaml` для демо данных
-- Mock данные в тестах
-- Generic термины в коде
+1. Check whether it already exists.
+2. Confirm it is not a security issue.
+3. Remove any PII, secrets, or customer-specific data from logs and screenshots.
 
----
+## Documentation ownership
 
-## 📝 Стиль коммитов
+Use these rules when docs need updating:
 
-Используйте [Conventional Commits](https://www.conventionalcommits.org/):
+- `README.md` — canonical public entrypoint
+- `README_EN.md` — extended guide and command reference
+- `docs/ARCHITECTURE.md` — pipeline and module behavior
+- `DEPLOYMENT_GUIDE.md` — install, operations, and pilot deployment
+- `docs/ROADMAP.md` — current next-step product work
+- `CHANGELOG.md` — shipped changes
 
-```
-feat: Add new audio format support
-fix: Fix transcription bug for 8kHz files
-docs: Update installation guide
-refactor: Improve quality analyzer performance
-test: Add tests for audio preprocessor
-chore: Update dependencies
-```
+## Questions
 
----
+- Website: [scanovich.ai](https://scanovich.ai)
+- Email: `iamfuyoh@gmail.com`
+- Telegram: [`@ScanovichAI`](https://t.me/ScanovichAI)
 
-## 🧪 Тестирование
-
-```bash
-# Запустить все тесты
-uv run pytest tests/
-
-# Запустить конкретный тест
-uv run pytest tests/test_config_validation.py
-
-# С coverage
-uv run pytest --cov=src tests/
-```
-
----
-
-## 📚 Документация
-
-При добавлении новой функциональности:
-
-1. **Docstrings** в коде (Google style)
-2. **README.md** — обновить если нужно
-3. **PROJECT_OVERVIEW.md** — для архитектурных изменений
-4. **DEPLOYMENT_GUIDE.md** — для изменений в установке
-
----
-
-## 🐛 Reporting Bugs
-
-**Перед созданием issue:**
-
-1. Проверьте, что bug еще не reported
-2. Убедитесь, что используете последнюю версию
-3. Проверьте SECURITY.md — возможно это security issue
-
-**Создайте issue с:**
-
-- Описанием проблемы
-- Шагами для воспроизведения
-- Ожидаемым и фактическим поведением
-- Версией Python, OS, GPU
-- Логами (БЕЗ PII!)
-
----
-
-## 💡 Feature Requests
-
-Хотите новую функцию?
-
-1. Создайте issue с тегом `enhancement`
-2. Опишите use case
-3. Объясните почему это полезно
-4. Предложите реализацию (опционально)
-
----
-
-## 🎨 Code Style
-
-### Python:
-```bash
-# Форматирование и линтинг
-uv run ruff check src/
-uv run ruff format src/
-
-# Type checking (опционально)
-uv run pyright src/
-```
-
-### Docstrings:
-```python
-def analyze_quality(transcript: str, script: str) -> dict:
-    """
-    Анализирует качество обслуживания по транскрипции.
-    
-    Args:
-        transcript: Текст транскрипции звонка
-        script: Корпоративный скрипт для оценки
-        
-    Returns:
-        dict: Результаты анализа с оценками и рекомендациями
-        
-    Raises:
-        ValueError: Если transcript пустой
-    """
-    pass
-```
-
----
-
-## 🏆 Признание вклада
-
-Все contributors будут добавлены в:
-- README.md (Contributors section)
-- Git history
-- Release notes
-
----
-
-## 📞 Вопросы?
-
-- 🌐 Website: [scanovich.ai](https://scanovich.ai)
-- 📧 Email: iamfuyoh@gmail.com
-- 💬 Telegram: [@ScanovichAI](https://t.me/ScanovichAI)
-
----
-
-**Спасибо за вклад в ASR Call Quality Analyzer! 🚀**
-
-**© 2025 ASR Call Quality Analyzer | **
+Thanks for helping make the project more useful.
 
