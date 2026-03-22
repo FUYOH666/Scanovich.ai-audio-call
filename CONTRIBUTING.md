@@ -138,7 +138,7 @@ uv run pytest --cov=src tests/
 
 1. **Docstrings** в коде (Google style)
 2. **README.md** — обновить если нужно
-3. **PROJECT_OVERVIEW.md** — для архитектурных изменений
+3. **`docs/ARCHITECTURE.md`** — для изменений пайплайна и модулей; **`PROJECT_OVERVIEW.md`** — краткий обзор при необходимости
 4. **DEPLOYMENT_GUIDE.md** — для изменений в установке
 
 ---

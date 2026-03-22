@@ -1,11 +1,10 @@
 """
-Модуль анализа качества обслуживания через Commercial LLM Sonnet 4.5.
+Анализ качества обслуживания по Markdown-критериям.
 
-Функции:
-- Определение типа оборудования (1.5T vs 3T)
-- Парсинг скриптов обслуживания (30 критериев)
-- Анализ звонков через OpenRouter API (Commercial LLM Sonnet 4.5)
-- Расчёт итоговых оценок качества
+Основной путь production: локальный LLM через OpenAI-compatible API (vLLM и т.п.) — см. `LLMAnalyzer`
+в model_comparison и ветку `provider: vllm` в конфиге.
+
+Опционально: облачный провайдер через тот же OpenAI SDK (типично OpenRouter) — класс `OpenRouterAnalyzer`.
 """
 
 import json
@@ -146,15 +145,13 @@ class EquipmentDetector:
         return "template_a"
 
 
-class CommercialLLMAnalyzer:
-    """Интеграция с Commercial LLM Sonnet 4.5 через OpenRouter."""
+class OpenRouterAnalyzer:
+    """Анализ через облачный OpenAI-compatible API (часто OpenRouter; ключ из ENV)."""
 
     def __init__(self, config: QualityAnalysisConfig):
         """
-        Инициализация Commercial LLM анализатора.
-
         Args:
-            config: Конфигурация анализа качества
+            config: Конфигурация анализа качества (base_url, api_key_env, model, …)
         """
         self.config = config
 
@@ -172,14 +169,14 @@ class CommercialLLMAnalyzer:
                 api_key=api_key,
                 timeout=config.timeout,
             )
-            logger.info(f"✓ Commercial LLM Sonnet 4.5 клиент инициализирован: {config.base_url}")
+            logger.info(f"✓ OpenRouter/cloud LLM клиент инициализирован: {config.base_url}")
         except Exception as e:
             logger.error(f"Ошибка инициализации OpenRouter клиента: {e}")
             raise RuntimeError(f"Не удалось подключиться к OpenRouter: {e}") from e
 
     def build_system_prompt(self, script_criteria: List[Dict], equipment_type: str) -> str:
         """
-        Построить system prompt для Commercial LLM.
+        Построить system prompt для Cloud LLM.
 
         Args:
             script_criteria: Список критериев из скрипта
@@ -250,7 +247,7 @@ class CommercialLLMAnalyzer:
         self, transcription: str, metadata: Optional[Dict] = None
     ) -> str:
         """
-        Построить user prompt для Commercial LLM.
+        Построить user prompt для Cloud LLM.
 
         Args:
             transcription: Текст транскрипции
@@ -290,7 +287,7 @@ class CommercialLLMAnalyzer:
     )
     def _call_claude(self, system_prompt: str, user_prompt: str) -> Tuple[str, Dict]:
         """
-        Вызов Commercial LLM Sonnet 4.5 API с retry-логикой.
+        Вызов облачного chat-completions API с retry-логикой.
 
         Args:
             system_prompt: System prompt
@@ -319,20 +316,20 @@ class CommercialLLMAnalyzer:
                 "total": response.usage.total_tokens,
             }
 
-            # Расчёт стоимости (Commercial LLM Sonnet 4.5: $3/$15 за 1M токенов)
+            # Расчёт стоимости (зависит от модели/тарифа провайдера)
             cost_usd = (
                 tokens_used["prompt"] * 0.000003
                 + tokens_used["completion"] * 0.000015
             )
 
             logger.info(
-                f"Commercial LLM ответ получен: {tokens_used['total']} токенов, ${cost_usd:.4f}"
+                f"Cloud LLM ответ получен: {tokens_used['total']} токенов, ${cost_usd:.4f}"
             )
 
             return result_text, {"tokens_used": tokens_used, "cost_usd": cost_usd}
 
         except Exception as e:
-            logger.warning(f"Ошибка вызова Commercial LLM API (retry): {e}")
+            logger.warning(f"Ошибка вызова Cloud LLM API (retry): {e}")
             raise
 
     def analyze(
@@ -343,7 +340,7 @@ class CommercialLLMAnalyzer:
         metadata: Optional[Dict] = None,
     ) -> Dict:
         """
-        Полный анализ звонка через Commercial LLM.
+        Полный анализ звонка через Cloud LLM.
 
         Args:
             transcription: Текст транскрипции
@@ -358,7 +355,7 @@ class CommercialLLMAnalyzer:
         system_prompt = self.build_system_prompt(script_criteria, equipment_type)
         user_prompt = self.build_user_prompt(transcription, metadata)
 
-        # Вызов Commercial LLM
+        # Вызов Cloud LLM
         response_text, api_stats = self._call_claude(system_prompt, user_prompt)
 
         # Парсинг JSON
@@ -368,14 +365,14 @@ class CommercialLLMAnalyzer:
             evaluation.update(api_stats)
             return evaluation
         else:
-            raise ValueError("Не удалось распарсить ответ от Commercial LLM")
+            raise ValueError("Не удалось распарсить ответ от Cloud LLM")
 
     def _parse_response(self, response_text: str) -> Optional[Dict]:
         """
-        Парсинг JSON ответа от Commercial LLM.
+        Парсинг JSON ответа от Cloud LLM.
 
         Args:
-            response_text: Ответ от Commercial LLM
+            response_text: Ответ от Cloud LLM
 
         Returns:
             Dict или None: Распарсенный JSON
@@ -406,13 +403,13 @@ class CommercialLLMAnalyzer:
             ]
             for field in required_fields:
                 if field not in result:
-                    logger.error(f"Commercial LLM ответ не содержит поле: {field}")
+                    logger.error(f"Cloud LLM ответ не содержит поле: {field}")
                     return None
 
             return result
 
         except json.JSONDecodeError as e:
-            logger.error(f"Ошибка парсинга JSON от Commercial LLM: {e}")
+            logger.error(f"Ошибка парсинга JSON от Cloud LLM: {e}")
             logger.debug(f"Некорректный JSON: {response_text[:500]}")
             return None
 
@@ -446,9 +443,9 @@ class QualityAnalyzer:
             self.analyzer = LLMAnalyzer(vllm_config)
             logger.info("✓ Используется локальный VLLM (LLM-30B) для анализа качества")
         else:
-            # Используем OpenRouter (Commercial LLM)
-            self.analyzer = CommercialLLMAnalyzer(config)
-            logger.info("✓ Используется OpenRouter (Commercial LLM Sonnet 4.5) для анализа качества")
+            # Используем OpenRouter (Cloud LLM)
+            self.analyzer = OpenRouterAnalyzer(config)
+            logger.info("✓ Используется облачный LLM (OpenRouter/OpenAI-compatible) для анализа качества")
 
         # Парсинг скриптов
         self.scripts = {}
@@ -510,7 +507,7 @@ class QualityAnalyzer:
 
         script_criteria = self.scripts[script_key]
 
-        # 3. Анализ через выбранную модель (VLLM или Commercial LLM)
+        # 3. Анализ через выбранную модель (VLLM или Cloud LLM)
         if self.config.provider == "vllm":
             # Построение промптов
             system_prompt = self._build_system_prompt(script_criteria, equipment_type)
@@ -524,7 +521,7 @@ class QualityAnalyzer:
             else:
                 raise ValueError("Не удалось распарсить ответ от LLM")
         else:
-            # Анализ через Commercial LLM
+            # Анализ через Cloud LLM
             evaluation = self.analyzer.analyze(
                 transcription, script_criteria, equipment_type, metadata
             )
@@ -551,7 +548,7 @@ class QualityAnalyzer:
     
     def _build_system_prompt(self, script_criteria, equipment_type):
         """Построить system prompt (используется для VLLM)."""
-        # Используем метод из CommercialLLMAnalyzer
+        # Используем метод из OpenRouterAnalyzer
         from src.model_comparison import LLMAnalyzer
         
         criteria_text = "\n\n".join(

@@ -24,9 +24,8 @@
 ## 🔧 Шаг 1: Клонирование репозитория
 
 ```bash
-# Клонировать репозиторий
-git clone git@github.com:YOUR_USERNAME/analyze-calls-AI.git ASR-4.5
-cd ASR-4.5
+git clone https://github.com/FUYOH666/Scanovich.ai-audio-call.git call-analytics
+cd call-analytics
 ```
 
 ---
@@ -45,6 +44,23 @@ uv sync
 **Ожидаемое время:** 5-10 минут (зависит от скорости интернета и загрузки PyTorch)
 
 **Примечание:** PyTorch с CUDA устанавливается автоматически через `uv.toml` конфигурацию
+
+### Альтернатива: Docker (GPU-хост)
+
+Образ собирается из корня репозитория ([`Dockerfile`](Dockerfile)). LLM (vLLM и т.п.) обычно запускается **отдельно** на хосте или в другом контейнере; в контейнере приложения — ASR-пайплайн и CLI.
+
+```bash
+docker build -t call-analytics:local .
+
+docker run --rm -it --gpus all \
+  -v "$(pwd)/input:/home/asruser/app/input" \
+  -v "$(pwd)/output:/home/asruser/app/output" \
+  -v "$(pwd)/config.yaml:/home/asruser/app/config.yaml:ro" \
+  call-analytics:local \
+  python main.py health
+```
+
+Подставьте нужные тома для `metadata`, `archive`, `logs` при полном цикле. Пользователь в образе: `asruser`, рабочая директория: `/home/asruser/app`.
 
 ---
 
@@ -140,7 +156,7 @@ huggingface-cli download YOUR_MODEL_NAME --local-dir models/YOUR_MODEL_NAME
 ## 🔍 Шаг 5: Проверка установки
 
 ```bash
-cd /path/to/project/ASR-4.5
+cd /path/to/project/call-analytics
 
 # Проверить здоровье системы
 uv run python main.py health
@@ -177,7 +193,7 @@ uv run python -m vllm.entrypoints.openai.api_server \
 ### Вариант A: Ручной запуск (для тестирования)
 
 ```bash
-cd /path/to/project/ASR-4.5
+cd /path/to/project/call-analytics
 
 # Запустить daemon
 uv run python main.py run
@@ -191,23 +207,17 @@ uv run python main.py run
 
 ---
 
-## 📥 Шаг 7: Настройка загрузчиков аудиозвонков (опционально)
+## 📥 Шаг 7: Загрузчики записей с АТС (опционально)
 
-Если у вас есть АТС с записями звонков:
+В этом репозитории: каталог [`voip/`](voip/) — интеграции **Rostelcom** и **Svyaztransit**. Укажите в `.env` каждого загрузчика вывод в общий `input/` проекта (см. README в `voip/rostelcom` и `voip/svyaztransit`).
 
 ```bash
-# 1. Клонировать проект загрузчиков
-cd /path/to/project
-git clone <ваш-репо-загрузчиков> Calls-downloader
-
-# 2. Настроить каждый загрузчик
-cd Calls-downloader/Provider-A-City1
+cd /path/to/project/call-analytics/voip/rostelcom
 cp .env.example .env
-nano .env  # Указать credentials АТС
+# DOWNLOAD_DIR=../../input и credentials АТС
 
-# 3. Установить systemd сервисы (см. раздел ниже)
-cd /path/to/project/ASR-4.5
-sudo ./systemd/install_all_services.sh
+cd /path/to/project/call-analytics
+sudo ./systemd/install_all_services.sh   # при необходимости
 ```
 
 ---
@@ -215,7 +225,7 @@ sudo ./systemd/install_all_services.sh
 ## 🛡️ Шаг 8: Защита от автологаута (критично!)
 
 ```bash
-cd /path/to/project/ASR-4.5
+cd /path/to/project/call-analytics
 
 # Отключить автоматические logout/suspend
 sudo ./systemd/disable_autologout.sh
@@ -346,7 +356,7 @@ curl https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getMe
 Система состоит из следующих компонентов:
 
 1. **VLLM Server** — LLM постобработка (порт 8000)
-2. **ASR-4.5 Watcher** — главный процесс транскрипции
+2. **ASR watcher** — главный процесс транскрипции
 3. **Загрузчики аудиозвонков** (опционально, 4 процесса)
 
 ---
@@ -356,7 +366,7 @@ curl https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getMe
 #### Быстрая установка (рекомендуется):
 
 ```bash
-cd /path/to/project/ASR-4.5
+cd /path/to/project/call-analytics
 
 # Установить все сервисы одной командой
 sudo ./systemd/install_all_services.sh
@@ -388,7 +398,7 @@ sudo systemctl start vllm.service
 sudo systemctl status vllm.service
 ```
 
-**2. ASR-4.5 Watcher:**
+**2. ASR watcher:**
 ```bash
 # Установить сервис
 sudo cp systemd/asr-watcher.service /etc/systemd/system/
@@ -502,7 +512,7 @@ sudo systemctl disable vllm.service
 #### Проверка настроек
 
 ```bash
-cd /path/to/project/ASR-4.5
+cd /path/to/project/call-analytics
 ./systemd/check_session_settings.sh
 ```
 
@@ -626,11 +636,15 @@ nvidia-smi
 
 ## 📚 Дополнительные ресурсы
 
-- **`README.md`** — основная документация
-- **`PROJECT_OVERVIEW.md`** — полное описание проекта и архитектуры
-- **`CONTRIBUTING.md`** — руководство для контрибьюторов
+- **`README.md`** / **`README_EN.md`** — быстрый старт и полное руководство
+- **`docs/README.md`** — индекс технической документации
+- **`docs/ARCHITECTURE.md`** — пайплайн и модули
+- **`PROJECT_OVERVIEW.md`** — краткий обзор продукта
+- **`CONTRIBUTING.md`** — для контрибьюторов
 - **`SECURITY.md`** — политика безопасности
+
+Файлы, попавшие в **`quarantine/`**, можно вернуть вручную или скриптом **`restore_from_quarantine.py`** (см. справку в скрипте).
 
 ---
 
-**© 2025 ASR Call Quality Analyzer**
+**© 2025 Call Analytics Platform**

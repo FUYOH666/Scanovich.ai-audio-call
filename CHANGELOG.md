@@ -5,6 +5,26 @@ All notable changes are documented in this file.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [Semantic Versioning](https://semver.org/).
 
+## [5.0.2] - 2026-03-22
+
+### Added
+- `.github/workflows/ci.yml` — `pytest` on push/PR to `main`/`master` (ruff on full tree deferred: legacy Cyrillic strings in CLI)
+- `docs/ARCHITECTURE.md` — focused pipeline and module map
+- `docs/ROADMAP.md` — consolidated backlog (replaces root `next_steps.md`)
+- `docs/README.md` — index of technical docs
+- `src/cli/` — Click CLI implementation moved out of root `main.py` (`commands.py` + `__init__.py`)
+
+### Removed
+- Portfolio / generic marketing Markdown under `docs/` (`ocr-automation-overview`, `healthcare-solutions`, `voice-analytics-overview`, `architecture-guide`, duplicate `production-deployment.md`)
+- Root `next_steps.md` (content merged into `docs/ROADMAP.md`)
+
+### Changed
+- `PROJECT_OVERVIEW.md` shortened to a summary with links (full pitch belongs on the website)
+- `DEPLOYMENT_GUIDE.md` — correct clone URL, Docker section, VoIP paths under `voip/`, quarantine note
+- `CommercialLLMAnalyzer` renamed to `OpenRouterAnalyzer` in `quality_analyzer.py` (cloud OpenAI-compatible path)
+- User-facing strings: prefer “Call Analytics Platform” and package version via `importlib.metadata`
+- `Dockerfile` labels aligned with package version
+
 ## [5.0.1] - 2026-03-22
 
 ### Added

@@ -15,7 +15,7 @@ if grep -q "^IdleAction=ignore" /etc/systemd/logind.conf 2>/dev/null; then
     echo "✅ IdleAction уже настроен"
 else
     echo "" >> /etc/systemd/logind.conf
-    echo "# ASR-4.5: отключение автологаута" >> /etc/systemd/logind.conf
+    echo "# Call Analytics Platform: отключение автологаута" >> /etc/systemd/logind.conf
     echo "IdleAction=ignore" >> /etc/systemd/logind.conf
     echo "IdleActionSec=0" >> /etc/systemd/logind.conf
     echo "✅ Настройки добавлены в /etc/systemd/logind.conf"

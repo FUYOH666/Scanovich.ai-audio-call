@@ -1,6 +1,6 @@
 [Unit]
-Description=VLLM Server - LLM-Model для ASR-4.5
-Documentation=https://github.com/ASR Call Quality Analyzer/ASR-4.5
+Description=VLLM / OpenAI-compatible LLM server for Call Analytics Platform
+Documentation=https://github.com/FUYOH666/Scanovich.ai-audio-call
 After=network.target
 
 [Service]

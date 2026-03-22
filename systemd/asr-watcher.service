@@ -1,6 +1,6 @@
 [Unit]
-Description=ASR-4.5 Watcher Service - Автоматическая транскрипция аудиозвонков
-Documentation=https://github.com/YOUR_USERNAME/analyze-calls-AI
+Description=Call Analytics — ASR watcher (transcription pipeline)
+Documentation=https://github.com/FUYOH666/Scanovich.ai-audio-call
 After=network.target vllm.service
 Requires=vllm.service
 
@@ -8,7 +8,7 @@ Requires=vllm.service
 Type=simple
 User=ai
 Group=ai
-WorkingDirectory=/path/to/project/ASR-4.5
+WorkingDirectory=/path/to/project/call-analytics
 Environment="PATH=/home/USER/.cargo/bin:/home/USER/.local/bin:/usr/local/bin:/usr/bin"
 Environment="PYTHONUNBUFFERED=1"
 

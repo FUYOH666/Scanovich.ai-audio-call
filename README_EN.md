@@ -15,7 +15,7 @@
 
 ASR Call Quality Analyzer is a fully automated system for analyzing customer service quality over the phone. The system uses local AI models (Whisper for transcription and LLM for analysis), ensuring 100% data confidentiality and significant cost savings compared to commercial solutions.
 
-**Version:** 4.5.0
+**Version:** see `pyproject.toml` / `uv run python main.py --version`
 
 **For:** Medical centers, call centers, retail, banks, education — any business with phone customer service.
 
@@ -107,8 +107,8 @@ flowchart LR
 
 ```bash
 # 1. Clone the repository
-git clone git@github.com:FUYOH666/Scanovich.ai-audio-call.git ASR-4.5
-cd ASR-4.5
+git clone git@github.com:FUYOH666/Scanovich.ai-audio-call.git call-analytics
+cd call-analytics
 
 # 2. Install uv (if not installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -245,7 +245,8 @@ cp branches.example.yaml branches.yaml
 
 - **`README.md`** — English quick-start (repo default)
 - **`DEPLOYMENT_GUIDE.md`** — complete deployment guide
-- **`PROJECT_OVERVIEW.md`** — project description, technologies, architecture
+- **`docs/ARCHITECTURE.md`** — pipeline and `src/` modules
+- **`PROJECT_OVERVIEW.md`** — short product summary and doc index
 - **`CHANGELOG.md`** — change history
 - **`SECURITY.md`** — security policy
 - **`CONTRIBUTING.md`** — contributor guide
@@ -350,7 +351,7 @@ This project is an open-source solution demonstrating the capabilities of call q
 ## Project Structure
 
 ```
-ASR-4.5/
+call-analytics/
 ├── src/                    # Source code (21 modules, ~6100 lines)
 │   ├── asr.py              # Whisper Large V3 transcription
 │   ├── vllm_postprocessor.py   # LLM masking + normalization

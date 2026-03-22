@@ -1,4 +1,4 @@
-# 🐳 ASR-4.5 Production Container
+# Call Analytics Platform — production container
 #
 # Production-ready Docker образ для ASR Call Quality Analyzer
 # Использует uv для детерминированной установки зависимостей из uv.lock
@@ -32,8 +32,8 @@ FROM python:3.12-slim
 
 # Метаданные образа
 LABEL maintainer="ScanovichAI <contact@scanovich.ai>"
-LABEL version="4.5.0"
-LABEL description="ASR-4.5 Production System - Call Quality Analyzer"
+LABEL version="5.0.2"
+LABEL description="Call Analytics Platform — call transcription and quality analysis"
 
 # Установка минимальных системных зависимостей для runtime
 RUN apt-get update && apt-get install -y \

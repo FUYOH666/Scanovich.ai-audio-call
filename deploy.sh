@@ -1,11 +1,11 @@
 #!/bin/bash
-# Безопасный деплой скрипт для ASR-4.5
+# Deploy helper — Call Analytics Platform
 # Author: Aleksandr Mordvinov
 # Date: 2025-11-04
 
 set -e  # Прерывать выполнение при ошибке
 
-echo "🚀 ASR-4.5 Deployment Script"
+echo "🚀 Call Analytics Platform — deploy"
 echo "============================"
 
 # Проверка наличия Python

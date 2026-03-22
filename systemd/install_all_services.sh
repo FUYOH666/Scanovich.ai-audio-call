@@ -18,9 +18,9 @@ echo "1️⃣  Установка VLLM Server..."
 sudo cp systemd/vllm.service /etc/systemd/system/
 echo "   ✅ vllm.service установлен"
 
-# 2. ASR-4.5 Watcher
+# 2. ASR watcher
 echo ""
-echo "2️⃣  Установка ASR-4.5 Watcher..."
+echo "2️⃣  Установка ASR watcher..."
 sudo cp systemd/asr-watcher.service /etc/systemd/system/
 echo "   ✅ asr-watcher.service установлен"
 
