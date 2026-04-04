@@ -142,3 +142,15 @@ The local-first story is already partly implemented:
 ## Commercial support
 
 This repository is MIT-licensed and self-hostable. If you need pilot setup, on-prem deployment, or business-specific criteria tuning, see [`FUNDING.md`](FUNDING.md).
+
+## Minimal Mode (No Telegram / Google Sheets)
+
+You can run the project without external integrations by disabling them in config:
+
+```yaml
+analytics:
+  telegram:
+    enabled: false
+
+google_sheets:
+  enabled: false
