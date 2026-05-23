@@ -76,6 +76,20 @@ cp config.example.yaml config.yaml
 cp branches.example.yaml branches.yaml
 ```
 
+For a minimal first run without Telegram or Google Sheets credentials, disable
+the optional integrations copied from [`config.example.yaml`](config.example.yaml):
+
+```yaml
+analytics:
+  telegram:
+    enabled: false
+google_sheets:
+  enabled: false
+```
+
+The core pipeline still works in this mode: local folder input, ASR, LLM
+post-processing, and JSON/text artifacts remain available.
+
 Recommended first checks:
 
 ```bash

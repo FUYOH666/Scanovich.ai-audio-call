@@ -67,6 +67,20 @@ asr:
   device: "cuda"
 ```
 
+For a minimal first run without Telegram or Google Sheets credentials, disable
+the optional integrations copied from [`config.example.yaml`](config.example.yaml):
+
+```yaml
+analytics:
+  telegram:
+    enabled: false
+google_sheets:
+  enabled: false
+```
+
+The core local pipeline still works in this mode: it can process files from
+`input/`, run ASR and LLM post-processing, and write local JSON/text artifacts.
+
 If you want to use a remote OpenAI-compatible LLM instead of a local server, point `vllm.base_url` and `quality_analysis.base_url` at that endpoint. Use placeholders in repo-tracked config and keep real hostnames in local config or environment overrides only.
 
 ### 3. Run the web layer
