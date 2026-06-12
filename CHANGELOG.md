@@ -7,6 +7,19 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [5.2.1] - 2026-06-12
+
+### Added
+- `docs/assets/` — README screenshots (`web-ui-overview.png`, `web-ui-detail.png`) and `github-social-preview.png` with regen guide
+- `docs/FAQ.md` — evaluator and operator FAQ
+- Reader paths (Evaluator / Operator / Contributor) in `docs/README.md`
+
+### Changed
+- `README.md` — tier-1 EN storefront: hero, who-it's-for, quick start, doc lanes, release badge, screenshots
+- `README_EN.md` — trimmed to deep CLI/config/troubleshooting reference (no duplicate landing)
+- `PROJECT_OVERVIEW.md`, `docs/EVALUATION_GUIDE.md`, `docs/examples/README.md`, `CONTRIBUTING.md`, `DEPLOYMENT_GUIDE.md`, `docs/ARCHITECTURE.md` — aligned with new doc structure
+- `pyproject.toml` — Ruff config migrated to `[tool.ruff.lint]` (fixes Cursor/VS Code Ruff extension workspace errors)
+
 ## [5.2.0] - 2026-06-12
 
 ### Added

@@ -99,3 +99,5 @@ If `web.require_api_key` is enabled, these routes require `X-API-Key`.
 ## Security note
 
 Default `.gitignore` excludes `input/`, `output/`, `metadata/`, real transcripts, and credentials. Only synthetic examples under `docs/examples/` should be committed.
+
+Public UI screenshots for the README live under [`assets/`](assets/README.md) (synthetic/redacted content only).

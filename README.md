@@ -1,13 +1,114 @@
 # Call Analytics Platform
 
+**Self-hosted call analytics: Whisper ASR → LLM cleanup & classification → local QA artifacts.**
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Platform: Linux](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](https://github.com/FUYOH666/Scanovich.ai-audio-call)
 [![CI](https://github.com/FUYOH666/Scanovich.ai-audio-call/actions/workflows/ci.yml/badge.svg)](https://github.com/FUYOH666/Scanovich.ai-audio-call/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/FUYOH666/Scanovich.ai-audio-call)](https://github.com/FUYOH666/Scanovich.ai-audio-call/releases)
+[![Docs](https://img.shields.io/badge/docs-index-blue)](docs/README.md)
 
-Canonical public entrypoint for the repository. For the extended guide and command reference, see [`README_EN.md`](README_EN.md).
+![Call Analytics web UI — upload and recent analyses](docs/assets/web-ui-overview.png)
 
-## At a glance
+Process phone recordings on infrastructure **you control**. No mandatory cloud SaaS. Optional Telegram and Google Sheets integrations.
+
+**Deep reference (CLI, config, troubleshooting):** [`README_EN.md`](README_EN.md) · **Русский обзор:** [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md)
+
+---
+
+## Who it's for
+
+- **QA and operations teams** that review phone calls and need structured feedback, not just raw transcripts.
+- **Privacy-first organizations** that want speech analytics on-prem or inside their own network boundary.
+- **Engineers running a pilot** who need a working web UI, HTTP API, and CLI over the same pipeline.
+
+## Why local-first
+
+- Audio and transcripts stay on **your** disks by default.
+- Fits teams that care about data residency (GDPR-style processes, FZ-152-aware deployments) without claiming legal certification out of the box.
+- Open core under MIT — extend, fork, or self-host without vendor lock-in.
+
+---
+
+## Quick start
+
+Evaluating fit first? See [`docs/EVALUATION_GUIDE.md`](docs/EVALUATION_GUIDE.md).
+
+### 1. Install
+
+```bash
+git clone https://github.com/FUYOH666/Scanovich.ai-audio-call.git call-analytics
+cd call-analytics
+uv sync
+cp config.example.yaml config.yaml
+cp branches.example.yaml branches.yaml
+```
+
+### 2. Configure ASR + LLM
+
+Minimal `config.yaml`:
+
+```yaml
+asr:
+  model_preset: "auto"
+  device: "cuda"   # or "cpu" for small tests
+
+vllm:
+  enabled: true
+  base_url: "http://localhost:8000/v1"   # local or remote OpenAI-compatible server
+```
+
+Point `vllm.base_url` (and `quality_analysis.base_url` if enabled) at your LLM gateway. Keep real hostnames in local config or env — not in git.
+
+### 3. Run the web UI
+
+```bash
+uv run python main.py web
+```
+
+Open `http://127.0.0.1:8080` — upload a file, inspect results, browse saved analyses.
+
+### 4. Minimal mode (no Telegram / Google Sheets)
+
+```yaml
+analytics:
+  telegram:
+    enabled: false
+
+google_sheets:
+  enabled: false
+```
+
+Core flow still works: **ASR → LLM →** artifacts in `output/` and `metadata/`.
+
+### 5. Optional: protected pilot
+
+```bash
+export WEB__REQUIRE_API_KEY=true
+export WEB__API_KEY=replace-with-a-strong-key
+uv run python main.py web --host 0.0.0.0 --port 8080
+```
+
+---
+
+## What you get
+
+| Output | Path | Purpose |
+|--------|------|---------|
+| Clean transcript | `output/<id>.txt` | Masked, LLM-cleaned text |
+| Metadata | `metadata/<id>.json` | Classification, ASR metrics |
+| Quality JSON | `quality_analysis/individual/<id>.json` | Optional QA scoring |
+
+**HTTP API:** `GET /healthz` · `POST /analyze` · `GET /analyses` · `GET /analyses/{id}` · `/` (browser UI)
+
+**Daemon mode:** `uv run python main.py run` watches `input/` for batch / VoIP workflows.
+
+![Analysis detail view](docs/assets/web-ui-detail.png)
+
+---
+
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -21,144 +122,30 @@ flowchart LR
   artifacts --> ui[browser_UI_and_API]
 ```
 
-- The shared single-file flow lives in [`src/pipeline_service.py`](src/pipeline_service.py).
-- The web/API layer lives in [`src/web/app.py`](src/web/app.py).
-- The browser UI is a static app under [`src/web/static/`](src/web/static/).
-- `main.py web` is the primary entrypoint for the demo and pilot-ready web layer.
-- Each successful web analysis persists artifacts to `output/`, `metadata/`, and `quality_analysis/`, which now also power the recent-analyses view.
-- Remote OpenAI-compatible LLM endpoints are already supported by config; see [`docs/REMOTE_ASR_AND_LLM.md`](docs/REMOTE_ASR_AND_LLM.md).
+Implementation map: [`src/pipeline_service.py`](src/pipeline_service.py) · [`src/web/app.py`](src/web/app.py) · [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 
-## Current product surface
+---
 
-The repository currently has two practical entry modes:
+## Documentation
 
-1. `uv run python main.py run` for the long-running daemon pipeline over `input/`.
-2. `uv run python main.py web` for a browser UI plus HTTP API over the same shared pipeline.
+| I want to… | Start here |
+|------------|------------|
+| **Evaluate** before deploying | [`docs/EVALUATION_GUIDE.md`](docs/EVALUATION_GUIDE.md) → [`docs/examples/`](docs/examples/README.md) |
+| **Deploy** for demo or production | [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md) → [`docs/DEPLOYMENT_PROFILES.md`](docs/DEPLOYMENT_PROFILES.md) |
+| **Understand** the codebase | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) → [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+| **Get answers** quickly | [`docs/FAQ.md`](docs/FAQ.md) |
 
-The web layer supports:
+Full index: [`docs/README.md`](docs/README.md) · Roadmap: [`docs/ROADMAP.md`](docs/ROADMAP.md) · Changes: [`CHANGELOG.md`](CHANGELOG.md)
 
-- `GET /healthz`
-- `POST /analyze`
-- `GET /analyses`
-- `GET /analyses/{result_id}`
-- `/` for the browser UI
+---
 
-## Quick start
+## Community & trust
 
-If you are evaluating fit first, start with [`docs/EVALUATION_GUIDE.md`](docs/EVALUATION_GUIDE.md).
-
-### 1. Install
-
-```bash
-git clone https://github.com/FUYOH666/Scanovich.ai-audio-call.git call-analytics
-cd call-analytics
-uv sync
-cp config.example.yaml config.yaml
-cp branches.example.yaml branches.yaml
-```
-
-### 2. Configure the local worker
-
-In `config.yaml`:
-
-```yaml
-asr:
-  model_preset: "auto"
-  device: "cuda"
-```
-
-If you want to use a remote OpenAI-compatible LLM instead of a local server, point `vllm.base_url` and `quality_analysis.base_url` at that endpoint. Use placeholders in repo-tracked config and keep real hostnames in local config or environment overrides only.
-
-### 3. Run the web layer
-
-```bash
-uv run python main.py web
-```
-
-Open `http://127.0.0.1:8080`.
-
-What you can do in the UI today:
-
-- upload one audio file,
-- inspect transcript, classification, ASR metrics, and quality output,
-- review recent analyses that were already persisted to disk,
-- reopen an earlier analysis without re-uploading the file.
-
-### 4. Protect a pilot deployment
-
-```bash
-export WEB__REQUIRE_API_KEY=true
-export WEB__API_KEY=replace-with-a-strong-key
-uv run python main.py web --host 0.0.0.0 --port 8080
-```
-
-The browser UI already supports `X-API-Key` through the optional API key field.
-
-### 5. Run the daemon pipeline
-
-```bash
-uv run python main.py run
-```
-
-Use this mode when VoIP downloaders or other systems write recordings into `input/`.
-
-### Minimal first-run (no Telegram or Google Sheets)
-
-You do not need Telegram bot tokens or Google Sheets credentials for the core pipeline. Disable optional integrations in `config.yaml`:
-
-```yaml
-analytics:
-  telegram:
-    enabled: false
-
-google_sheets:
-  enabled: false
-```
-
-With this setup, both entry modes still work:
-
-- `uv run python main.py web` — upload a file, get transcript + classification + local artifacts under `output/` and `metadata/`.
-- `uv run python main.py run` — drop files into `input/` and process them with the same ASR → LLM flow.
-
-You still need a reachable OpenAI-compatible LLM if `vllm.enabled: true` (local vLLM/llama.cpp gateway or remote endpoint). Quality analysis stays optional via `quality_analysis.enabled`.
-
-## Artifact model
-
-The web layer and the daemon share the same persisted artifact story:
-
-- `output/<result_id>.txt` for the cleaned transcript
-- `metadata/<result_id>.json` for classification and ASR metrics
-- `quality_analysis/individual/<result_id>.json` for quality results when enabled
-
-That persisted state is now reused directly by the recent-analyses API and UI rather than copied into a separate database.
-
-## Documentation map
-
-- [`README_EN.md`](README_EN.md) — extended guide and command reference
-- [`docs/README.md`](docs/README.md) — full docs hierarchy
-- [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md) — deployment and 24/7 operations
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — pipeline and module map
-- [`docs/EVALUATION_GUIDE.md`](docs/EVALUATION_GUIDE.md) — pilot-first evaluation path
-- [`docs/ROADMAP.md`](docs/ROADMAP.md) — current shipped items and next product steps
-- [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md) — Russian overview and doc map
-- [`CHANGELOG.md`](CHANGELOG.md) — change history
-- [`FUNDING.md`](FUNDING.md) — support and sponsorship
-
-## Community
-
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — contribution workflow and repo conventions
-- [`SECURITY.md`](SECURITY.md) — responsible reporting and data-handling expectations
+- [`SECURITY.md`](SECURITY.md) — responsible disclosure and data-handling expectations
 - [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) — collaboration norms
-- [`LICENSE`](LICENSE) — MIT license
-
-## Local-first direction
-
-The local-first story is already partly implemented:
-
-- ASR is in-process Faster-Whisper today.
-- LLM post-processing and quality analysis can already use a local or remote OpenAI-compatible server.
-- Optional HTTP ASR is a logical next adapter-based step, but it is not implemented in this pass.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — how to propose changes
+- [`LICENSE`](LICENSE) — MIT
 
 ## Commercial support
 
-This repository is MIT-licensed and self-hostable. If you need pilot setup, on-prem deployment, or business-specific criteria tuning, see [`FUNDING.md`](FUNDING.md).
+Need pilot setup, on-prem deployment, or custom QA criteria? See [`FUNDING.md`](FUNDING.md) and [scanovich.ai](https://scanovich.ai).

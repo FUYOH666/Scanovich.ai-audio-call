@@ -28,3 +28,5 @@ If you are showing the project to a pilot customer or sponsor, walk through the 
 5. Ask whether this would help the team review more calls, coach operators faster, or reduce blind spots in QA.
 
 The goal is not to impress with raw JSON. The goal is to make the business value easy to see.
+
+For a visual walkthrough, see [`docs/assets/`](../assets/README.md) and the sample report section in [`docs/EVALUATION_GUIDE.md`](../EVALUATION_GUIDE.md). For quick answers, see [`docs/FAQ.md`](../FAQ.md).

@@ -1,12 +1,21 @@
 # Documentation index
 
-Technical documentation for this repository only. Use this file as the map for where each type of information lives.
+Technical documentation for this repository. Use this file as the map for where each type of information lives.
 
 ## Start here
 
-- [`../README.md`](../README.md) — canonical public overview
-- [`../README_EN.md`](../README_EN.md) — extended guide and command reference
+- [`../README.md`](../README.md) — **canonical public overview** (quick start, screenshots, doc lanes)
+- [`../README_EN.md`](../README_EN.md) — deep CLI / config / troubleshooting reference
 - [`../PROJECT_OVERVIEW.md`](../PROJECT_OVERVIEW.md) — Russian overview and doc map
+- [`FAQ.md`](FAQ.md) — short answers for common questions
+
+## Reader paths
+
+| I am… | Read in order |
+|-------|----------------|
+| **Evaluator / buyer** | [EVALUATION_GUIDE.md](EVALUATION_GUIDE.md) → [examples/](examples/README.md) → [../README.md](../README.md) quick start |
+| **Operator / DevOps** | [../DEPLOYMENT_GUIDE.md](../DEPLOYMENT_GUIDE.md) → [DEPLOYMENT_PROFILES.md](DEPLOYMENT_PROFILES.md) → [REMOTE_ASR_AND_LLM.md](REMOTE_ASR_AND_LLM.md) |
+| **Contributor** | [../CONTRIBUTING.md](../CONTRIBUTING.md) → [ARCHITECTURE.md](ARCHITECTURE.md) → [../CHANGELOG.md](../CHANGELOG.md) |
 
 ## Product and evaluation docs
 
@@ -14,7 +23,9 @@ Technical documentation for this repository only. Use this file as the map for w
 |----------|-------------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Pipeline, shared web/API flow, persisted artifacts, and module map. |
 | [EVALUATION_GUIDE.md](EVALUATION_GUIDE.md) | Fast path for first pilots and fit checks before a full deployment. |
+| [FAQ.md](FAQ.md) | Common questions for evaluators and operators. |
 | [examples/](examples/README.md) | Synthetic sample transcript and JSON outputs plus the live artifact model. |
+| [assets/](assets/README.md) | README screenshots and GitHub social preview assets. |
 | [../src/web/](../src/web/) | Browser UI and HTTP API for upload, recent analyses, and single-file review. |
 
 ## Deployment and operations

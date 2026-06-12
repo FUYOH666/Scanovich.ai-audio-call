@@ -64,4 +64,4 @@ Backlog and direction for [Scanovich.ai-audio-call](https://github.com/FUYOH666/
 2. Follow [CONTRIBUTING.md](../CONTRIBUTING.md) (ruff, tests)  
 3. Update docs when behavior or config changes  
 
-_Last updated: 2026-06-12 (v5.2.0 maintenance release: staff review, minimal-mode docs, WSL2 notes)_
+_Last updated: 2026-06-12 (v5.2.1 tier-1 README/docs polish)_
