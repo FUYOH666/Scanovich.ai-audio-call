@@ -7,6 +7,25 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [5.2.0] - 2026-06-12
+
+### Added
+- `docs/reviews/STAFF_REVIEW_2026-06.md` — full staff review, tech-delta matrix, and deferred GPU upgrade notes
+- Minimal first-run documentation in `README.md` and `README_EN.md` — disable Telegram and Google Sheets while keeping ASR → LLM → local artifacts
+- WSL2 deployment notes in `DEPLOYMENT_GUIDE.md` (experimental Windows path)
+- Reverse-proxy note for upload rate limiting behind `X-Forwarded-For`
+
+### Changed
+- Version unified at **5.2.0** (`pyproject.toml`, `src/__init__.py`, FastAPI app metadata)
+- CI: `actions/checkout@v6`, `astral-sh/setup-uv@v7` — apply manually on GitHub (workflow file requires `workflow` OAuth scope from local push)
+- `pydantic` 2.10.3 → 2.12.5, `pydantic-settings` 2.6.1 → 2.7.1
+- `pytest.ini` and `pyproject.toml` — exclude `voip/` from default collection to avoid import collisions
+- `config.example.yaml` — minimal-mode header comment
+- `docs/README.md`, `docs/ROADMAP.md` — linked staff review and marked minimal docs / WSL2 done
+
+### Deferred (explicit)
+- `torch` 2.5.1 → 2.10.0, `faster-whisper` 1.0.3 → 1.2.x, `openai` 1.54 → 2.x — require GPU / integration smoke on Linux before merge
+
 ## [5.1.0] - 2026-03-22
 
 ### Added

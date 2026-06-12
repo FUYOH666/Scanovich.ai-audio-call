@@ -21,6 +21,7 @@ from fastapi import FastAPI, File, Header, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from src import __version__
 from src.pipeline_service import CallAnalysisPipeline
 from src.utils import ConfigManager, setup_logging
 
@@ -54,7 +55,7 @@ def create_app(
 
     app = FastAPI(
         title="Call Analytics Platform API",
-        version="5.1.0",
+        version=__version__,
         lifespan=lifespan,
     )
 

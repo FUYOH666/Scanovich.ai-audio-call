@@ -2,6 +2,11 @@
 #
 # ШАБЛОН БЕЗОПАСНОЙ КОНФИГУРАЦИИ
 # Скопируйте в config.yaml и заполните реальными значениями
+#
+# Minimal first-run (no Telegram / Google Sheets):
+#   analytics.telegram.enabled: false
+#   google_sheets.enabled: false
+# Core ASR → LLM → local artifacts still works. See README.md § Minimal first-run.
 
 # ⭐ ASR configuration (Whisper)
 # model_preset: "auto" = detect GPU VRAM and select best model

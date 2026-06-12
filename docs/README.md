@@ -37,6 +37,7 @@ These are useful, but not required reading for every adopter.
 
 | Document | Description |
 |----------|-------------|
+| [reviews/STAFF_REVIEW_2026-06.md](reviews/STAFF_REVIEW_2026-06.md) | Staff-level audit before v5.2.0; tech-delta and deferred GPU upgrades. |
 | [PRODUCTIZATION_PLAN.md](PRODUCTIZATION_PLAN.md) | Strategic rationale and productization notes. Read as context, not as the live task tracker. |
 | [PILOT_OUTREACH_PLAYBOOK.md](PILOT_OUTREACH_PLAYBOOK.md) | Narrow outreach and first pilot conversation playbook. |
 | [WORKING_TOGETHER.md](WORKING_TOGETHER.md) | Collaboration paths that preserve the open-source core. |

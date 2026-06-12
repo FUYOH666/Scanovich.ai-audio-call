@@ -39,6 +39,16 @@ Web/API слой сейчас умеет:
 - LLM уже может быть локальным или удалённым OpenAI-compatible endpoint.
 - Если LLM вынесен на другой хост, настройте `vllm.base_url` и `quality_analysis.base_url`.
 
+### Windows / WSL2 (экспериментально)
+
+Основной путь — **Linux с NVIDIA GPU**. На Windows многие команды запускают стек в **WSL2**:
+
+- Установите WSL2 (Ubuntu) и Python 3.12 + `uv` внутри дистрибутива, не в native Windows Python.
+- **CUDA в WSL2** требует драйвер NVIDIA на хосте Windows и совместимой версии CUDA toolkit в WSL — см. [документацию NVIDIA](https://docs.nvidia.com/cuda/wsl-user-guide/index.html) и [Microsoft WSL GPU](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gpu-compute).
+- Пути к аудио и конфигам используйте в формате Linux (`/home/...`), не `C:\...`.
+- **systemd** в WSL может быть недоступен — для daemon-режима предпочтите `main.py web` или ручной запуск `main.py run` в tmux/screen.
+- Production 24/7 и VoIP-интеграции по-прежнему ориентированы на bare-metal Linux или VM.
+
 ## Установка
 
 ```bash
@@ -108,6 +118,8 @@ uv run python main.py web --host 0.0.0.0 --port 8080
 ```
 
 Ключ передаётся через `X-API-Key`. В browser UI для этого есть отдельное поле.
+
+За reverse-proxy (nginx, Caddy) лимит upload-запросов считается по первому значению `X-Forwarded-For`. Настройте прокси так, чтобы клиентский IP передавался корректно, или ограничивайте rate limit на уровне прокси.
 
 ### Альтернативный продвинутый запуск
 

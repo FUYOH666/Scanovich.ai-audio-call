@@ -29,11 +29,13 @@ Backlog and direction for [Scanovich.ai-audio-call](https://github.com/FUYOH666/
 - [x] Minimal web UI for upload-and-review demos (`src/web/`)
 - [x] HTTP API for single-file analysis and orchestration (`/healthz`, `/analyze`)
 - [x] Recent analyses page backed by persisted artifacts in `output/`, `metadata/`, and `quality_analysis/`
+- [x] Minimal first-run docs (no Telegram / Google Sheets) in README and deployment guide
 - [ ] Pilot hardening for web/API: rate limiting, upload quotas, audit-friendly logs, and clearer protected-demo operations
 - [x] One-command web launch and clearer deployment path via `main.py web`
 - [x] Filtering, pagination, and search for recent analyses
 - [ ] Better detail views and export/share actions for saved analyses
 - [ ] CI/CD hardening (already: GitHub Actions)
+- [x] WSL2 deployment notes in `DEPLOYMENT_GUIDE.md`
 
 **Local-first deployment**
 
@@ -41,6 +43,7 @@ Backlog and direction for [Scanovich.ai-audio-call](https://github.com/FUYOH666/
 - [ ] Clear deployment profiles: all-local GPU, CPU worker + remote ASR, remote LLM
 - [ ] Shared config defaults to reduce drift between `vllm` and `quality_analysis`
 - [ ] Public website to protected pilot bridge with a clean demo URL strategy and no shared runtime code
+- [ ] GPU smoke validation before bumping `torch`, `faster-whisper`, and `openai` SDK (see `docs/reviews/STAFF_REVIEW_2026-06.md`)
 
 ## Longer term (3–12 months)
 
@@ -61,4 +64,4 @@ Backlog and direction for [Scanovich.ai-audio-call](https://github.com/FUYOH666/
 2. Follow [CONTRIBUTING.md](../CONTRIBUTING.md) (ruff, tests)  
 3. Update docs when behavior or config changes  
 
-_Last updated: 2026-03-22 (docs refresh and recent-analyses update)_
+_Last updated: 2026-06-12 (v5.2.0 maintenance release: staff review, minimal-mode docs, WSL2 notes)_
