@@ -1,6 +1,6 @@
 [project]
 name = "call-analytics-platform"
-version = "5.2.0"
+version = "5.2.1"
 description = "Local-first call analytics platform with shared pipeline, pilot-ready API/UI, and on-prem deployment paths"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
@@ -108,6 +108,17 @@ packages = ["src"]
 [tool.ruff]
 target-version = "py312"
 line-length = 100
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
 select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
@@ -127,22 +138,13 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
     "ARG001", # unused function argument
 ]
-exclude = [
-    ".git",
-    ".venv",
-    "venv",
-    "__pycache__",
-    "build",
-    "dist",
-    "*.egg-info",
-]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-
-[tool.ruff.isort]
-known-first-party = ["src"]
 
 [tool.pyright]
 pythonVersion = "3.12"

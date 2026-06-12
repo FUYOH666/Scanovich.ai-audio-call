@@ -13,13 +13,15 @@ Production-ориентированная система: **записи зво�
 | Нужно | Файл |
 |--------|------|
 | Быстрый старт (EN) | [README.md](README.md) |
-| Полное руководство (EN) | [README_EN.md](README_EN.md) |
+| Полное руководство (CLI, config) | [README_EN.md](README_EN.md) |
 | Развёртывание 24/7, systemd | [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) |
 | Пайплайн и модули | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | Граница между сайтом и продуктом | [docs/PRODUCT_SURFACES.md](docs/PRODUCT_SURFACES.md) |
 | Планы развития | [docs/ROADMAP.md](docs/ROADMAP.md) |
 | Product strategy и приоритеты | [docs/PRODUCTIZATION_PLAN.md](docs/PRODUCTIZATION_PLAN.md) |
 | Быстрая оценка перед пилотом | [docs/EVALUATION_GUIDE.md](docs/EVALUATION_GUIDE.md) |
+| FAQ | [docs/FAQ.md](docs/FAQ.md) |
+| Скриншоты и social preview | [docs/assets/README.md](docs/assets/README.md) |
 | Удалённый LLM / CPU ASR | [docs/REMOTE_ASR_AND_LLM.md](docs/REMOTE_ASR_AND_LLM.md) |
 | Поддержка и спонсорство | [FUNDING.md](FUNDING.md) |
 | Индекс docs | [docs/README.md](docs/README.md) |
@@ -47,4 +49,4 @@ Production-ориентированная система: **записи зво�
 
 ---
 
-**© 2025 Aleksandr Mordvinov (ScanovichAI)**
+**© 2026 Aleksandr Mordvinov (ScanovichAI)**

@@ -154,6 +154,8 @@ Use this order when presenting a pilot result to a non-technical stakeholder:
 
 The synthetic examples in `docs/examples/` are meant to support exactly this flow.
 
+When presenting to stakeholders remotely, you can also use the README screenshots in [`docs/assets/`](../assets/README.md) (`web-ui-overview.png`, `web-ui-detail.png`) — they show the live UI layout without exposing customer data.
+
 ## What to postpone until later
 
 Avoid blocking the first pilot on:

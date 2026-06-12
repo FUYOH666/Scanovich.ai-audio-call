@@ -9,7 +9,8 @@ This repository is public, but it works in a privacy-sensitive domain. Good cont
 Please read:
 
 - [`README.md`](README.md) for the public product overview
-- [`docs/README.md`](docs/README.md) for the documentation map
+- [`docs/README.md`](docs/README.md) for the documentation map and reader paths
+- [`docs/FAQ.md`](docs/FAQ.md) for common evaluator questions
 - [`SECURITY.md`](SECURITY.md) for responsible reporting and data-handling rules
 
 For non-trivial changes, opening an issue first is the safest path.
@@ -110,6 +111,17 @@ Use the pull request template and include:
 - whether any UI screenshots help.
 
 Good PRs are focused and easy to review.
+
+## Documentation and screenshots
+
+When you change user-visible UI or the public README:
+
+- update [`README.md`](README.md) if the product story or quick start changes,
+- update [`README_EN.md`](README_EN.md) for CLI/config/troubleshooting details,
+- regenerate PNGs in [`docs/assets/`](docs/assets/README.md) with **synthetic data only**,
+- add an entry to [`CHANGELOG.md`](CHANGELOG.md) under `[Unreleased]` or the next release section.
+
+Follow the reader paths in [`docs/README.md`](docs/README.md) (Evaluator / Operator / Contributor) so links stay consistent.
 
 ## Reporting bugs and proposing features
 
