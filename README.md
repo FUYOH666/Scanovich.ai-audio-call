@@ -102,6 +102,26 @@ uv run python main.py run
 
 Use this mode when VoIP downloaders or other systems write recordings into `input/`.
 
+### Minimal first-run (no Telegram or Google Sheets)
+
+You do not need Telegram bot tokens or Google Sheets credentials for the core pipeline. Disable optional integrations in `config.yaml`:
+
+```yaml
+analytics:
+  telegram:
+    enabled: false
+
+google_sheets:
+  enabled: false
+```
+
+With this setup, both entry modes still work:
+
+- `uv run python main.py web` — upload a file, get transcript + classification + local artifacts under `output/` and `metadata/`.
+- `uv run python main.py run` — drop files into `input/` and process them with the same ASR → LLM flow.
+
+You still need a reachable OpenAI-compatible LLM if `vllm.enabled: true` (local vLLM/llama.cpp gateway or remote endpoint). Quality analysis stays optional via `quality_analysis.enabled`.
+
 ## Artifact model
 
 The web layer and the daemon share the same persisted artifact story:

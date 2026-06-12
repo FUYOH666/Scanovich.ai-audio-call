@@ -131,6 +131,26 @@ uv run python main.py run
 
 Use this when VoIP downloaders or another upstream process write audio into `input/`.
 
+## Minimal first-run (no Telegram or Google Sheets)
+
+Telegram and Google Sheets are optional. For a first local run, disable them in `config.yaml`:
+
+```yaml
+analytics:
+  telegram:
+    enabled: false
+
+google_sheets:
+  enabled: false
+```
+
+Core processing still works:
+
+- `main.py web` — upload and review results with artifacts under `output/` and `metadata/`.
+- `main.py run` — watch `input/` and process files through ASR → LLM.
+
+You still need a reachable OpenAI-compatible LLM when `vllm.enabled: true`. Enable `quality_analysis` only when you have the provider credentials configured.
+
 ## Artifact model
 
 Each persisted analysis is keyed by the source stem and typically produces:
