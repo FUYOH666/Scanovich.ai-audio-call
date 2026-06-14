@@ -36,7 +36,7 @@ dependencies = [
     # ⭐ PyTorch with CUDA 12.4 (RTX 5090) - критичные версии
     # Требует uv.toml с index pytorch-cu124 для установки CUDA-версий
     "torch==2.5.1",
-    "torchaudio==2.5.1",
+    "torchaudio==2.11.0",
     # ⭐ Configuration & Validation - критичные версии
     "pydantic==2.12.5",
     "pydantic-settings==2.7.1",
