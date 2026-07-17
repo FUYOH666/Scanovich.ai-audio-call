@@ -39,7 +39,8 @@ Typical implementation help:
 - installation and configuration,
 - integration planning,
 - report tuning,
-- rollout support.
+- rollout support,
+- adapting ASR / language / audio profile beyond the demo defaults in this repository.
 
 ### 3. Ongoing support
 
