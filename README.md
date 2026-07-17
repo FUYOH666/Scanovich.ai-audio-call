@@ -29,6 +29,22 @@ Process phone recordings on infrastructure **you control**. No mandatory cloud S
 - Fits teams that care about data residency (GDPR-style processes, FZ-152-aware deployments) without claiming legal certification out of the box.
 - Open core under MIT — extend, fork, or self-host without vendor lock-in.
 
+## Important: this is a demonstration configuration
+
+This repository ships a **working reference stack** tuned for a **specific class of telephony recordings** — not a universal “transcribe any audio on Earth equally well” product.
+
+Results depend heavily on:
+
+- **language and locale** (defaults lean Russian telephony),
+- **audio quality** (sample rate, codecs, noise, channel layout),
+- **call type and domain vocabulary** (sales, support, booking scripts),
+- **ASR model choice and size** (Whisper family presets vs hardware),
+- **LLM prompts, QA criteria, and templates** for your business.
+
+Changing language, audio profile, or industry usually means **retuning ASR + prompts + evaluation templates**, not only flipping a config flag.
+
+If your use case differs (another language, much worse/better recordings, different vertical) and you want guidance on how to adapt the stack — **reach out**. Contact and paid/customization paths: [`FUNDING.md`](FUNDING.md) · Email `iamfuyoh@gmail.com` · Telegram [`@ScanovichAI`](https://t.me/ScanovichAI).
+
 ---
 
 ## Quick start
@@ -148,4 +164,4 @@ Full index: [`docs/README.md`](docs/README.md) · Roadmap: [`docs/ROADMAP.md`](d
 
 ## Commercial support
 
-Need pilot setup, on-prem deployment, or custom QA criteria? See [`FUNDING.md`](FUNDING.md) and [scanovich.ai](https://scanovich.ai).
+Need pilot setup, on-prem deployment, another language / audio profile, or custom QA criteria? See [`FUNDING.md`](FUNDING.md) and [scanovich.ai](https://scanovich.ai).

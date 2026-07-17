@@ -7,6 +7,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+- `README.md`, `PROJECT_OVERVIEW.md`, `docs/FAQ.md`, `FUNDING.md` — clarify that the shipped stack is a demonstration configuration for a specific telephony profile; ASR quality depends on model, language, and audio; contact path for customization
+
 ## [5.2.1] - 2026-06-12
 
 ### Added

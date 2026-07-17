@@ -16,6 +16,10 @@ Teams that need instant multi-tenant SaaS, zero setup, real-time agent coaching,
 
 You run the stack on your infrastructure. Data stays under your control by default. You configure criteria and integrations; there is no mandatory vendor cloud for core processing.
 
+### Will it transcribe every language and every audio quality the same way?
+
+No. This repo is a **demonstration configuration** for a specific telephony profile (language, codecs, noise, domain). Accuracy depends first on the **ASR model** and how well it matches your audio. Another language or a very different recording quality usually needs retuning — see the note in [`README.md`](../README.md#important-this-is-a-demonstration-configuration) and contact in [`FUNDING.md`](../FUNDING.md).
+
 ## Setup & hardware
 
 ### Do I need a GPU?
