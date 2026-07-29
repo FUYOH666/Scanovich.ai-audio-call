@@ -49,7 +49,7 @@ dependencies = [
     "librosa>=0.10.0,<1.0.0",
     "soundfile>=0.12.0,<1.0.0",
     # ⭐ VLLM Client - критичная версия
-    "openai==1.54.0",
+    "openai==2.41.1",
     # ⭐ File System Monitoring - диапазон
     "watchdog>=4.0.0,<5.0.0",
     # ⭐ GPU Monitoring - критичная версия
